@@ -7,125 +7,57 @@
   <title>Z-Kitap · Akıllı Tahta</title>
   <style>
     :root {
-      --bg: #e8eef5;
-      --panel: #ffffff;
-      --panel-2: #f1f5f9;
-      --accent: #2563eb;
-      --accent-2: #7c3aed;
-      --text: #1e293b;
-      --muted: #64748b;
-      --danger: #dc2626;
-      --success: #16a34a;
-      --border: #cbd5e1;
-      --shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
-      --radius: 14px;
-      --touch: 48px;
+      --bg: #e8eef5; --panel: #ffffff; --panel-2: #f1f5f9;
+      --accent: #2563eb; --accent-2: #7c3aed; --text: #1e293b;
+      --muted: #64748b; --danger: #dc2626; --border: #cbd5e1;
+      --shadow: 0 8px 30px rgba(15,23,42,0.12); --radius: 14px; --touch: 48px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      user-select: none;
+      height: 100%; overflow: hidden; background: var(--bg); color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif; user-select: none;
     }
-    #app {
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      height: 100%;
-      width: 100%;
-    }
-
-    /* ========== TOP BAR ========== */
+    #app { display: grid; grid-template-rows: auto 1fr auto; height: 100%; width: 100%; }
     .topbar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 12px;
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      z-index: 50;
-      position: relative;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+      background: var(--panel); border-bottom: 1px solid var(--border);
+      z-index: 50; position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .logo {
-      font-weight: 800;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
+      font-weight: 800; font-size: 1.15rem;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      white-space: nowrap;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      min-width: var(--touch);
-      min-height: var(--touch);
-      padding: 0 12px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.12s, background 0.12s, box-shadow 0.12s;
-      touch-action: manipulation;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-width: var(--touch); min-height: var(--touch); padding: 0 12px;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--panel-2); color: var(--text);
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      transition: transform 0.12s, background 0.12s; touch-action: manipulation;
     }
-    .btn:hover, .btn:focus-visible { background: #e2e8f0; }
+    .btn:hover { background: #e2e8f0; }
     .btn:active { transform: scale(0.96); }
     .btn.primary {
       background: linear-gradient(135deg, #2563eb, #7c3aed);
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      border-color: transparent; color: #fff;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.35);
     }
-    .btn.primary:hover { filter: brightness(1.06); }
-    .btn.danger {
-      background: #fef2f2;
-      border-color: #fecaca;
-      color: var(--danger);
-    }
+    .btn.danger { background: #fef2f2; border-color: #fecaca; color: var(--danger); }
     .btn.icon-only { width: var(--touch); padding: 0; font-size: 1.3rem; }
-    .btn.active {
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
-    }
     .spacer { flex: 1; }
     .status {
-      font-size: 0.82rem;
-      color: var(--muted);
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 0.82rem; color: var(--muted); max-width: 180px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-
-    /* ========== + MENU ========== */
     .menu-wrap { position: relative; }
     .menu {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      width: min(360px, 94vw);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 12px;
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 100;
-      max-height: 78vh;
-      overflow-y: auto;
+      position: absolute; top: calc(100% + 8px); left: 0;
+      width: min(360px, 94vw); background: var(--panel);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 12px; display: none;
+      flex-direction: column; gap: 8px; z-index: 100;
+      max-height: 78vh; overflow-y: auto;
     }
     .menu.open { display: flex; animation: slideIn 0.18s ease; }
     @keyframes slideIn {
@@ -133,275 +65,162 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .menu-section {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      margin: 4px 4px 2px;
-      font-weight: 700;
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--muted); margin: 4px 4px 2px; font-weight: 700;
     }
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
+    .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .tool-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      min-height: 62px;
-      padding: 8px 4px;
-      border-radius: 12px;
-      background: var(--panel-2);
-      border: 1px solid transparent;
-      color: var(--text);
-      font-size: 0.7rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.12s;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; min-height: 62px; padding: 8px 4px; border-radius: 12px;
+      background: var(--panel-2); border: 1px solid transparent;
+      color: var(--text); font-size: 0.7rem; font-weight: 600; cursor: pointer;
     }
     .tool-btn span.icon { font-size: 1.35rem; line-height: 1; }
-    .tool-btn:hover, .tool-btn:focus-visible { background: #e2e8f0; }
+    .tool-btn:hover { background: #e2e8f0; }
     .tool-btn.active {
       background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(124,58,237,0.12));
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--accent); color: var(--accent);
     }
-    .color-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 4px;
-    }
+    .color-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px; }
     .swatch {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      cursor: pointer;
-      transition: transform 0.12s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      width: 34px; height: 34px; border-radius: 50%; border: 3px solid transparent;
+      cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
-    .swatch:hover { transform: scale(1.1); }
     .swatch.active {
       border-color: var(--accent);
       box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent);
     }
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 6px;
-    }
+    .slider-row { display: flex; align-items: center; gap: 10px; padding: 4px 6px; }
     .slider-row label { font-size: 0.8rem; color: var(--muted); min-width: 70px; }
-    input[type="range"] {
-      flex: 1;
-      accent-color: var(--accent);
-      height: 6px;
-    }
-    .menu-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 4px;
-    }
+    input[type="range"] { flex: 1; accent-color: var(--accent); height: 6px; }
+    .menu-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
     .menu-actions .btn { width: 100%; font-size: 0.82rem; min-height: 42px; }
-
-    /* ========== WORKSPACE (scrollable) ========== */
     .workspace {
-      position: relative;
-      overflow: auto;
-      background: #dbe4ee;
+      position: relative; overflow: auto; background: #dbe4ee;
       -webkit-overflow-scrolling: touch;
     }
     .canvas-stage {
-      position: relative;
-      margin: 24px auto;
-      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.18);
-      border-radius: 2px;
-      background: #fff;
-      line-height: 0;
+      position: relative; margin: 24px auto;
+      box-shadow: 0 8px 32px rgba(15,23,42,0.18);
+      border-radius: 2px; background: #fff; line-height: 0;
     }
-    canvas {
-      display: block;
-      touch-action: none;
-    }
-    #pdfCanvas { position: absolute; top: 0; left: 0; }
-    #drawCanvas { position: absolute; top: 0; left: 0; }
-    #toolCanvas { position: absolute; top: 0; left: 0; pointer-events: none; }
-
+    canvas { display: block; touch-action: none; }
+    #pdfCanvas, #drawCanvas, #toolCanvas { position: absolute; top: 0; left: 0; }
+    #toolCanvas { pointer-events: none; }
     .empty-state {
-      text-align: center;
-      padding: 48px 24px;
-      color: var(--muted);
-      max-width: 440px;
-      margin: 60px auto;
+      text-align: center; padding: 48px 24px; max-width: 460px; margin: 60px auto; color: var(--muted);
     }
     .empty-state h2 {
-      font-size: 1.55rem;
-      margin-bottom: 12px;
+      font-size: 1.55rem; margin-bottom: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .empty-state p { line-height: 1.55; margin-bottom: 22px; color: var(--text); opacity: 0.75; }
-
-    /* Geometry overlays */
-    .geo-overlay {
-      position: absolute;
-      pointer-events: auto;
-      z-index: 20;
-      touch-action: none;
+    .empty-state p { line-height: 1.55; margin-bottom: 22px; color: var(--text); opacity: 0.8; }
+    .geo {
+      position: absolute; z-index: 30; touch-action: none;
+      transform-origin: center center;
     }
-    .ruler {
-      height: 48px;
-      background: linear-gradient(180deg, #fef9c3, #fde047);
-      border: 2px solid #ca8a04;
-      border-radius: 6px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: flex-end;
-      overflow: hidden;
-      cursor: move;
+    .geo .body { position: relative; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.22)); }
+    .geo .h {
+      position: absolute; width: 26px; height: 26px; border-radius: 50%;
+      border: 2.5px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: #fff; font-weight: 700; cursor: grab; z-index: 5;
     }
-    .ruler .marks {
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(90deg,
-        transparent 0, transparent 9px,
-        #854d0e 9px, #854d0e 10px);
-      opacity: 0.5;
+    .geo .h:active { cursor: grabbing; }
+    .geo .h.move { background: #2563eb; }
+    .geo .h.rot { background: #7c3aed; }
+    .geo .h.len { background: #ea580c; }
+    .geo .h.draw { background: #059669; width: 32px; height: 32px; font-size: 14px; }
+    .geo .close {
+      position: absolute; top: -16px; right: -16px; width: 26px; height: 26px;
+      border-radius: 50%; background: #dc2626; color: #fff; border: 2px solid #fff;
+      font-size: 14px; font-weight: 700; cursor: pointer; z-index: 6;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
-    .ruler .label {
-      position: absolute;
-      top: 4px;
-      left: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #713f12;
+    .geo .badge {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      background: rgba(15,23,42,0.9); color: #fff; font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none;
     }
-    .protractor {
-      width: 220px;
-      height: 110px;
-      background: rgba(255,255,255,0.95);
-      border: 2px solid #2563eb;
-      border-radius: 110px 110px 0 0;
-      box-shadow: 0 3px 14px rgba(0,0,0,0.18);
-      cursor: move;
-      position: relative;
-    }
-    .protractor::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 2px;
-      height: 100%;
-      background: #dc2626;
-      transform: translateX(-50%);
-    }
-    .set-square {
-      width: 0;
-      height: 0;
-      border-left: 140px solid transparent;
-      border-right: 140px solid transparent;
-      border-bottom: 140px solid rgba(22, 163, 74, 0.85);
-      filter: drop-shadow(0 3px 10px rgba(0,0,0,0.2));
-      cursor: move;
-    }
-
-    /* ========== BOTTOM BAR ========== */
+    .compass-ui { position: absolute; z-index: 35; pointer-events: none; }
+    .compass-ui svg { overflow: visible; }
     .bottombar {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 14px;
-      background: var(--panel);
-      border-top: 1px solid var(--border);
-      z-index: 40;
-      flex-wrap: wrap;
-      box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+      gap: 6px;
+      padding: 6px 10px; background: var(--panel); border-top: 1px solid var(--border);
+      z-index: 40; box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
     }
-    .page-info {
-      font-size: 0.9rem;
-      font-weight: 600;
-      min-width: 80px;
-      text-align: center;
-      color: var(--muted);
+    .bb-left, .bb-right {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
     }
+    .bb-left { justify-content: flex-start; }
+    .bb-right { justify-content: flex-end; }
+    .bb-center {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .bottombar .tool-chip {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 44px; min-height: 44px; padding: 0 8px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--panel-2); color: var(--text);
+      font-size: 1.15rem; cursor: pointer; font-weight: 600;
+    }
+    .bottombar .tool-chip.active {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-color: transparent; color: #fff;
+    }
+    .bottombar .swatch-mini {
+      width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .bottombar .swatch-mini.active {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 3px #2563eb;
+    }
+    .bottombar .sep {
+      width: 1px; height: 28px; background: var(--border); margin: 0 4px; flex-shrink: 0;
+    }
+    .bottombar input[type="range"] {
+      width: 80px; accent-color: var(--accent); height: 5px;
+    }
+    .bottombar .bb-label {
+      font-size: 0.72rem; color: var(--muted); font-weight: 600;
+    }
+    .page-info { font-size: 0.9rem; font-weight: 600; min-width: 80px; text-align: center; color: var(--muted); }
     .page-info strong { color: var(--text); }
     .page-input {
-      width: 58px;
-      height: 40px;
-      text-align: center;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 0.95rem;
-      font-weight: 600;
+      width: 58px; height: 40px; text-align: center; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--panel-2);
+      color: var(--text); font-size: 0.95rem; font-weight: 600;
     }
-    .zoom-label {
-      font-size: 0.82rem;
-      color: var(--muted);
-      min-width: 48px;
-      text-align: center;
-    }
-
+    .zoom-label { font-size: 0.82rem; color: var(--muted); min-width: 48px; text-align: center; }
     #fileInput { display: none; }
-
     .toast {
-      position: fixed;
-      bottom: 88px;
-      left: 50%;
+      position: fixed; bottom: 88px; left: 50%;
       transform: translateX(-50%) translateY(16px);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 11px 18px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transition: all 0.25s;
-      z-index: 200;
-      pointer-events: none;
-      font-weight: 600;
-      font-size: 0.9rem;
+      background: var(--panel); border: 1px solid var(--border); color: var(--text);
+      padding: 11px 18px; border-radius: 12px; box-shadow: var(--shadow);
+      opacity: 0; transition: all 0.25s; z-index: 200; pointer-events: none;
+      font-weight: 600; font-size: 0.9rem;
     }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* Pan cursor */
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #drawCanvas.pan-mode { cursor: grab; }
     .workspace.panning { cursor: grab; }
     .workspace.panning.dragging { cursor: grabbing; }
-    #drawCanvas.pan-mode { cursor: grab; }
   </style>
 </head>
 <body>
   <div id="app">
     <header class="topbar">
       <div class="menu-wrap">
-        <button class="btn icon-only primary" id="menuBtn" title="Araçlar">＋</button>
+        <button class="btn icon-only primary" id="menuBtn">＋</button>
         <div class="menu" id="toolsMenu">
-          <div class="menu-section">Çizim & Taşıma</div>
-          <div class="menu-grid">
-            <button class="tool-btn active" data-tool="pen"><span class="icon">✏️</span>Kalem</button>
-            <button class="tool-btn" data-tool="eraser"><span class="icon">🧽</span>Silgi</button>
-            <button class="tool-btn" data-tool="pan"><span class="icon">✋</span>Taşı</button>
-            <button class="tool-btn" data-tool="line"><span class="icon">／</span>Çizgi</button>
-          </div>
-          <div class="menu-grid" style="margin-top:6px;">
-            <button class="tool-btn" data-tool="rect"><span class="icon">▭</span>Dikdörtgen</button>
-            <button class="tool-btn" data-tool="compass"><span class="icon">⭕</span>Pergel</button>
-          </div>
-
           <div class="menu-section">Renk</div>
-          <div class="color-row" id="colorRow">
+          <div class="color-row">
             <div class="swatch active" data-color="#dc2626" style="background:#dc2626"></div>
             <div class="swatch" data-color="#ea580c" style="background:#ea580c"></div>
             <div class="swatch" data-color="#ca8a04" style="background:#ca8a04"></div>
@@ -410,31 +229,26 @@
             <div class="swatch" data-color="#7c3aed" style="background:#7c3aed"></div>
             <div class="swatch" data-color="#db2777" style="background:#db2777"></div>
             <div class="swatch" data-color="#0f172a" style="background:#0f172a"></div>
-            <div class="swatch" data-color="#ffffff" style="background:#ffffff; border:1px solid #94a3b8;"></div>
+            <div class="swatch" data-color="#ffffff" style="background:#ffffff;border:1px solid #94a3b8"></div>
           </div>
-
           <div class="menu-section">Kalınlık</div>
           <div class="slider-row">
             <label>İnce ↔ Kalın</label>
-            <input type="range" id="brushSize" min="1" max="40" value="4" />
-            <span id="brushVal">4</span>
+            <input type="range" id="brushSize" min="1" max="40" value="3" />
+            <span id="brushVal">3</span>
           </div>
-
           <div class="menu-section">Geometri Seti</div>
           <div class="menu-grid">
             <button class="tool-btn" data-tool="ruler"><span class="icon">📏</span>Cetvel</button>
             <button class="tool-btn" data-tool="protractor"><span class="icon">📐</span>Açıölçer</button>
             <button class="tool-btn" data-tool="setsquare"><span class="icon">△</span>Gönye</button>
+            <button class="tool-btn" data-tool="compass"><span class="icon">⭕</span>Pergel</button>
           </div>
-
           <div class="menu-section">Görünüm</div>
           <div class="menu-grid">
             <button class="tool-btn" id="zoomInBtn"><span class="icon">🔍+</span>Büyüt</button>
             <button class="tool-btn" id="zoomOutBtn"><span class="icon">🔍−</span>Küçült</button>
-            <button class="tool-btn" id="fitWidthBtn"><span class="icon">↔</span>Genişlik</button>
-            <button class="tool-btn" id="fullscreenBtn"><span class="icon">⛶</span>Tam Ekran</button>
           </div>
-
           <div class="menu-section">Dosya & Temizlik</div>
           <div class="menu-actions">
             <button class="btn primary" id="loadPdfBtn">📄 PDF Yükle</button>
@@ -444,574 +258,814 @@
           </div>
         </div>
       </div>
-
       <div class="logo">Z-Kitap</div>
       <div class="spacer"></div>
       <div class="status" id="fileStatus">PDF yüklenmedi</div>
-      <button class="btn icon-only" id="quickLoad" title="PDF Yükle">📂</button>
+      <button class="btn icon-only" id="quickLoad">📂</button>
     </header>
-
     <main class="workspace" id="workspace">
       <div class="empty-state" id="emptyState">
         <h2>Z-Kitap Hazır</h2>
-        <p>PDF dosyanızı yükleyin. Kalem, silgi, <strong>Taşı</strong> (PDF’i kaydır), cetvel, pergel, gönye ve açıölçer ile işaretleme yapabilirsiniz.</p>
+        <p>PDF yükleyin. Gerçekçi cetvel, açıölçer, gönye ve pergel ile ölçülü çizim yapın.</p>
         <button class="btn primary" id="emptyLoadBtn">PDF Yükle</button>
       </div>
-      <div class="canvas-stage" id="canvasStage" style="display:none;">
+      <div class="canvas-stage" id="canvasStage" style="display:none">
         <canvas id="pdfCanvas"></canvas>
         <canvas id="drawCanvas"></canvas>
         <canvas id="toolCanvas"></canvas>
       </div>
     </main>
-
     <footer class="bottombar">
-      <button class="btn icon-only" id="prevPage" title="Önceki">◀</button>
-      <input type="number" class="page-input" id="pageInput" min="1" value="1" />
-      <span class="page-info">/ <strong id="pageCount">0</strong></span>
-      <button class="btn icon-only" id="nextPage" title="Sonraki">▶</button>
-      <div class="spacer" style="max-width:32px;"></div>
-      <button class="btn icon-only" id="zoomOutBottom" title="Küçült">−</button>
-      <span class="zoom-label" id="zoomLabel">100%</span>
-      <button class="btn icon-only" id="zoomInBottom" title="Büyüt">+</button>
+      <div class="bb-left">
+        <button class="btn icon-only" id="undoBtn" title="Geri Al">↶</button>
+        <button class="btn icon-only" id="redoBtn" title="İleri Al">↷</button>
+        <div class="sep"></div>
+        <button class="tool-chip active" data-tool="pen" title="Kalem">✏️</button>
+        <button class="tool-chip" data-tool="eraser" title="Silgi">🧽</button>
+        <button class="tool-chip" data-tool="pan" title="Taşı">✋</button>
+      </div>
+      <div class="bb-center">
+        <button class="btn icon-only" id="prevPage" title="Önceki">◀</button>
+        <input type="number" class="page-input" id="pageInput" min="1" value="1" />
+        <span class="page-info">/ <strong id="pageCount">0</strong></span>
+        <button class="btn icon-only" id="nextPage" title="Sonraki">▶</button>
+        <div class="sep"></div>
+        <button class="btn icon-only" id="zoomOutBottom" title="Küçült">−</button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button class="btn icon-only" id="zoomInBottom" title="Büyüt">+</button>
+      </div>
+      <div class="bb-right">
+        <button class="btn icon-only" id="fitWidthBtn" title="Genişlik">↔</button>
+        <button class="btn icon-only" id="fullscreenBtn" title="Tam Ekran">⛶</button>
+      </div>
     </footer>
   </div>
-
   <input type="file" id="fileInput" accept="application/pdf,.pdf" />
   <div class="toast" id="toast"></div>
+<script type="module">
+import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
 
-  <script type="module">
-    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+const PX_PER_CM = 37.795;
+const state = {
+  pdf: null, pageNum: 1, pageCount: 0, scale: 1.15,
+  tool: 'pen', color: '#dc2626', brushSize: 3,
+  drawing: false, lastX: 0, lastY: 0, startX: 0, startY: 0,
+  paths: {}, tempShape: null,
+  panning: false, panStartX: 0, panStartY: 0, scrollLeft0: 0, scrollTop0: 0,
+  geos: [],
+  compass: null,
+  undoStack: [],
+  redoStack: [],
+};
 
-    const state = {
-      pdf: null,
-      pageNum: 1,
-      pageCount: 0,
-      scale: 1.15,
-      tool: 'pen',
-      color: '#dc2626',
-      brushSize: 4,
-      drawing: false,
-      lastX: 0, lastY: 0,
-      startX: 0, startY: 0,
-      paths: {},
-      tempShape: null,
-      geoElements: [],
-      compassCenter: null,
-      // pan
-      panning: false,
-      panStartX: 0,
-      panStartY: 0,
-      scrollLeft0: 0,
-      scrollTop0: 0,
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const pdfCanvas = $('#pdfCanvas'), drawCanvas = $('#drawCanvas'), toolCanvas = $('#toolCanvas');
+const pdfCtx = pdfCanvas.getContext('2d');
+const drawCtx = drawCanvas.getContext('2d');
+const toolCtx = toolCanvas.getContext('2d');
+const canvasStage = $('#canvasStage'), workspace = $('#workspace');
+const emptyState = $('#emptyState'), menu = $('#toolsMenu'), menuBtn = $('#menuBtn');
+const fileInput = $('#fileInput'), toastEl = $('#toast');
+
+function toast(msg, ms = 2400) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => toastEl.classList.remove('show'), ms);
+}
+
+function getPointer(e) {
+  const rect = drawCanvas.getBoundingClientRect();
+  let cx, cy;
+  if (e.touches?.length) { cx = e.touches[0].clientX; cy = e.touches[0].clientY; }
+  else if (e.changedTouches?.length) { cx = e.changedTouches[0].clientX; cy = e.changedTouches[0].clientY; }
+  else { cx = e.clientX; cy = e.clientY; }
+  return {
+    x: (cx - rect.left) * (drawCanvas.width / rect.width),
+    y: (cy - rect.top) * (drawCanvas.height / rect.height)
+  };
+}
+
+function updateCursor() {
+  drawCanvas.classList.toggle('pan-mode', state.tool === 'pan');
+  workspace.classList.toggle('panning', state.tool === 'pan');
+  drawCanvas.style.cursor = state.tool === 'compass' ? 'crosshair'
+    : state.tool === 'pan' ? 'grab' : 'crosshair';
+}
+
+menuBtn.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
+document.addEventListener('click', e => {
+  if (!menu.contains(e.target) && e.target !== menuBtn) menu.classList.remove('open');
+});
+
+function setTool(t) {
+  if (t === 'ruler' || t === 'protractor' || t === 'setsquare') {
+    spawnGeo(t);
+    menu.classList.remove('open');
+    return;
+  }
+  $$('.tool-btn[data-tool], .tool-chip[data-tool]').forEach(b => b.classList.remove('active'));
+  $$(`[data-tool="${t}"]`).forEach(b => b.classList.add('active'));
+  state.tool = t;
+  updateCursor();
+  menu.classList.remove('open');
+  if (t === 'compass') {
+    clearCompass();
+    toast('Pergel: 1) Sivri ucu tıkla  2) Kalem ucundan tutup döndür');
+  } else {
+    clearCompass();
+    const n = { pen: 'Kalem', eraser: 'Silgi', pan: 'Taşı' };
+    if (n[t]) toast(n[t] + ' seçildi');
+  }
+}
+
+$$('.tool-btn[data-tool], .tool-chip[data-tool]').forEach(btn => {
+  btn.addEventListener('click', () => setTool(btn.dataset.tool));
+});
+
+$$('.swatch').forEach(s => {
+  s.addEventListener('click', () => {
+    $$('.swatch').forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+    state.color = s.dataset.color;
+  });
+});
+$('#brushSize').addEventListener('input', () => {
+  state.brushSize = +$('#brushSize').value;
+  $('#brushVal').textContent = state.brushSize;
+});
+
+function triggerLoad() { fileInput.click(); }
+$('#loadPdfBtn').onclick = triggerLoad;
+$('#quickLoad').onclick = triggerLoad;
+$('#emptyLoadBtn').onclick = triggerLoad;
+
+fileInput.addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const buf = await file.arrayBuffer();
+    state.pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+    state.pageCount = state.pdf.numPages;
+    state.pageNum = 1; state.paths = {};
+    state.undoStack = []; state.redoStack = [];
+    clearAllGeo(); clearCompass();
+    updateUndoButtons();
+    $('#pageCount').textContent = state.pageCount;
+    $('#fileStatus').textContent = file.name;
+    emptyState.style.display = 'none';
+    canvasStage.style.display = 'block';
+    await renderPage();
+    toast('PDF yüklendi · ' + state.pageCount + ' sayfa');
+    menu.classList.remove('open');
+  } catch (err) { console.error(err); toast('PDF açılamadı'); }
+  fileInput.value = '';
+});
+
+$('#clearPageBtn').onclick = () => {
+  if (!state.pdf) return;
+  state.undoStack.push({ page: state.pageNum, paths: clonePaths() });
+  if (state.undoStack.length > 80) state.undoStack.shift();
+  state.redoStack = [];
+  state.paths[state.pageNum] = [];
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  updateUndoButtons();
+  toast('Sayfa temizlendi'); menu.classList.remove('open');
+};
+$('#clearAllBtn').onclick = () => {
+  state.paths = {};
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  toast('Tüm işaretler silindi'); menu.classList.remove('open');
+};
+$('#removePdfBtn').onclick = () => {
+  state.pdf = null; state.paths = {}; state.pageCount = 0; state.pageNum = 1;
+  pdfCtx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  canvasStage.style.display = 'none'; emptyState.style.display = 'block';
+  $('#pageCount').textContent = '0'; $('#fileStatus').textContent = 'PDF yüklenmedi';
+  clearAllGeo(); clearCompass();
+  toast('PDF kaldırıldı'); menu.classList.remove('open');
+};
+
+function setScale(s) {
+  state.scale = Math.max(0.35, Math.min(3.5, s));
+  $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
+  if (state.pdf) renderPage();
+}
+$('#zoomInBtn').onclick = () => { setScale(state.scale + 0.15); menu.classList.remove('open'); };
+$('#zoomOutBtn').onclick = () => { setScale(state.scale - 0.15); menu.classList.remove('open'); };
+$('#zoomInBottom').onclick = () => setScale(state.scale + 0.15);
+$('#zoomOutBottom').onclick = () => setScale(state.scale - 0.15);
+$('#fitWidthBtn').onclick = async () => {
+  if (!state.pdf) return;
+  const page = await state.pdf.getPage(state.pageNum);
+  const vp = page.getViewport({ scale: 1 });
+  setScale((workspace.clientWidth - 48) / vp.width);
+  menu.classList.remove('open');
+};
+$('#fullscreenBtn').onclick = () => {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+  menu.classList.remove('open');
+};
+
+$('#undoBtn').onclick = () => undo();
+$('#redoBtn').onclick = () => redo();
+$('#prevPage').onclick = () => changePage(-1);
+$('#nextPage').onclick = () => changePage(1);
+$('#pageInput').onchange = () => {
+  let n = parseInt($('#pageInput').value, 10);
+  if (isNaN(n) || n < 1) n = 1;
+  if (n > state.pageCount) n = state.pageCount;
+  state.pageNum = n; renderPage();
+};
+async function changePage(d) {
+  if (!state.pdf) return;
+  const n = state.pageNum + d;
+  if (n < 1 || n > state.pageCount) return;
+  state.pageNum = n; await renderPage(); workspace.scrollTop = 0;
+}
+
+async function renderPage() {
+  if (!state.pdf) return;
+  const page = await state.pdf.getPage(state.pageNum);
+  const viewport = page.getViewport({ scale: state.scale });
+  const w = Math.floor(viewport.width), h = Math.floor(viewport.height);
+  [pdfCanvas, drawCanvas, toolCanvas].forEach(c => {
+    c.width = w; c.height = h; c.style.width = w + 'px'; c.style.height = h + 'px';
+  });
+  canvasStage.style.width = w + 'px'; canvasStage.style.height = h + 'px';
+  pdfCtx.clearRect(0, 0, w, h);
+  await page.render({ canvasContext: pdfCtx, viewport }).promise;
+  redrawAnnotations();
+  $('#pageInput').value = state.pageNum;
+  $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
+  if (state.compass) renderCompassUI();
+}
+
+function drawPath(p) {
+  drawCtx.save();
+  drawCtx.lineCap = 'round'; drawCtx.lineJoin = 'round';
+  if (p.type === 'pen') {
+    drawCtx.strokeStyle = p.color; drawCtx.lineWidth = p.size;
+    drawCtx.beginPath();
+    p.points.forEach((pt, i) => i ? drawCtx.lineTo(pt.x, pt.y) : drawCtx.moveTo(pt.x, pt.y));
+    drawCtx.stroke();
+  } else if (p.type === 'eraser') {
+    drawCtx.globalCompositeOperation = 'destination-out';
+    drawCtx.lineWidth = p.size;
+    drawCtx.beginPath();
+    p.points.forEach((pt, i) => i ? drawCtx.lineTo(pt.x, pt.y) : drawCtx.moveTo(pt.x, pt.y));
+    drawCtx.stroke();
+  } else if (p.type === 'line') {
+    drawCtx.strokeStyle = p.color; drawCtx.lineWidth = p.size;
+    drawCtx.beginPath(); drawCtx.moveTo(p.x1, p.y1); drawCtx.lineTo(p.x2, p.y2); drawCtx.stroke();
+  } else if (p.type === 'circle' || p.type === 'arc') {
+    drawCtx.strokeStyle = p.color; drawCtx.lineWidth = p.size;
+    drawCtx.beginPath();
+    if (p.type === 'arc' && p.a0 != null) drawCtx.arc(p.cx, p.cy, p.r, p.a0, p.a1, !!p.ccw);
+    else drawCtx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
+    drawCtx.stroke();
+  }
+  drawCtx.restore();
+}
+function redrawAnnotations() {
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  (state.paths[state.pageNum] || []).forEach(drawPath);
+}
+function clonePaths() {
+  const src = state.paths[state.pageNum] || [];
+  return src.map(p => JSON.parse(JSON.stringify(p)));
+}
+
+function pushPath(p) {
+  // snapshot before change for undo
+  state.undoStack.push({ page: state.pageNum, paths: clonePaths() });
+  if (state.undoStack.length > 80) state.undoStack.shift();
+  state.redoStack = [];
+  if (!state.paths[state.pageNum]) state.paths[state.pageNum] = [];
+  state.paths[state.pageNum].push(p);
+  redrawAnnotations();
+  updateUndoButtons();
+}
+
+function undo() {
+  if (!state.undoStack.length) { toast('Geri alınacak bir şey yok'); return; }
+  const cur = { page: state.pageNum, paths: clonePaths() };
+  state.redoStack.push(cur);
+  const prev = state.undoStack.pop();
+  // restore paths for that page; also switch if needed
+  if (prev.page !== state.pageNum && state.pdf) {
+    state.pageNum = prev.page;
+    renderPage().then(() => {
+      state.paths[prev.page] = prev.paths;
+      redrawAnnotations();
+      updateUndoButtons();
+    });
+  } else {
+    state.paths[prev.page] = prev.paths;
+    redrawAnnotations();
+    updateUndoButtons();
+  }
+  toast('Geri alındı');
+}
+
+function redo() {
+  if (!state.redoStack.length) { toast('İleri alınacak bir şey yok'); return; }
+  const cur = { page: state.pageNum, paths: clonePaths() };
+  state.undoStack.push(cur);
+  const next = state.redoStack.pop();
+  if (next.page !== state.pageNum && state.pdf) {
+    state.pageNum = next.page;
+    renderPage().then(() => {
+      state.paths[next.page] = next.paths;
+      redrawAnnotations();
+      updateUndoButtons();
+    });
+  } else {
+    state.paths[next.page] = next.paths;
+    redrawAnnotations();
+    updateUndoButtons();
+  }
+  toast('İleri alındı');
+}
+
+function updateUndoButtons() {
+  const u = $('#undoBtn'), r = $('#redoBtn');
+  if (u) u.style.opacity = state.undoStack.length ? '1' : '0.4';
+  if (r) r.style.opacity = state.redoStack.length ? '1' : '0.4';
+}
+
+function startDraw(e) {
+  if (!state.pdf) return;
+  e.preventDefault();
+  try { drawCanvas.setPointerCapture(e.pointerId); } catch (_) {}
+
+  if (state.tool === 'pan') {
+    state.panning = true;
+    state.panStartX = e.clientX; state.panStartY = e.clientY;
+    state.scrollLeft0 = workspace.scrollLeft; state.scrollTop0 = workspace.scrollTop;
+    workspace.classList.add('dragging');
+    return;
+  }
+
+  const { x, y } = getPointer(e);
+  state.drawing = true; state.lastX = x; state.lastY = y; state.startX = x; state.startY = y;
+
+  if (state.tool === 'pen' || state.tool === 'eraser') {
+    state.tempShape = {
+      type: state.tool, color: state.color,
+      size: state.brushSize * (state.tool === 'eraser' ? 2.5 : 1),
+      points: [{ x, y }]
     };
-
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => document.querySelectorAll(s);
-    const pdfCanvas = $('#pdfCanvas');
-    const drawCanvas = $('#drawCanvas');
-    const toolCanvas = $('#toolCanvas');
-    const pdfCtx = pdfCanvas.getContext('2d');
-    const drawCtx = drawCanvas.getContext('2d');
-    const toolCtx = toolCanvas.getContext('2d');
-    const canvasStage = $('#canvasStage');
-    const workspace = $('#workspace');
-    const emptyState = $('#emptyState');
-    const menu = $('#toolsMenu');
-    const menuBtn = $('#menuBtn');
-    const fileInput = $('#fileInput');
-    const toastEl = $('#toast');
-
-    function toast(msg, ms = 2200) {
-      toastEl.textContent = msg;
-      toastEl.classList.add('show');
-      clearTimeout(toastEl._t);
-      toastEl._t = setTimeout(() => toastEl.classList.remove('show'), ms);
-    }
-
-    function getPointer(e) {
-      const rect = drawCanvas.getBoundingClientRect();
-      let clientX, clientY;
-      if (e.touches && e.touches.length) {
-        clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
-      } else if (e.changedTouches && e.changedTouches.length) {
-        clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY;
+  } else if (state.tool === 'compass') {
+    if (!state.compass) {
+      state.compass = { pivot: { x, y }, angle: -Math.PI / 2, radius: 90, el: null, pencilDragging: false };
+      renderCompassUI();
+      toast('Kalem ucunu (renkli daire) tutup döndür');
+    } else {
+      const tip = compassPencilTip();
+      const dist = Math.hypot(x - tip.x, y - tip.y);
+      const distPivot = Math.hypot(x - state.compass.pivot.x, y - state.compass.pivot.y);
+      if (dist < 45) {
+        state.compass.pencilDragging = true;
+        state.compass.arcStart = Math.atan2(y - state.compass.pivot.y, x - state.compass.pivot.x);
+        state.compass.arcLast = state.compass.arcStart;
+        state.compass.totalTravel = 0;
+        state.compass.prevAng = state.compass.arcStart;
+      } else if (distPivot < 30) {
+        state.compass.pivot = { x, y };
+        renderCompassUI();
       } else {
-        clientX = e.clientX; clientY = e.clientY;
-      }
-      return {
-        x: (clientX - rect.left) * (drawCanvas.width / rect.width),
-        y: (clientY - rect.top) * (drawCanvas.height / rect.height)
-      };
-    }
-
-    function updateCursor() {
-      if (state.tool === 'pan') {
-        drawCanvas.classList.add('pan-mode');
-        workspace.classList.add('panning');
-      } else {
-        drawCanvas.classList.remove('pan-mode');
-        workspace.classList.remove('panning');
-        workspace.classList.remove('dragging');
+        state.compass.pivot = { x, y };
+        state.compass.radius = 90;
+        state.compass.angle = -Math.PI / 2;
+        renderCompassUI();
       }
     }
+  }
+}
 
-    // Menu
-    menuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      menu.classList.toggle('open');
-    });
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && e.target !== menuBtn) menu.classList.remove('open');
-    });
+function moveDraw(e) {
+  if (state.panning) {
+    e.preventDefault();
+    workspace.scrollLeft = state.scrollLeft0 - (e.clientX - state.panStartX);
+    workspace.scrollTop = state.scrollTop0 - (e.clientY - state.panStartY);
+    return;
+  }
+  if (!state.drawing || !state.pdf) return;
+  e.preventDefault();
+  const { x, y } = getPointer(e);
+  state.lastX = x; state.lastY = y;
 
-    $$('.tool-btn[data-tool]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        $$('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        state.tool = btn.dataset.tool;
-        updateCursor();
-        if (['ruler','protractor','setsquare'].includes(state.tool)) {
-          spawnGeometry(state.tool);
-        }
-        menu.classList.remove('open');
-        const names = { pen:'Kalem', eraser:'Silgi', pan:'Taşı (kaydır)', line:'Çizgi', rect:'Dikdörtgen', compass:'Pergel', ruler:'Cetvel', protractor:'Açıölçer', setsquare:'Gönye' };
-        toast((names[state.tool] || state.tool) + ' seçildi');
+  if (state.tool === 'pen' || state.tool === 'eraser') {
+    state.tempShape.points.push({ x, y });
+    drawCtx.save();
+    drawCtx.lineCap = 'round'; drawCtx.lineJoin = 'round';
+    drawCtx.lineWidth = state.tempShape.size;
+    if (state.tool === 'eraser') drawCtx.globalCompositeOperation = 'destination-out';
+    else { drawCtx.strokeStyle = state.color; drawCtx.globalCompositeOperation = 'source-over'; }
+    const pts = state.tempShape.points;
+    if (pts.length >= 2) {
+      drawCtx.beginPath();
+      drawCtx.moveTo(pts[pts.length - 2].x, pts[pts.length - 2].y);
+      drawCtx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
+      drawCtx.stroke();
+    }
+    drawCtx.restore();
+  } else if (state.tool === 'compass' && state.compass?.pencilDragging) {
+    const c = state.compass;
+    const ang = Math.atan2(y - c.pivot.y, x - c.pivot.x);
+    c.radius = Math.max(20, Math.hypot(x - c.pivot.x, y - c.pivot.y));
+    c.angle = ang;
+    // track continuous angle travel
+    let dAng = ang - c.prevAng;
+    if (dAng > Math.PI) dAng -= Math.PI * 2;
+    if (dAng < -Math.PI) dAng += Math.PI * 2;
+    c.totalTravel = (c.totalTravel || 0) + dAng;
+    c.prevAng = ang;
+    c.arcLast = ang;
+
+    toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+    toolCtx.save();
+    toolCtx.strokeStyle = state.color;
+    toolCtx.lineWidth = state.brushSize;
+    toolCtx.beginPath();
+    const a0 = c.arcStart;
+    const a1 = c.arcStart + c.totalTravel;
+    toolCtx.arc(c.pivot.x, c.pivot.y, c.radius, a0, a1, c.totalTravel < 0);
+    toolCtx.stroke();
+    toolCtx.setLineDash([5, 4]);
+    toolCtx.globalAlpha = 0.3;
+    toolCtx.beginPath();
+    toolCtx.arc(c.pivot.x, c.pivot.y, c.radius, 0, Math.PI * 2);
+    toolCtx.stroke();
+    toolCtx.restore();
+    renderCompassUI();
+  }
+}
+
+function endDraw(e) {
+  if (state.panning) {
+    state.panning = false; workspace.classList.remove('dragging'); return;
+  }
+  if (!state.drawing) return;
+  state.drawing = false;
+  toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+
+  if ((state.tool === 'pen' || state.tool === 'eraser') && state.tempShape) {
+    pushPath(state.tempShape);
+    state.tempShape = null;
+  } else if (state.tool === 'compass' && state.compass?.pencilDragging) {
+    const c = state.compass;
+    c.pencilDragging = false;
+    const travel = Math.abs(c.totalTravel || 0);
+    if (travel > Math.PI * 1.6) {
+      pushPath({ type: 'circle', color: state.color, size: state.brushSize, cx: c.pivot.x, cy: c.pivot.y, r: c.radius });
+      toast('Çember çizildi · r ≈ ' + ((c.radius / state.scale) / PX_PER_CM).toFixed(1) + ' cm');
+    } else if (travel > 0.15) {
+      const a0 = c.arcStart;
+      const a1 = c.arcStart + c.totalTravel;
+      pushPath({
+        type: 'arc', color: state.color, size: state.brushSize,
+        cx: c.pivot.x, cy: c.pivot.y, r: c.radius, a0, a1, ccw: c.totalTravel < 0
       });
-    });
-
-    $$('.swatch').forEach(s => {
-      s.addEventListener('click', () => {
-        $$('.swatch').forEach(x => x.classList.remove('active'));
-        s.classList.add('active');
-        state.color = s.dataset.color;
-      });
-    });
-
-    const brushSize = $('#brushSize');
-    brushSize.addEventListener('input', () => {
-      state.brushSize = +brushSize.value;
-      $('#brushVal').textContent = state.brushSize;
-    });
-
-    function triggerLoad() { fileInput.click(); }
-    $('#loadPdfBtn').addEventListener('click', triggerLoad);
-    $('#quickLoad').addEventListener('click', triggerLoad);
-    $('#emptyLoadBtn').addEventListener('click', triggerLoad);
-
-    fileInput.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      try {
-        const buf = await file.arrayBuffer();
-        state.pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-        state.pageCount = state.pdf.numPages;
-        state.pageNum = 1;
-        state.paths = {};
-        $('#pageCount').textContent = state.pageCount;
-        $('#fileStatus').textContent = file.name;
-        emptyState.style.display = 'none';
-        canvasStage.style.display = 'block';
-        await renderPage();
-        toast('PDF yüklendi · ' + state.pageCount + ' sayfa');
-        menu.classList.remove('open');
-      } catch (err) {
-        console.error(err);
-        toast('PDF açılamadı');
-      }
-      fileInput.value = '';
-    });
-
-    $('#clearPageBtn').addEventListener('click', () => {
-      if (!state.pdf) return;
-      state.paths[state.pageNum] = [];
-      drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-      toast('Sayfa temizlendi');
-      menu.classList.remove('open');
-    });
-    $('#clearAllBtn').addEventListener('click', () => {
-      state.paths = {};
-      drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-      toast('Tüm işaretler silindi');
-      menu.classList.remove('open');
-    });
-    $('#removePdfBtn').addEventListener('click', () => {
-      state.pdf = null;
-      state.paths = {};
-      state.pageCount = 0;
-      state.pageNum = 1;
-      pdfCtx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
-      drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-      canvasStage.style.display = 'none';
-      emptyState.style.display = 'block';
-      $('#pageCount').textContent = '0';
-      $('#fileStatus').textContent = 'PDF yüklenmedi';
-      clearAllGeo();
-      toast('PDF kaldırıldı');
-      menu.classList.remove('open');
-    });
-
-    function setScale(s) {
-      state.scale = Math.max(0.35, Math.min(3.5, s));
-      $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
-      if (state.pdf) renderPage();
+      toast('Yay çizildi');
     }
-    $('#zoomInBtn').addEventListener('click', () => { setScale(state.scale + 0.15); menu.classList.remove('open'); });
-    $('#zoomOutBtn').addEventListener('click', () => { setScale(state.scale - 0.15); menu.classList.remove('open'); });
-    $('#zoomInBottom').addEventListener('click', () => setScale(state.scale + 0.15));
-    $('#zoomOutBottom').addEventListener('click', () => setScale(state.scale - 0.15));
-    $('#fitWidthBtn').addEventListener('click', async () => {
-      if (!state.pdf) return;
-      const page = await state.pdf.getPage(state.pageNum);
-      const vp = page.getViewport({ scale: 1 });
-      const avail = workspace.clientWidth - 48;
-      setScale(avail / vp.width);
-      menu.classList.remove('open');
+    renderCompassUI();
+  }
+}
+
+drawCanvas.addEventListener('pointerdown', startDraw);
+drawCanvas.addEventListener('pointermove', moveDraw);
+drawCanvas.addEventListener('pointerup', endDraw);
+drawCanvas.addEventListener('pointercancel', endDraw);
+
+function compassPencilTip() {
+  const c = state.compass;
+  if (!c) return { x: 0, y: 0 };
+  return {
+    x: c.pivot.x + Math.cos(c.angle) * c.radius,
+    y: c.pivot.y + Math.sin(c.angle) * c.radius
+  };
+}
+
+function clearCompass() {
+  if (state.compass?.el) state.compass.el.remove();
+  state.compass = null;
+  toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+}
+
+function renderCompassUI() {
+  const c = state.compass;
+  if (!c) return;
+  if (c.el) c.el.remove();
+
+  const tip = compassPencilTip();
+  const px = c.pivot.x, py = c.pivot.y, tx = tip.x, ty = tip.y;
+  const pad = 50;
+  const minX = Math.min(px, tx) - pad, minY = Math.min(py, ty) - pad;
+  const maxX = Math.max(px, tx) + pad, maxY = Math.max(py, ty) + pad;
+  const w = maxX - minX, h = maxY - minY;
+  const lx = v => v - minX, ly = v => v - minY;
+
+  const dx = tx - px, dy = ty - py;
+  const len = Math.hypot(dx, dy) || 1;
+  const nx = -dy / len, ny = dx / len;
+  const lift = Math.min(55, c.radius * 0.4);
+  const hx = (px + tx) / 2 + nx * lift;
+  const hy = (py + ty) / 2 + ny * lift;
+  const angDeg = c.angle * 180 / Math.PI;
+
+  const el = document.createElement('div');
+  el.className = 'compass-ui';
+  el.style.left = minX + 'px';
+  el.style.top = minY + 'px';
+  el.style.width = w + 'px';
+  el.style.height = h + 'px';
+  el.innerHTML = `<svg width="${w}" height="${h}" style="overflow:visible">
+    <line x1="${lx(px)}" y1="${ly(py)}" x2="${lx(hx)}" y2="${ly(hy)}" stroke="#334155" stroke-width="5" stroke-linecap="round"/>
+    <line x1="${lx(tx)}" y1="${ly(ty)}" x2="${lx(hx)}" y2="${ly(hy)}" stroke="#334155" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="${lx(hx)}" cy="${ly(hy)}" r="9" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="${lx(hx)}" cy="${ly(hy)}" r="3.5" fill="#64748b"/>
+    <!-- needle -->
+    <circle cx="${lx(px)}" cy="${ly(py)}" r="4" fill="#0f172a"/>
+    <line x1="${lx(px)}" y1="${ly(py)}" x2="${lx(px)}" y2="${ly(py) - 12}" stroke="#0f172a" stroke-width="2"
+      transform="rotate(${angDeg + 90}, ${lx(px)}, ${ly(py)})"/>
+    <!-- pencil body -->
+    <rect x="${lx(tx) - 4}" y="${ly(ty) - 28}" width="8" height="20" rx="2" fill="#fbbf24"
+      transform="rotate(${angDeg + 90}, ${lx(tx)}, ${ly(ty)})"/>
+    <polygon points="${lx(tx)},${ly(ty)} ${lx(tx) - 5},${ly(ty) - 12} ${lx(tx) + 5},${ly(ty) - 12}"
+      fill="${state.color}" transform="rotate(${angDeg + 90}, ${lx(tx)}, ${ly(ty)})"/>
+    <circle cx="${lx(tx)}" cy="${ly(ty)}" r="10" fill="${state.color}" stroke="#fff" stroke-width="2.5"/>
+    <circle cx="${lx(tx)}" cy="${ly(ty)}" r="20" fill="none" stroke="${state.color}" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.5"/>
+  </svg>`;
+  canvasStage.appendChild(el);
+  c.el = el;
+}
+
+function clearAllGeo() {
+  state.geos.forEach(g => g.el.remove());
+  state.geos = [];
+}
+
+function drawStraightLine(x1, y1, x2, y2) {
+  pushPath({ type: 'line', color: state.color, size: state.brushSize, x1, y1, x2, y2 });
+}
+
+function buildRulerSVG(cm) {
+  const unit = 20;
+  const w = cm * unit + 16;
+  const h = 48;
+  let ticks = '', labels = '';
+  for (let i = 0; i <= cm * 10; i++) {
+    const x = 8 + i * (unit / 10);
+    const major = i % 10 === 0, mid = i % 5 === 0;
+    const th = major ? 20 : mid ? 12 : 7;
+    ticks += `<line x1="${x}" y1="0" x2="${x}" y2="${th}" stroke="#1e293b" stroke-width="${major ? 1.4 : 0.7}"/>`;
+    if (major) labels += `<text x="${x}" y="36" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b" font-family="system-ui">${i / 10}</text>`;
+  }
+  return { svg: `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <rect width="${w}" height="${h}" rx="3" fill="#fef08a" stroke="#a16207" stroke-width="2"/>
+    <rect width="${w}" height="2" fill="#ca8a04"/>
+    ${ticks}${labels}
+    <text x="${w - 6}" y="${h - 5}" text-anchor="end" font-size="9" fill="#854d0e">cm</text>
+  </svg>`, w, h, unit, cm };
+}
+
+function buildProtractorSVG() {
+  const R = 120, cx = 130, cy = 130, W = 260, H = 140;
+  let ticks = '', labels = '';
+  for (let a = 0; a <= 180; a++) {
+    const rad = a * Math.PI / 180;
+    const x1 = cx + R * Math.cos(Math.PI - rad);
+    const y1 = cy - R * Math.sin(Math.PI - rad);
+    const major = a % 10 === 0, mid = a % 5 === 0;
+    const len = major ? 14 : mid ? 9 : 5;
+    const x2 = cx + (R - len) * Math.cos(Math.PI - rad);
+    const y2 = cy - (R - len) * Math.sin(Math.PI - rad);
+    ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1e293b" stroke-width="${major ? 1.3 : 0.7}"/>`;
+    if (major) {
+      const lx = cx + (R - 26) * Math.cos(Math.PI - rad);
+      const ly = cy - (R - 26) * Math.sin(Math.PI - rad);
+      labels += `<text x="${lx}" y="${ly + 3}" text-anchor="middle" font-size="9" font-weight="600" fill="#1e293b">${a}</text>`;
+    }
+  }
+  return { svg: `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <path d="M10,130 A120,120 0 0 1 250,130 L10,130Z" fill="rgba(255,255,255,0.93)" stroke="#2563eb" stroke-width="2.5"/>
+    <line x1="10" y1="130" x2="250" y2="130" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="130" cy="130" r="3.5" fill="#dc2626"/>
+    <line x1="130" y1="130" x2="130" y2="16" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="3 2"/>
+    ${ticks}${labels}
+  </svg>`, w: W, h: H, cx: 130, cy: 130, R: 120 };
+}
+
+function buildSetSquareSVG() {
+  const s = 170;
+  let ticks = '';
+  for (let i = 0; i <= 10; i++) {
+    const x = i * 15;
+    ticks += `<line x1="${x}" y1="${s}" x2="${x}" y2="${s - (i % 5 ? 7 : 12)}" stroke="#14532d" stroke-width="1"/>`;
+    ticks += `<line x1="0" y1="${s - x}" x2="${i % 5 ? 7 : 12}" y2="${s - x}" stroke="#14532d" stroke-width="1"/>`;
+  }
+  return { svg: `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
+    <polygon points="0,${s} ${s},${s} 0,0" fill="rgba(34,197,94,0.25)" stroke="#16a34a" stroke-width="2.5"/>
+    <line x1="0" y1="${s}" x2="${s}" y2="${s}" stroke="#15803d" stroke-width="2.5"/>
+    <line x1="0" y1="${s}" x2="0" y2="0" stroke="#15803d" stroke-width="2.5"/>
+    <line x1="0" y1="0" x2="${s}" y2="${s}" stroke="#15803d" stroke-width="2.5"/>
+    ${ticks}
+    <text x="22" y="${s - 8}" font-size="11" font-weight="700" fill="#14532d">45°</text>
+    <text x="6" y="36" font-size="11" font-weight="700" fill="#14532d">45°</text>
+    <text x="58" y="95" font-size="11" font-weight="700" fill="#14532d">90°</text>
+  </svg>`, w: s, h: s, s };
+}
+
+function spawnGeo(type) {
+  if (!state.pdf) { toast('Önce PDF yükleyin'); return; }
+  state.geos.filter(g => g.type === type).forEach(g => g.el.remove());
+  state.geos = state.geos.filter(g => g.type !== type);
+
+  const el = document.createElement('div');
+  el.className = 'geo';
+  el.style.left = '30px'; el.style.top = '40px';
+
+  let meta;
+  if (type === 'ruler') meta = buildRulerSVG(12);
+  else if (type === 'protractor') meta = buildProtractorSVG();
+  else meta = buildSetSquareSVG();
+
+  el.innerHTML = `
+    <div class="body">${meta.svg}</div>
+    <div class="h move" style="left:-10px;top:50%;transform:translateY(-50%)" title="Taşı">✥</div>
+    <div class="h rot" style="right:-10px;top:50%;transform:translateY(-50%)" title="Döndür">↻</div>
+    ${type === 'ruler' ? '<div class="h len" style="right:-10px;bottom:-10px" title="Uzunluk">↔</div>' : ''}
+    <div class="h draw" style="left:50%;bottom:-36px;transform:translateX(-50%)" title="Kenardan çiz">✏️</div>
+    <button class="close">×</button>
+    <div class="badge" style="bottom:-58px">0°</div>
+  `;
+  canvasStage.appendChild(el);
+
+  const geo = { type, el, meta, rot: 0, lengthCm: type === 'ruler' ? 12 : 0, drawEdge: 0 };
+  state.geos.push(geo);
+  bindGeo(geo);
+
+  const tips = {
+    ruler: 'Cetvel: ✥ taşı · ↻ döndür · ↔ uzat/kısalt · ✏️ kenardan çizgi',
+    protractor: 'Açıölçer: ✥ taşı · ↻ döndür · ✏️ taban + açı ışını çiz',
+    setsquare: 'Gönye: ✥ taşı · ↻ döndür · ✏️ kenarlardan çizgi (3 kez bas)'
+  };
+  toast(tips[type]);
+}
+
+function bindGeo(geo) {
+  const el = geo.el;
+  const body = el.querySelector('.body');
+  const badge = el.querySelector('.badge');
+  let mode = null, sx, sy, sLeft, sTop, sRot, sCm;
+
+  function applyTransform() {
+    body.style.transform = `rotate(${geo.rot}deg)`;
+    badge.textContent = Math.round(((geo.rot % 360) + 360) % 360) + '°'
+      + (geo.type === 'ruler' ? ' · ' + geo.lengthCm + ' cm' : '');
+  }
+  applyTransform();
+
+  function onDown(e, m) {
+    e.stopPropagation(); e.preventDefault();
+    mode = m; sx = e.clientX; sy = e.clientY;
+    sLeft = parseFloat(el.style.left) || 0;
+    sTop = parseFloat(el.style.top) || 0;
+    sRot = geo.rot; sCm = geo.lengthCm;
+    e.target.setPointerCapture?.(e.pointerId);
+  }
+
+  el.querySelector('.h.move').onpointerdown = e => onDown(e, 'move');
+  el.querySelector('.h.rot').onpointerdown = e => onDown(e, 'rot');
+  const lenH = el.querySelector('.h.len');
+  if (lenH) lenH.onpointerdown = e => onDown(e, 'len');
+  body.onpointerdown = e => {
+    if (e.target.closest('.h') || e.target.closest('.close')) return;
+    onDown(e, 'move');
+  };
+
+  const onMove = e => {
+    if (!mode || !state.geos.includes(geo)) return;
+    e.preventDefault();
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (mode === 'move') {
+      el.style.left = (sLeft + dx) + 'px';
+      el.style.top = (sTop + dy) + 'px';
+    } else if (mode === 'rot') {
+      const rect = body.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+      const a0 = Math.atan2(sy - cy, sx - cx);
+      const a1 = Math.atan2(e.clientY - cy, e.clientX - cx);
+      geo.rot = sRot + (a1 - a0) * 180 / Math.PI;
+      const snap = Math.round(geo.rot / 15) * 15;
+      if (Math.abs(geo.rot - snap) < 4) geo.rot = snap;
+      applyTransform();
+    } else if (mode === 'len' && geo.type === 'ruler') {
+      geo.lengthCm = Math.max(5, Math.min(30, Math.round((sCm + dx / 20) * 2) / 2));
+      const m = buildRulerSVG(geo.lengthCm);
+      geo.meta = m;
+      body.innerHTML = m.svg;
+      applyTransform();
+    }
+  };
+  const onUp = () => { mode = null; };
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+
+  el.querySelector('.close').onclick = e => {
+    e.stopPropagation();
+    el.remove();
+    state.geos = state.geos.filter(g => g !== geo);
+  };
+
+  el.querySelector('.h.draw').onpointerdown = e => {
+    e.stopPropagation(); e.preventDefault();
+    startEdgeDraw(geo);
+  };
+}
+
+function startEdgeDraw(geo) {
+  const el = geo.el;
+  const body = el.querySelector('.body');
+  const rect = body.getBoundingClientRect();
+  const stageRect = canvasStage.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2 - stageRect.left;
+  const cy = rect.top + rect.height / 2 - stageRect.top;
+  const rad = geo.rot * Math.PI / 180;
+  const scaleX = drawCanvas.width / drawCanvas.getBoundingClientRect().width;
+  const scaleY = drawCanvas.height / drawCanvas.getBoundingClientRect().height;
+
+  if (geo.type === 'ruler') {
+    const w = geo.meta.w, h = geo.meta.h;
+    const hw = w / 2, hh = h / 2;
+    const rot = (p) => ({
+      x: cx + p.x * Math.cos(rad) - p.y * Math.sin(rad),
+      y: cy + p.x * Math.sin(rad) + p.y * Math.cos(rad)
     });
-    $('#fullscreenBtn').addEventListener('click', () => {
-      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-      else document.exitFullscreen();
-      menu.classList.remove('open');
+    const A = rot({ x: -hw, y: -hh }), B = rot({ x: hw, y: -hh });
+    drawStraightLine(A.x * scaleX, A.y * scaleY, B.x * scaleX, B.y * scaleY);
+    toast('Cetvel kenarı çizildi · ' + geo.lengthCm + ' cm');
+  } else if (geo.type === 'protractor') {
+    const ox = rect.left - stageRect.left + geo.meta.cx * (rect.width / geo.meta.w);
+    const oy = rect.top - stageRect.top + geo.meta.cy * (rect.height / geo.meta.h);
+    const dirX = Math.sin(rad), dirY = -Math.cos(rad);
+    const len = geo.meta.R * (rect.width / geo.meta.w);
+    drawStraightLine(ox * scaleX, oy * scaleY, (ox + dirX * len) * scaleX, (oy + dirY * len) * scaleY);
+    const baseDirX = Math.cos(rad), baseDirY = Math.sin(rad);
+    const half = (geo.meta.w / 2 - 10) * (rect.width / geo.meta.w);
+    drawStraightLine(
+      (ox - baseDirX * half) * scaleX, (oy - baseDirY * half) * scaleY,
+      (ox + baseDirX * half) * scaleX, (oy + baseDirY * half) * scaleY
+    );
+    toast('Açıölçer: taban + ' + Math.round(((geo.rot % 360) + 360) % 360) + '° ışını');
+  } else if (geo.type === 'setsquare') {
+    geo.drawEdge = (geo.drawEdge || 0) % 3;
+    const s = geo.meta.s;
+    const scaleDisp = rect.width / s;
+    const hw = s / 2, hh = s / 2;
+    const corners = [
+      { x: -hw, y: hh }, { x: hw, y: hh }, { x: -hw, y: -hh }
+    ];
+    const edges = [
+      [corners[0], corners[1]],
+      [corners[0], corners[2]],
+      [corners[2], corners[1]]
+    ];
+    const [pA, pB] = edges[geo.drawEdge];
+    const rotP = (p) => ({
+      x: cx + p.x * scaleDisp * Math.cos(rad) - p.y * scaleDisp * Math.sin(rad),
+      y: cy + p.x * scaleDisp * Math.sin(rad) + p.y * scaleDisp * Math.cos(rad)
     });
+    const A = rotP(pA), B = rotP(pB);
+    drawStraightLine(A.x * scaleX, A.y * scaleY, B.x * scaleX, B.y * scaleY);
+    const names = ['yatay kenar', 'dikey kenar', 'hipotenüs'];
+    toast('Gönye: ' + names[geo.drawEdge] + ' çizildi');
+    geo.drawEdge++;
+  }
+}
 
-    $('#prevPage').addEventListener('click', () => changePage(-1));
-    $('#nextPage').addEventListener('click', () => changePage(1));
-    $('#pageInput').addEventListener('change', () => {
-      let n = parseInt($('#pageInput').value, 10);
-      if (isNaN(n) || n < 1) n = 1;
-      if (n > state.pageCount) n = state.pageCount;
-      state.pageNum = n;
-      renderPage();
-    });
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) { e.preventDefault(); undo(); return; }
+  if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) { e.preventDefault(); redo(); return; }
+  if (e.key === 'ArrowLeft') changePage(-1);
+  if (e.key === 'ArrowRight') changePage(1);
+  if (e.key === '+' || e.key === '=') setScale(state.scale + 0.1);
+  if (e.key === '-') setScale(state.scale - 0.1);
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  if (e.key === 'Escape') { menu.classList.remove('open'); clearCompass(); }
+});
 
-    async function changePage(delta) {
-      if (!state.pdf) return;
-      const next = state.pageNum + delta;
-      if (next < 1 || next > state.pageCount) return;
-      state.pageNum = next;
-      await renderPage();
-      workspace.scrollTop = 0;
-    }
-
-    async function renderPage() {
-      if (!state.pdf) return;
-      const page = await state.pdf.getPage(state.pageNum);
-      const viewport = page.getViewport({ scale: state.scale });
-      const w = Math.floor(viewport.width);
-      const h = Math.floor(viewport.height);
-
-      [pdfCanvas, drawCanvas, toolCanvas].forEach(c => {
-        c.width = w;
-        c.height = h;
-        c.style.width = w + 'px';
-        c.style.height = h + 'px';
-      });
-      canvasStage.style.width = w + 'px';
-      canvasStage.style.height = h + 'px';
-
-      pdfCtx.clearRect(0, 0, w, h);
-      await page.render({ canvasContext: pdfCtx, viewport }).promise;
-
-      drawCtx.clearRect(0, 0, w, h);
-      (state.paths[state.pageNum] || []).forEach(p => drawPath(p));
-
-      $('#pageInput').value = state.pageNum;
-      $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
-    }
-
-    function drawPath(p) {
-      drawCtx.save();
-      drawCtx.lineCap = 'round';
-      drawCtx.lineJoin = 'round';
-      if (p.type === 'pen') {
-        drawCtx.strokeStyle = p.color;
-        drawCtx.lineWidth = p.size;
-        drawCtx.globalCompositeOperation = 'source-over';
-        drawCtx.beginPath();
-        p.points.forEach((pt, i) => i === 0 ? drawCtx.moveTo(pt.x, pt.y) : drawCtx.lineTo(pt.x, pt.y));
-        drawCtx.stroke();
-      } else if (p.type === 'eraser') {
-        drawCtx.globalCompositeOperation = 'destination-out';
-        drawCtx.lineWidth = p.size;
-        drawCtx.beginPath();
-        p.points.forEach((pt, i) => i === 0 ? drawCtx.moveTo(pt.x, pt.y) : drawCtx.lineTo(pt.x, pt.y));
-        drawCtx.stroke();
-      } else if (p.type === 'line') {
-        drawCtx.strokeStyle = p.color;
-        drawCtx.lineWidth = p.size;
-        drawCtx.beginPath();
-        drawCtx.moveTo(p.x1, p.y1);
-        drawCtx.lineTo(p.x2, p.y2);
-        drawCtx.stroke();
-      } else if (p.type === 'rect') {
-        drawCtx.strokeStyle = p.color;
-        drawCtx.lineWidth = p.size;
-        drawCtx.strokeRect(p.x, p.y, p.w, p.h);
-      } else if (p.type === 'circle') {
-        drawCtx.strokeStyle = p.color;
-        drawCtx.lineWidth = p.size;
-        drawCtx.beginPath();
-        drawCtx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
-        drawCtx.stroke();
-      }
-      drawCtx.restore();
-    }
-
-    // ---------- Pointer: draw or pan ----------
-    function startDraw(e) {
-      if (!state.pdf) return;
-      e.preventDefault();
-
-      // PAN MODE
-      if (state.tool === 'pan') {
-        state.panning = true;
-        state.panStartX = e.clientX ?? (e.touches && e.touches[0].clientX);
-        state.panStartY = e.clientY ?? (e.touches && e.touches[0].clientY);
-        state.scrollLeft0 = workspace.scrollLeft;
-        state.scrollTop0 = workspace.scrollTop;
-        workspace.classList.add('dragging');
-        drawCanvas.setPointerCapture?.(e.pointerId);
-        return;
-      }
-
-      const { x, y } = getPointer(e);
-      state.drawing = true;
-      state.lastX = x; state.lastY = y;
-      state.startX = x; state.startY = y;
-
-      if (state.tool === 'pen' || state.tool === 'eraser') {
-        if (!state.paths[state.pageNum]) state.paths[state.pageNum] = [];
-        state.tempShape = {
-          type: state.tool,
-          color: state.color,
-          size: state.brushSize * (state.tool === 'eraser' ? 2.5 : 1),
-          points: [{ x, y }]
-        };
-      } else if (state.tool === 'compass') {
-        state.compassCenter = { x, y };
-      }
-    }
-
-    function moveDraw(e) {
-      // PAN
-      if (state.panning) {
-        e.preventDefault();
-        const cx = e.clientX ?? (e.touches && e.touches[0].clientX);
-        const cy = e.clientY ?? (e.touches && e.touches[0].clientY);
-        const dx = cx - state.panStartX;
-        const dy = cy - state.panStartY;
-        workspace.scrollLeft = state.scrollLeft0 - dx;
-        workspace.scrollTop = state.scrollTop0 - dy;
-        return;
-      }
-
-      if (!state.drawing || !state.pdf) return;
-      e.preventDefault();
-      const { x, y } = getPointer(e);
-
-      if (state.tool === 'pen' || state.tool === 'eraser') {
-        state.tempShape.points.push({ x, y });
-        drawCtx.save();
-        drawCtx.lineCap = 'round';
-        drawCtx.lineJoin = 'round';
-        drawCtx.lineWidth = state.tempShape.size;
-        if (state.tool === 'eraser') {
-          drawCtx.globalCompositeOperation = 'destination-out';
-        } else {
-          drawCtx.strokeStyle = state.color;
-          drawCtx.globalCompositeOperation = 'source-over';
-        }
-        drawCtx.beginPath();
-        drawCtx.moveTo(state.lastX, state.lastY);
-        drawCtx.lineTo(x, y);
-        drawCtx.stroke();
-        drawCtx.restore();
-        state.lastX = x; state.lastY = y;
-      } else if (state.tool === 'line' || state.tool === 'rect' || state.tool === 'compass') {
-        toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
-        toolCtx.strokeStyle = state.color;
-        toolCtx.lineWidth = state.brushSize;
-        toolCtx.setLineDash([6, 4]);
-        if (state.tool === 'line') {
-          toolCtx.beginPath();
-          toolCtx.moveTo(state.startX, state.startY);
-          toolCtx.lineTo(x, y);
-          toolCtx.stroke();
-        } else if (state.tool === 'rect') {
-          toolCtx.strokeRect(state.startX, state.startY, x - state.startX, y - state.startY);
-        } else if (state.tool === 'compass' && state.compassCenter) {
-          const r = Math.hypot(x - state.compassCenter.x, y - state.compassCenter.y);
-          toolCtx.beginPath();
-          toolCtx.arc(state.compassCenter.x, state.compassCenter.y, r, 0, Math.PI * 2);
-          toolCtx.stroke();
-          toolCtx.setLineDash([]);
-          toolCtx.beginPath();
-          toolCtx.arc(state.compassCenter.x, state.compassCenter.y, 3, 0, Math.PI * 2);
-          toolCtx.fillStyle = state.color;
-          toolCtx.fill();
-        }
-        toolCtx.setLineDash([]);
-      }
-    }
-
-    function endDraw(e) {
-      if (state.panning) {
-        state.panning = false;
-        workspace.classList.remove('dragging');
-        return;
-      }
-      if (!state.drawing) return;
-      state.drawing = false;
-      toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
-
-      if (!state.paths[state.pageNum]) state.paths[state.pageNum] = [];
-
-      let endX = state.lastX, endY = state.lastY;
-      try {
-        const pt = getPointer(e);
-        endX = pt.x; endY = pt.y;
-      } catch (_) {}
-
-      if ((state.tool === 'pen' || state.tool === 'eraser') && state.tempShape) {
-        state.paths[state.pageNum].push(state.tempShape);
-        state.tempShape = null;
-      } else if (state.tool === 'line') {
-        state.paths[state.pageNum].push({
-          type: 'line', color: state.color, size: state.brushSize,
-          x1: state.startX, y1: state.startY, x2: endX, y2: endY
-        });
-        redrawAnnotations();
-      } else if (state.tool === 'rect') {
-        state.paths[state.pageNum].push({
-          type: 'rect', color: state.color, size: state.brushSize,
-          x: Math.min(state.startX, endX), y: Math.min(state.startY, endY),
-          w: Math.abs(endX - state.startX), h: Math.abs(endY - state.startY)
-        });
-        redrawAnnotations();
-      } else if (state.tool === 'compass' && state.compassCenter) {
-        const r = Math.hypot(endX - state.compassCenter.x, endY - state.compassCenter.y);
-        if (r > 4) {
-          state.paths[state.pageNum].push({
-            type: 'circle', color: state.color, size: state.brushSize,
-            cx: state.compassCenter.x, cy: state.compassCenter.y, r
-          });
-          redrawAnnotations();
-        }
-        state.compassCenter = null;
-      }
-    }
-
-    function redrawAnnotations() {
-      drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-      (state.paths[state.pageNum] || []).forEach(p => drawPath(p));
-    }
-
-    drawCanvas.addEventListener('pointerdown', startDraw);
-    drawCanvas.addEventListener('pointermove', moveDraw);
-    drawCanvas.addEventListener('pointerup', endDraw);
-    drawCanvas.addEventListener('pointerleave', endDraw);
-    drawCanvas.addEventListener('pointercancel', endDraw);
-
-    // Also allow pan by dragging on workspace empty areas when pan tool active
-    workspace.addEventListener('pointerdown', (e) => {
-      if (state.tool !== 'pan' || e.target === drawCanvas || e.target.closest('.geo-overlay')) return;
-      if (!state.pdf) return;
-      state.panning = true;
-      state.panStartX = e.clientX;
-      state.panStartY = e.clientY;
-      state.scrollLeft0 = workspace.scrollLeft;
-      state.scrollTop0 = workspace.scrollTop;
-      workspace.classList.add('dragging');
-      workspace.setPointerCapture?.(e.pointerId);
-    });
-    workspace.addEventListener('pointermove', (e) => {
-      if (!state.panning || state.tool !== 'pan') return;
-      const dx = e.clientX - state.panStartX;
-      const dy = e.clientY - state.panStartY;
-      workspace.scrollLeft = state.scrollLeft0 - dx;
-      workspace.scrollTop = state.scrollTop0 - dy;
-    });
-    workspace.addEventListener('pointerup', () => {
-      if (state.panning) {
-        state.panning = false;
-        workspace.classList.remove('dragging');
-      }
-    });
-
-    // Geometry
-    function clearAllGeo() {
-      state.geoElements.forEach(el => el.remove());
-      state.geoElements = [];
-    }
-    function spawnGeometry(type) {
-      state.geoElements.filter(el => el.dataset.geo === type).forEach(el => {
-        el.remove();
-        state.geoElements = state.geoElements.filter(e => e !== el);
-      });
-      let el;
-      if (type === 'ruler') {
-        el = document.createElement('div');
-        el.className = 'geo-overlay ruler';
-        el.dataset.geo = 'ruler';
-        el.style.width = '320px';
-        el.innerHTML = '<div class="marks"></div><div class="label">0 — 30 cm</div>';
-        el.style.left = '40px'; el.style.top = '60px';
-      } else if (type === 'protractor') {
-        el = document.createElement('div');
-        el.className = 'geo-overlay protractor';
-        el.dataset.geo = 'protractor';
-        el.style.left = '80px'; el.style.top = '100px';
-      } else if (type === 'setsquare') {
-        el = document.createElement('div');
-        el.className = 'geo-overlay set-square';
-        el.dataset.geo = 'setsquare';
-        el.style.left = '60px'; el.style.top = '80px';
-      }
-      if (!el) return;
-      makeDraggable(el);
-      el.addEventListener('dblclick', () => {
-        el.remove();
-        state.geoElements = state.geoElements.filter(e => e !== el);
-      });
-      canvasStage.appendChild(el);
-      state.geoElements.push(el);
-      toast(type === 'ruler' ? 'Cetvel eklendi (çift tıkla kaldır)' :
-            type === 'protractor' ? 'Açıölçer eklendi (çift tıkla kaldır)' :
-            'Gönye eklendi (çift tıkla kaldır)');
-    }
-    function makeDraggable(el) {
-      let dragging = false, ox = 0, oy = 0;
-      el.addEventListener('pointerdown', (e) => {
-        e.stopPropagation();
-        dragging = true;
-        const rect = el.getBoundingClientRect();
-        const parent = canvasStage.getBoundingClientRect();
-        ox = e.clientX - rect.left;
-        oy = e.clientY - rect.top;
-        el.setPointerCapture(e.pointerId);
-      });
-      el.addEventListener('pointermove', (e) => {
-        if (!dragging) return;
-        const parent = canvasStage.getBoundingClientRect();
-        el.style.left = (e.clientX - parent.left - ox) + 'px';
-        el.style.top = (e.clientY - parent.top - oy) + 'px';
-      });
-      el.addEventListener('pointerup', () => { dragging = false; });
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') changePage(-1);
-      if (e.key === 'ArrowRight') changePage(1);
-      if (e.key === '+' || e.key === '=') setScale(state.scale + 0.1);
-      if (e.key === '-') setScale(state.scale - 0.1);
-      if (e.key === 'f' || e.key === 'F') {
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-        else document.exitFullscreen();
-      }
-      if (e.key === 'Escape') menu.classList.remove('open');
-    });
-
-    toast('Z-Kitap hazır · PDF yükleyin', 2800);
-  </script>
+updateUndoButtons();
+toast('Z-Kitap hazır · PDF yükleyin', 2800);
+</script>
 </body>
 </html>
