@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#e8eef5" />
   <title>Z-Kitap · Akıllı Tahta</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
   <style>
     :root {
-      --bg: #0b1220;
-      --panel: #111827;
-      --panel-2: #1e293b;
-      --accent: #38bdf8;
-      --accent-2: #818cf8;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --danger: #f87171;
-      --success: #34d399;
-      --border: rgba(148,163,184,0.25);
-      --shadow: 0 10px 40px rgba(0,0,0,0.45);
-      --radius: 16px;
+      --bg: #e8eef5;
+      --panel: #ffffff;
+      --panel-2: #f1f5f9;
+      --accent: #2563eb;
+      --accent-2: #7c3aed;
+      --text: #1e293b;
+      --muted: #64748b;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --border: #cbd5e1;
+      --shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+      --radius: 14px;
       --touch: 48px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -42,12 +41,13 @@
     .topbar {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--panel);
       border-bottom: 1px solid var(--border);
       z-index: 50;
       position: relative;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .logo {
       font-weight: 800;
@@ -66,35 +66,43 @@
       gap: 6px;
       min-width: var(--touch);
       min-height: var(--touch);
-      padding: 0 14px;
-      border: none;
+      padding: 0 12px;
+      border: 1px solid var(--border);
       border-radius: 12px;
       background: var(--panel-2);
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+      transition: transform 0.12s, background 0.12s, box-shadow 0.12s;
       touch-action: manipulation;
     }
-    .btn:hover, .btn:focus-visible { background: #334155; }
+    .btn:hover, .btn:focus-visible { background: #e2e8f0; }
     .btn:active { transform: scale(0.96); }
     .btn.primary {
-      background: linear-gradient(135deg, #0ea5e9, #6366f1);
-      box-shadow: 0 4px 16px rgba(56,189,248,0.35);
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
     }
-    .btn.primary:hover { filter: brightness(1.08); }
-    .btn.danger { background: #7f1d1d; color: #fecaca; }
-    .btn.icon-only { width: var(--touch); padding: 0; font-size: 1.35rem; }
+    .btn.primary:hover { filter: brightness(1.06); }
+    .btn.danger {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: var(--danger);
+    }
+    .btn.icon-only { width: var(--touch); padding: 0; font-size: 1.3rem; }
     .btn.active {
-      background: linear-gradient(135deg, #0ea5e9, #6366f1);
-      box-shadow: 0 0 0 2px rgba(56,189,248,0.5);
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
     }
     .spacer { flex: 1; }
     .status {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--muted);
-      max-width: 220px;
+      max-width: 200px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -106,7 +114,7 @@
       position: absolute;
       top: calc(100% + 8px);
       left: 0;
-      width: min(340px, 92vw);
+      width: min(360px, 94vw);
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -119,17 +127,18 @@
       max-height: 78vh;
       overflow-y: auto;
     }
-    .menu.open { display: flex; animation: slideIn 0.2s ease; }
+    .menu.open { display: flex; animation: slideIn 0.18s ease; }
     @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-8px); }
+      from { opacity: 0; transform: translateY(-6px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .menu-section {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       color: var(--muted);
-      margin: 6px 4px 2px;
+      margin: 4px 4px 2px;
+      font-weight: 700;
     }
     .menu-grid {
       display: grid;
@@ -142,21 +151,21 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      min-height: 64px;
+      min-height: 62px;
       padding: 8px 4px;
       border-radius: 12px;
       background: var(--panel-2);
       border: 1px solid transparent;
       color: var(--text);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.12s;
     }
-    .tool-btn span.icon { font-size: 1.4rem; line-height: 1; }
-    .tool-btn:hover, .tool-btn:focus-visible { background: #334155; }
+    .tool-btn span.icon { font-size: 1.35rem; line-height: 1; }
+    .tool-btn:hover, .tool-btn:focus-visible { background: #e2e8f0; }
     .tool-btn.active {
-      background: linear-gradient(135deg, rgba(14,165,233,0.25), rgba(99,102,241,0.25));
+      background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(124,58,237,0.12));
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -167,15 +176,19 @@
       padding: 4px;
     }
     .swatch {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 3px solid transparent;
       cursor: pointer;
-      transition: transform 0.15s;
+      transition: transform 0.12s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
-    .swatch:hover { transform: scale(1.12); }
-    .swatch.active { border-color: #fff; box-shadow: 0 0 0 2px var(--accent); }
+    .swatch:hover { transform: scale(1.1); }
+    .swatch.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent);
+    }
     .slider-row {
       display: flex;
       align-items: center;
@@ -194,55 +207,48 @@
       gap: 8px;
       margin-top: 4px;
     }
-    .menu-actions .btn { width: 100%; font-size: 0.85rem; min-height: 44px; }
+    .menu-actions .btn { width: 100%; font-size: 0.82rem; min-height: 42px; }
 
-    /* ========== WORKSPACE ========== */
+    /* ========== WORKSPACE (scrollable) ========== */
     .workspace {
       position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(ellipse at 30% 20%, rgba(56,189,248,0.07), transparent 50%),
-        radial-gradient(ellipse at 70% 80%, rgba(129,140,248,0.06), transparent 50%),
-        #0b1220;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow: auto;
+      background: #dbe4ee;
+      -webkit-overflow-scrolling: touch;
     }
-    .canvas-wrap {
+    .canvas-stage {
       position: relative;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.55);
-      border-radius: 4px;
-      overflow: hidden;
-      background: #1a1a1a;
-      max-width: 100%;
-      max-height: 100%;
+      margin: 24px auto;
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.18);
+      border-radius: 2px;
+      background: #fff;
+      line-height: 0;
     }
     canvas {
       display: block;
       touch-action: none;
     }
     #pdfCanvas { position: absolute; top: 0; left: 0; }
-    #drawCanvas { position: absolute; top: 0; left: 0; cursor: crosshair; }
+    #drawCanvas { position: absolute; top: 0; left: 0; }
     #toolCanvas { position: absolute; top: 0; left: 0; pointer-events: none; }
 
     .empty-state {
       text-align: center;
-      padding: 40px 24px;
+      padding: 48px 24px;
       color: var(--muted);
-      max-width: 420px;
+      max-width: 440px;
+      margin: 60px auto;
     }
     .empty-state h2 {
-      font-size: 1.6rem;
-      color: var(--text);
+      font-size: 1.55rem;
       margin-bottom: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .empty-state p { line-height: 1.55; margin-bottom: 20px; }
-    .empty-state .btn { margin: 0 auto; }
+    .empty-state p { line-height: 1.55; margin-bottom: 22px; color: var(--text); opacity: 0.75; }
 
-    /* Geometry overlays (DOM based for ease) */
+    /* Geometry overlays */
     .geo-overlay {
       position: absolute;
       pointer-events: auto;
@@ -251,10 +257,10 @@
     }
     .ruler {
       height: 48px;
-      background: linear-gradient(180deg, #fef3c7, #fde68a);
-      border: 2px solid #d97706;
+      background: linear-gradient(180deg, #fef9c3, #fde047);
+      border: 2px solid #ca8a04;
       border-radius: 6px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
       display: flex;
       align-items: flex-end;
       overflow: hidden;
@@ -263,11 +269,10 @@
     .ruler .marks {
       position: absolute;
       inset: 0;
-      background-image:
-        repeating-linear-gradient(90deg,
-          transparent 0, transparent 9px,
-          #92400e 9px, #92400e 10px);
-      opacity: 0.55;
+      background-image: repeating-linear-gradient(90deg,
+        transparent 0, transparent 9px,
+        #854d0e 9px, #854d0e 10px);
+      opacity: 0.5;
     }
     .ruler .label {
       position: absolute;
@@ -275,15 +280,15 @@
       left: 8px;
       font-size: 0.7rem;
       font-weight: 700;
-      color: #78350f;
+      color: #713f12;
     }
     .protractor {
       width: 220px;
       height: 110px;
-      background: rgba(255,255,255,0.92);
-      border: 2px solid #0ea5e9;
+      background: rgba(255,255,255,0.95);
+      border: 2px solid #2563eb;
       border-radius: 110px 110px 0 0;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      box-shadow: 0 3px 14px rgba(0,0,0,0.18);
       cursor: move;
       position: relative;
     }
@@ -294,7 +299,7 @@
       left: 50%;
       width: 2px;
       height: 100%;
-      background: #ef4444;
+      background: #dc2626;
       transform: translateX(-50%);
     }
     .set-square {
@@ -302,16 +307,9 @@
       height: 0;
       border-left: 140px solid transparent;
       border-right: 140px solid transparent;
-      border-bottom: 140px solid rgba(52,211,153,0.85);
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+      border-bottom: 140px solid rgba(22, 163, 74, 0.85);
+      filter: drop-shadow(0 3px 10px rgba(0,0,0,0.2));
       cursor: move;
-      position: relative;
-    }
-    .compass-hint {
-      position: absolute;
-      border: 2px dashed var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
     }
 
     /* ========== BOTTOM BAR ========== */
@@ -319,96 +317,100 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 10px 16px;
-      background: linear-gradient(0deg, #0f172a 0%, #111827 100%);
+      gap: 8px;
+      padding: 8px 14px;
+      background: var(--panel);
       border-top: 1px solid var(--border);
       z-index: 40;
       flex-wrap: wrap;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
     }
     .page-info {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      min-width: 90px;
+      min-width: 80px;
       text-align: center;
       color: var(--muted);
     }
     .page-info strong { color: var(--text); }
     .page-input {
-      width: 64px;
+      width: 58px;
       height: 40px;
       text-align: center;
       border-radius: 10px;
       border: 1px solid var(--border);
       background: var(--panel-2);
       color: var(--text);
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
     }
     .zoom-label {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--muted);
-      min-width: 52px;
+      min-width: 48px;
       text-align: center;
     }
 
-    /* Fullscreen tweaks */
-    :fullscreen .topbar,
-    :fullscreen .bottombar { background: rgba(15,23,42,0.95); }
-
-    /* File input hidden */
     #fileInput { display: none; }
 
-    /* Toast */
     .toast {
       position: fixed;
-      bottom: 90px;
+      bottom: 88px;
       left: 50%;
-      transform: translateX(-50%) translateY(20px);
+      transform: translateX(-50%) translateY(16px);
       background: var(--panel);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 12px 20px;
+      padding: 11px 18px;
       border-radius: 12px;
       box-shadow: var(--shadow);
       opacity: 0;
-      transition: all 0.3s;
+      transition: all 0.25s;
       z-index: 200;
       pointer-events: none;
       font-weight: 600;
+      font-size: 0.9rem;
     }
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* Pan cursor */
+    .workspace.panning { cursor: grab; }
+    .workspace.panning.dragging { cursor: grabbing; }
+    #drawCanvas.pan-mode { cursor: grab; }
   </style>
 </head>
 <body>
   <div id="app">
-    <!-- TOP -->
     <header class="topbar">
       <div class="menu-wrap">
         <button class="btn icon-only primary" id="menuBtn" title="Araçlar">＋</button>
         <div class="menu" id="toolsMenu">
-          <div class="menu-section">Çizim</div>
+          <div class="menu-section">Çizim & Taşıma</div>
           <div class="menu-grid">
             <button class="tool-btn active" data-tool="pen"><span class="icon">✏️</span>Kalem</button>
             <button class="tool-btn" data-tool="eraser"><span class="icon">🧽</span>Silgi</button>
+            <button class="tool-btn" data-tool="pan"><span class="icon">✋</span>Taşı</button>
             <button class="tool-btn" data-tool="line"><span class="icon">／</span>Çizgi</button>
+          </div>
+          <div class="menu-grid" style="margin-top:6px;">
             <button class="tool-btn" data-tool="rect"><span class="icon">▭</span>Dikdörtgen</button>
+            <button class="tool-btn" data-tool="compass"><span class="icon">⭕</span>Pergel</button>
           </div>
 
           <div class="menu-section">Renk</div>
           <div class="color-row" id="colorRow">
-            <div class="swatch active" data-color="#ef4444" style="background:#ef4444"></div>
-            <div class="swatch" data-color="#f97316" style="background:#f97316"></div>
-            <div class="swatch" data-color="#eab308" style="background:#eab308"></div>
-            <div class="swatch" data-color="#22c55e" style="background:#22c55e"></div>
-            <div class="swatch" data-color="#0ea5e9" style="background:#0ea5e9"></div>
-            <div class="swatch" data-color="#8b5cf6" style="background:#8b5cf6"></div>
-            <div class="swatch" data-color="#ec4899" style="background:#ec4899"></div>
-            <div class="swatch" data-color="#ffffff" style="background:#ffffff"></div>
-            <div class="swatch" data-color="#1e293b" style="background:#1e293b"></div>
+            <div class="swatch active" data-color="#dc2626" style="background:#dc2626"></div>
+            <div class="swatch" data-color="#ea580c" style="background:#ea580c"></div>
+            <div class="swatch" data-color="#ca8a04" style="background:#ca8a04"></div>
+            <div class="swatch" data-color="#16a34a" style="background:#16a34a"></div>
+            <div class="swatch" data-color="#2563eb" style="background:#2563eb"></div>
+            <div class="swatch" data-color="#7c3aed" style="background:#7c3aed"></div>
+            <div class="swatch" data-color="#db2777" style="background:#db2777"></div>
+            <div class="swatch" data-color="#0f172a" style="background:#0f172a"></div>
+            <div class="swatch" data-color="#ffffff" style="background:#ffffff; border:1px solid #94a3b8;"></div>
           </div>
 
           <div class="menu-section">Kalınlık</div>
@@ -423,7 +425,6 @@
             <button class="tool-btn" data-tool="ruler"><span class="icon">📏</span>Cetvel</button>
             <button class="tool-btn" data-tool="protractor"><span class="icon">📐</span>Açıölçer</button>
             <button class="tool-btn" data-tool="setsquare"><span class="icon">△</span>Gönye</button>
-            <button class="tool-btn" data-tool="compass"><span class="icon">⭕</span>Pergel</button>
           </div>
 
           <div class="menu-section">Görünüm</div>
@@ -450,27 +451,25 @@
       <button class="btn icon-only" id="quickLoad" title="PDF Yükle">📂</button>
     </header>
 
-    <!-- WORKSPACE -->
     <main class="workspace" id="workspace">
       <div class="empty-state" id="emptyState">
         <h2>Z-Kitap Hazır</h2>
-        <p>PDF dosyanızı yükleyin. Kalem, silgi, cetvel, pergel, gönye ve açıölçer ile akıllı tahtada işaretleme yapabilirsiniz. Pardus ve Linux tarayıcılarında sorunsuz çalışır.</p>
+        <p>PDF dosyanızı yükleyin. Kalem, silgi, <strong>Taşı</strong> (PDF’i kaydır), cetvel, pergel, gönye ve açıölçer ile işaretleme yapabilirsiniz.</p>
         <button class="btn primary" id="emptyLoadBtn">PDF Yükle</button>
       </div>
-      <div class="canvas-wrap" id="canvasWrap" style="display:none;">
+      <div class="canvas-stage" id="canvasStage" style="display:none;">
         <canvas id="pdfCanvas"></canvas>
         <canvas id="drawCanvas"></canvas>
         <canvas id="toolCanvas"></canvas>
       </div>
     </main>
 
-    <!-- BOTTOM -->
     <footer class="bottombar">
       <button class="btn icon-only" id="prevPage" title="Önceki">◀</button>
       <input type="number" class="page-input" id="pageInput" min="1" value="1" />
       <span class="page-info">/ <strong id="pageCount">0</strong></span>
       <button class="btn icon-only" id="nextPage" title="Sonraki">▶</button>
-      <div class="spacer" style="max-width:40px;"></div>
+      <div class="spacer" style="max-width:32px;"></div>
       <button class="btn icon-only" id="zoomOutBottom" title="Küçült">−</button>
       <span class="zoom-label" id="zoomLabel">100%</span>
       <button class="btn icon-only" id="zoomInBottom" title="Büyüt">+</button>
@@ -484,28 +483,29 @@
     import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs';
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
 
-    // ---------- State ----------
     const state = {
       pdf: null,
       pageNum: 1,
       pageCount: 0,
-      scale: 1.2,
+      scale: 1.15,
       tool: 'pen',
-      color: '#ef4444',
+      color: '#dc2626',
       brushSize: 4,
       drawing: false,
-      lastX: 0,
-      lastY: 0,
-      annotations: {}, // pageNum -> ImageData or paths
-      paths: {},       // pageNum -> array of path objects
-      startX: 0,
-      startY: 0,
+      lastX: 0, lastY: 0,
+      startX: 0, startY: 0,
+      paths: {},
       tempShape: null,
       geoElements: [],
       compassCenter: null,
+      // pan
+      panning: false,
+      panStartX: 0,
+      panStartY: 0,
+      scrollLeft0: 0,
+      scrollTop0: 0,
     };
 
-    // ---------- DOM ----------
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
     const pdfCanvas = $('#pdfCanvas');
@@ -514,7 +514,7 @@
     const pdfCtx = pdfCanvas.getContext('2d');
     const drawCtx = drawCanvas.getContext('2d');
     const toolCtx = toolCanvas.getContext('2d');
-    const canvasWrap = $('#canvasWrap');
+    const canvasStage = $('#canvasStage');
     const workspace = $('#workspace');
     const emptyState = $('#emptyState');
     const menu = $('#toolsMenu');
@@ -522,25 +522,22 @@
     const fileInput = $('#fileInput');
     const toastEl = $('#toast');
 
-    // ---------- Utils ----------
     function toast(msg, ms = 2200) {
       toastEl.textContent = msg;
       toastEl.classList.add('show');
-      setTimeout(() => toastEl.classList.remove('show'), ms);
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.classList.remove('show'), ms);
     }
 
     function getPointer(e) {
       const rect = drawCanvas.getBoundingClientRect();
       let clientX, clientY;
       if (e.touches && e.touches.length) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
+        clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
       } else if (e.changedTouches && e.changedTouches.length) {
-        clientX = e.changedTouches[0].clientX;
-        clientY = e.changedTouches[0].clientY;
+        clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY;
       } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
+        clientX = e.clientX; clientY = e.clientY;
       }
       return {
         x: (clientX - rect.left) * (drawCanvas.width / rect.width),
@@ -548,7 +545,18 @@
       };
     }
 
-    // ---------- Menu ----------
+    function updateCursor() {
+      if (state.tool === 'pan') {
+        drawCanvas.classList.add('pan-mode');
+        workspace.classList.add('panning');
+      } else {
+        drawCanvas.classList.remove('pan-mode');
+        workspace.classList.remove('panning');
+        workspace.classList.remove('dragging');
+      }
+    }
+
+    // Menu
     menuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       menu.classList.toggle('open');
@@ -557,22 +565,21 @@
       if (!menu.contains(e.target) && e.target !== menuBtn) menu.classList.remove('open');
     });
 
-    // Tool buttons
     $$('.tool-btn[data-tool]').forEach(btn => {
       btn.addEventListener('click', () => {
         $$('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.tool = btn.dataset.tool;
-        clearGeoHints();
+        updateCursor();
         if (['ruler','protractor','setsquare'].includes(state.tool)) {
           spawnGeometry(state.tool);
         }
         menu.classList.remove('open');
-        toast(btn.textContent.trim() + ' seçildi');
+        const names = { pen:'Kalem', eraser:'Silgi', pan:'Taşı (kaydır)', line:'Çizgi', rect:'Dikdörtgen', compass:'Pergel', ruler:'Cetvel', protractor:'Açıölçer', setsquare:'Gönye' };
+        toast((names[state.tool] || state.tool) + ' seçildi');
       });
     });
 
-    // Colors
     $$('.swatch').forEach(s => {
       s.addEventListener('click', () => {
         $$('.swatch').forEach(x => x.classList.remove('active'));
@@ -581,14 +588,12 @@
       });
     });
 
-    // Brush
     const brushSize = $('#brushSize');
     brushSize.addEventListener('input', () => {
       state.brushSize = +brushSize.value;
       $('#brushVal').textContent = state.brushSize;
     });
 
-    // File load
     function triggerLoad() { fileInput.click(); }
     $('#loadPdfBtn').addEventListener('click', triggerLoad);
     $('#quickLoad').addEventListener('click', triggerLoad);
@@ -603,11 +608,10 @@
         state.pageCount = state.pdf.numPages;
         state.pageNum = 1;
         state.paths = {};
-        state.annotations = {};
         $('#pageCount').textContent = state.pageCount;
         $('#fileStatus').textContent = file.name;
         emptyState.style.display = 'none';
-        canvasWrap.style.display = 'block';
+        canvasStage.style.display = 'block';
         await renderPage();
         toast('PDF yüklendi · ' + state.pageCount + ' sayfa');
         menu.classList.remove('open');
@@ -618,7 +622,6 @@
       fileInput.value = '';
     });
 
-    // Clear / Remove
     $('#clearPageBtn').addEventListener('click', () => {
       if (!state.pdf) return;
       state.paths[state.pageNum] = [];
@@ -639,7 +642,7 @@
       state.pageNum = 1;
       pdfCtx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
       drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-      canvasWrap.style.display = 'none';
+      canvasStage.style.display = 'none';
       emptyState.style.display = 'block';
       $('#pageCount').textContent = '0';
       $('#fileStatus').textContent = 'PDF yüklenmedi';
@@ -648,9 +651,8 @@
       menu.classList.remove('open');
     });
 
-    // Zoom
     function setScale(s) {
-      state.scale = Math.max(0.4, Math.min(3.5, s));
+      state.scale = Math.max(0.35, Math.min(3.5, s));
       $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
       if (state.pdf) renderPage();
     }
@@ -662,19 +664,16 @@
       if (!state.pdf) return;
       const page = await state.pdf.getPage(state.pageNum);
       const vp = page.getViewport({ scale: 1 });
-      const avail = workspace.clientWidth - 40;
+      const avail = workspace.clientWidth - 48;
       setScale(avail / vp.width);
       menu.classList.remove('open');
     });
-
-    // Fullscreen
     $('#fullscreenBtn').addEventListener('click', () => {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen();
       else document.exitFullscreen();
       menu.classList.remove('open');
     });
 
-    // Page nav
     $('#prevPage').addEventListener('click', () => changePage(-1));
     $('#nextPage').addEventListener('click', () => changePage(1));
     $('#pageInput').addEventListener('change', () => {
@@ -691,9 +690,9 @@
       if (next < 1 || next > state.pageCount) return;
       state.pageNum = next;
       await renderPage();
+      workspace.scrollTop = 0;
     }
 
-    // ---------- Render PDF ----------
     async function renderPage() {
       if (!state.pdf) return;
       const page = await state.pdf.getPage(state.pageNum);
@@ -707,16 +706,14 @@
         c.style.width = w + 'px';
         c.style.height = h + 'px';
       });
-      canvasWrap.style.width = w + 'px';
-      canvasWrap.style.height = h + 'px';
+      canvasStage.style.width = w + 'px';
+      canvasStage.style.height = h + 'px';
 
       pdfCtx.clearRect(0, 0, w, h);
       await page.render({ canvasContext: pdfCtx, viewport }).promise;
 
-      // Restore annotations
       drawCtx.clearRect(0, 0, w, h);
-      const paths = state.paths[state.pageNum] || [];
-      paths.forEach(p => drawPath(p));
+      (state.paths[state.pageNum] || []).forEach(p => drawPath(p));
 
       $('#pageInput').value = state.pageNum;
       $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
@@ -731,19 +728,13 @@
         drawCtx.lineWidth = p.size;
         drawCtx.globalCompositeOperation = 'source-over';
         drawCtx.beginPath();
-        p.points.forEach((pt, i) => {
-          if (i === 0) drawCtx.moveTo(pt.x, pt.y);
-          else drawCtx.lineTo(pt.x, pt.y);
-        });
+        p.points.forEach((pt, i) => i === 0 ? drawCtx.moveTo(pt.x, pt.y) : drawCtx.lineTo(pt.x, pt.y));
         drawCtx.stroke();
       } else if (p.type === 'eraser') {
         drawCtx.globalCompositeOperation = 'destination-out';
         drawCtx.lineWidth = p.size;
         drawCtx.beginPath();
-        p.points.forEach((pt, i) => {
-          if (i === 0) drawCtx.moveTo(pt.x, pt.y);
-          else drawCtx.lineTo(pt.x, pt.y);
-        });
+        p.points.forEach((pt, i) => i === 0 ? drawCtx.moveTo(pt.x, pt.y) : drawCtx.lineTo(pt.x, pt.y));
         drawCtx.stroke();
       } else if (p.type === 'line') {
         drawCtx.strokeStyle = p.color;
@@ -766,16 +757,27 @@
       drawCtx.restore();
     }
 
-    // ---------- Drawing ----------
+    // ---------- Pointer: draw or pan ----------
     function startDraw(e) {
       if (!state.pdf) return;
       e.preventDefault();
+
+      // PAN MODE
+      if (state.tool === 'pan') {
+        state.panning = true;
+        state.panStartX = e.clientX ?? (e.touches && e.touches[0].clientX);
+        state.panStartY = e.clientY ?? (e.touches && e.touches[0].clientY);
+        state.scrollLeft0 = workspace.scrollLeft;
+        state.scrollTop0 = workspace.scrollTop;
+        workspace.classList.add('dragging');
+        drawCanvas.setPointerCapture?.(e.pointerId);
+        return;
+      }
+
       const { x, y } = getPointer(e);
       state.drawing = true;
-      state.lastX = x;
-      state.lastY = y;
-      state.startX = x;
-      state.startY = y;
+      state.lastX = x; state.lastY = y;
+      state.startX = x; state.startY = y;
 
       if (state.tool === 'pen' || state.tool === 'eraser') {
         if (!state.paths[state.pageNum]) state.paths[state.pageNum] = [];
@@ -787,19 +789,28 @@
         };
       } else if (state.tool === 'compass') {
         state.compassCenter = { x, y };
-      } else if (state.tool === 'line' || state.tool === 'rect') {
-        state.tempShape = { type: state.tool };
       }
     }
 
     function moveDraw(e) {
+      // PAN
+      if (state.panning) {
+        e.preventDefault();
+        const cx = e.clientX ?? (e.touches && e.touches[0].clientX);
+        const cy = e.clientY ?? (e.touches && e.touches[0].clientY);
+        const dx = cx - state.panStartX;
+        const dy = cy - state.panStartY;
+        workspace.scrollLeft = state.scrollLeft0 - dx;
+        workspace.scrollTop = state.scrollTop0 - dy;
+        return;
+      }
+
       if (!state.drawing || !state.pdf) return;
       e.preventDefault();
       const { x, y } = getPointer(e);
 
       if (state.tool === 'pen' || state.tool === 'eraser') {
         state.tempShape.points.push({ x, y });
-        // live draw
         drawCtx.save();
         drawCtx.lineCap = 'round';
         drawCtx.lineJoin = 'round';
@@ -815,8 +826,7 @@
         drawCtx.lineTo(x, y);
         drawCtx.stroke();
         drawCtx.restore();
-        state.lastX = x;
-        state.lastY = y;
+        state.lastX = x; state.lastY = y;
       } else if (state.tool === 'line' || state.tool === 'rect' || state.tool === 'compass') {
         toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
         toolCtx.strokeStyle = state.color;
@@ -828,15 +838,12 @@
           toolCtx.lineTo(x, y);
           toolCtx.stroke();
         } else if (state.tool === 'rect') {
-          const w = x - state.startX;
-          const h = y - state.startY;
-          toolCtx.strokeRect(state.startX, state.startY, w, h);
+          toolCtx.strokeRect(state.startX, state.startY, x - state.startX, y - state.startY);
         } else if (state.tool === 'compass' && state.compassCenter) {
           const r = Math.hypot(x - state.compassCenter.x, y - state.compassCenter.y);
           toolCtx.beginPath();
           toolCtx.arc(state.compassCenter.x, state.compassCenter.y, r, 0, Math.PI * 2);
           toolCtx.stroke();
-          // center dot
           toolCtx.setLineDash([]);
           toolCtx.beginPath();
           toolCtx.arc(state.compassCenter.x, state.compassCenter.y, 3, 0, Math.PI * 2);
@@ -848,13 +855,17 @@
     }
 
     function endDraw(e) {
+      if (state.panning) {
+        state.panning = false;
+        workspace.classList.remove('dragging');
+        return;
+      }
       if (!state.drawing) return;
       state.drawing = false;
       toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
 
       if (!state.paths[state.pageNum]) state.paths[state.pageNum] = [];
 
-      // Get end coordinates safely (pointer events give clientX/Y on the event itself)
       let endX = state.lastX, endY = state.lastY;
       try {
         const pt = getPointer(e);
@@ -866,34 +877,23 @@
         state.tempShape = null;
       } else if (state.tool === 'line') {
         state.paths[state.pageNum].push({
-          type: 'line',
-          color: state.color,
-          size: state.brushSize,
-          x1: state.startX, y1: state.startY,
-          x2: endX, y2: endY
+          type: 'line', color: state.color, size: state.brushSize,
+          x1: state.startX, y1: state.startY, x2: endX, y2: endY
         });
         redrawAnnotations();
       } else if (state.tool === 'rect') {
         state.paths[state.pageNum].push({
-          type: 'rect',
-          color: state.color,
-          size: state.brushSize,
-          x: Math.min(state.startX, endX),
-          y: Math.min(state.startY, endY),
-          w: Math.abs(endX - state.startX),
-          h: Math.abs(endY - state.startY)
+          type: 'rect', color: state.color, size: state.brushSize,
+          x: Math.min(state.startX, endX), y: Math.min(state.startY, endY),
+          w: Math.abs(endX - state.startX), h: Math.abs(endY - state.startY)
         });
         redrawAnnotations();
       } else if (state.tool === 'compass' && state.compassCenter) {
         const r = Math.hypot(endX - state.compassCenter.x, endY - state.compassCenter.y);
         if (r > 4) {
           state.paths[state.pageNum].push({
-            type: 'circle',
-            color: state.color,
-            size: state.brushSize,
-            cx: state.compassCenter.x,
-            cy: state.compassCenter.y,
-            r
+            type: 'circle', color: state.color, size: state.brushSize,
+            cx: state.compassCenter.x, cy: state.compassCenter.y, r
           });
           redrawAnnotations();
         }
@@ -906,30 +906,48 @@
       (state.paths[state.pageNum] || []).forEach(p => drawPath(p));
     }
 
-    // Pointer events (mouse + touch)
     drawCanvas.addEventListener('pointerdown', startDraw);
     drawCanvas.addEventListener('pointermove', moveDraw);
     drawCanvas.addEventListener('pointerup', endDraw);
     drawCanvas.addEventListener('pointerleave', endDraw);
     drawCanvas.addEventListener('pointercancel', endDraw);
 
-    // ---------- Geometry tools (DOM overlays) ----------
-    function clearGeoHints() {
-      // nothing persistent
-    }
+    // Also allow pan by dragging on workspace empty areas when pan tool active
+    workspace.addEventListener('pointerdown', (e) => {
+      if (state.tool !== 'pan' || e.target === drawCanvas || e.target.closest('.geo-overlay')) return;
+      if (!state.pdf) return;
+      state.panning = true;
+      state.panStartX = e.clientX;
+      state.panStartY = e.clientY;
+      state.scrollLeft0 = workspace.scrollLeft;
+      state.scrollTop0 = workspace.scrollTop;
+      workspace.classList.add('dragging');
+      workspace.setPointerCapture?.(e.pointerId);
+    });
+    workspace.addEventListener('pointermove', (e) => {
+      if (!state.panning || state.tool !== 'pan') return;
+      const dx = e.clientX - state.panStartX;
+      const dy = e.clientY - state.panStartY;
+      workspace.scrollLeft = state.scrollLeft0 - dx;
+      workspace.scrollTop = state.scrollTop0 - dy;
+    });
+    workspace.addEventListener('pointerup', () => {
+      if (state.panning) {
+        state.panning = false;
+        workspace.classList.remove('dragging');
+      }
+    });
+
+    // Geometry
     function clearAllGeo() {
       state.geoElements.forEach(el => el.remove());
       state.geoElements = [];
     }
-
     function spawnGeometry(type) {
-      // Remove previous of same type for cleanliness (optional keep multiple)
-      // We allow one of each for simplicity on smart board
       state.geoElements.filter(el => el.dataset.geo === type).forEach(el => {
         el.remove();
         state.geoElements = state.geoElements.filter(e => e !== el);
       });
-
       let el;
       if (type === 'ruler') {
         el = document.createElement('div');
@@ -937,59 +955,50 @@
         el.dataset.geo = 'ruler';
         el.style.width = '320px';
         el.innerHTML = '<div class="marks"></div><div class="label">0 — 30 cm</div>';
-        el.style.left = '60px';
-        el.style.top = '80px';
+        el.style.left = '40px'; el.style.top = '60px';
       } else if (type === 'protractor') {
         el = document.createElement('div');
         el.className = 'geo-overlay protractor';
         el.dataset.geo = 'protractor';
-        el.style.left = '100px';
-        el.style.top = '120px';
+        el.style.left = '80px'; el.style.top = '100px';
       } else if (type === 'setsquare') {
         el = document.createElement('div');
         el.className = 'geo-overlay set-square';
         el.dataset.geo = 'setsquare';
-        el.style.left = '80px';
-        el.style.top = '100px';
+        el.style.left = '60px'; el.style.top = '80px';
       }
       if (!el) return;
-
       makeDraggable(el);
-      // also rotatable with two-finger or shift+drag later; for now simple drag + double-click remove
       el.addEventListener('dblclick', () => {
         el.remove();
         state.geoElements = state.geoElements.filter(e => e !== el);
       });
-      canvasWrap.appendChild(el);
+      canvasStage.appendChild(el);
       state.geoElements.push(el);
-      toast(type === 'ruler' ? 'Cetvel eklendi · çift tıkla kaldır' :
-            type === 'protractor' ? 'Açıölçer eklendi · çift tıkla kaldır' :
-            'Gönye eklendi · çift tıkla kaldır');
+      toast(type === 'ruler' ? 'Cetvel eklendi (çift tıkla kaldır)' :
+            type === 'protractor' ? 'Açıölçer eklendi (çift tıkla kaldır)' :
+            'Gönye eklendi (çift tıkla kaldır)');
     }
-
     function makeDraggable(el) {
       let dragging = false, ox = 0, oy = 0;
       el.addEventListener('pointerdown', (e) => {
         e.stopPropagation();
         dragging = true;
         const rect = el.getBoundingClientRect();
-        const parent = canvasWrap.getBoundingClientRect();
+        const parent = canvasStage.getBoundingClientRect();
         ox = e.clientX - rect.left;
         oy = e.clientY - rect.top;
         el.setPointerCapture(e.pointerId);
       });
       el.addEventListener('pointermove', (e) => {
         if (!dragging) return;
-        const parent = canvasWrap.getBoundingClientRect();
-        let left = e.clientX - parent.left - ox;
-        let top = e.clientY - parent.top - oy;
-        el.style.left = left + 'px';
-        el.style.top = top + 'px';
+        const parent = canvasStage.getBoundingClientRect();
+        el.style.left = (e.clientX - parent.left - ox) + 'px';
+        el.style.top = (e.clientY - parent.top - oy) + 'px';
       });
       el.addEventListener('pointerup', () => { dragging = false; });
     }
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') changePage(-1);
       if (e.key === 'ArrowRight') changePage(1);
@@ -1002,8 +1011,7 @@
       if (e.key === 'Escape') menu.classList.remove('open');
     });
 
-    // Initial
-    toast('Z-Kitap hazır · PDF yükleyin', 3000);
+    toast('Z-Kitap hazır · PDF yükleyin', 2800);
   </script>
 </body>
 </html>
