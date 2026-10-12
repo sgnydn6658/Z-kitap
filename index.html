@@ -1,61 +1,3 @@
-Conversation Log
-bana bir Z kitap uygulaması yap pdf yüklenebilsin pardus ve linux akıllı tahtada çalışabilsin asıl amacımız onlarda çalışması alt tarafta küçük bir bölüm istediğimiz sayfata gidebilme sayfalar arası gçiş vs olsun  sol üstte bir menüye bastığımızda + işareti bi menü açılsın ve o menüde kalem sigi renk paleti kalınlık tam ekran pdf yükleme bölümü kulllanışlı cetvel pergel gönye açıçlçer  geometri setleri olsun genişilik ayarlama büyültme küçültme sayfayı temizleme pdf kaldırma temizleme olsun ama estetik olsun hepsi göze hitap eden güzel birz kitap çıkar bana 
-
-Pardus ve Linux akıllı tahtalar (MEB ETAP - Vestel, Arçelik, Aidata) başta olmak üzere tüm platformlarda akıcı, dokunmatik uyumlu ve modern bir arayüzle çalışan Z-Kitap Akıllı Tahta Uygulaması hazırlandı.
-
-Proje dosyaları şu dizinde oluşturuldu: 📁 C:\Users\sgnyd\.gemini\antigravity\scratch\zkitap-pardus\
-
-🎨 Öne Çıkan Özellikler ve Menü Tasarımı
-1. ➕ Sol Üst Açılır Menü (+ Butonu) & Hızlı Araç Çubuğu
-Estetik FAB Butonu: Sol üstteki degrade geçişli, gölgeli + butonuna dokunulduğunda buton zarif bir × kapatma simgesine dönüşür ve sol taraftan cam efektli (glassmorphism) ana menü açılır.
-Hızlı Erişim Çubuğu: Menüyü açmaya gerek kalmadan tahta başında hızlıca işlem yapabilmeniz için + butonunun hemen yanında Kalem, Vurgulayıcı, Silgi, El (Taşıma), Geri Al ve Temizle hap butonları bulunur.
-2. ✏️ Çizim, Silgi, Renk & Kalınlık Motoru
-Akıcı Çizim (Smooth Curve): Akıllı tahta kalemleri ve parmak dokunuşları için yumuşatılmış kavisli çizim motoru.
-Fosforlu Kalem (Vurgulayıcı): Kitap metinlerinin altını çizdiğinizde yazıyı gizlemeyen yarı saydam vurgulayıcı.
-Hassas Silgi: Çizimleri katmandan pürüzsüzce siler.
-Geometrik Şekiller: Düz çizgi, yön oku, dikdörtgen kutu ve kusursuz daire/çember çizim araçları.
-Renk Paleti: Siyah, kırmızı, mavi, yeşil, altın sarısı, turuncu, mor, gökyüzü mavisi, beyaz, fosforlu sarı ve Özel Renk Seçici (Color Picker).
-Kalınlık Ayarı: 1 px ile 40 px arasında canlı önizleme dairesi sunan kaydırıcı ve hazır kalınlık butonları (2px, 4px, 8px, 16px).
-3. 📐 Etkileşimli Geometri Setleri
-
-Öğretmenlerin matematik ve geometri derslerinde akıllı tahtada parmakla yönetebileceği gerçekçi araçlar:
-
-📏 Cetvel: 0–20 cm ölçekli, milimetrik bölmeli, 360° serbest döndürülebilen ve anlık açı göstergeli.
-🧭 İletki (Açıölçer): 0°–180° çift yönlü açı ölçekli, merkez hedefli, açı ölçme özellikli.
-📐 Gönye: 45°–45°–90° dik açılı, kenar ölçülü üçgen gönye.
-⭕ Pergel: İğne ucu merkez alınarak açıklığı (yarıçap) ayarlanabilen; "Daire Çiz" veya "Yay Çiz" butonuna basıldığında tahtaya kusursuz daire çizen interaktif pergel.
-4. 📄 Ergonomik Alt Sayfa Gezinme Çubuğu
-Sayfa Geçişleri: Önceki (◀️), Sonraki (▶️), İlk Sayfa (⏮️), Son Sayfa (⏭️).
-İstenen Sayfaya Gitme: Ortadaki kutucuğa sayfa numarasını yazıp (örn. 28) Git butonuna veya Enter'a basarak anında o sayfaya geçebilme.
-Hızlı Kaydırıcı (Slider): Çok sayfalı kitaplarda hızlı gezinme.
-Sayfa Çizim Belleği: Bir sayfaya çizim yapıp başka sayfaya geçip geri döndüğünüzde çizimleriniz kaybolmaz.
-Genişletilmiş Tahta Alanı: Alt çubuktaki aşağı ok simgesiyle çubuğu gizleyebilir, tahta alanını maksimuma çıkarabilirsiniz.
-5. 📂 PDF Yükleme, Kaldırma & Tahta Şablonları
-PDF Yükleme: Dosya seçici veya doğrudan sürükle-bırak desteği. Yüksek çözünürlüklü (Retina/4K) vektör render.
-PDF'i Kaldır / Boş Tahta: Dilediğiniz an PDF'i kaldırıp tahtayı temizleyebilir ve şu arka planlara geçebilirsiniz:
-⚪ Beyaz Tahta
-⬛ Kara Tahta (Tebeşir Modu)
-📐 Kareli Defter (Matematik/Geometri)
-📝 Çizgili Defter (Türkçe/Edebiyat)
-🎵 Müzik Portesi (Müzik dersleri)
-Görünüm Ayarları: Genişliğe Sığdır, Tam Sayfaya Sığdır, Büyüt (+), Küçült (-), Sayfayı PNG Olarak Kaydet.
-Akıllı Tahta Tam Ekran: Menüden tek tıkla veya F11 ile tam ekran modu.
-🚀 Pardus ETAP ve Linux Akıllı Tahtada Çalıştırma
-
-Uygulama modern web standartlarında (HTML5/Canvas/PointerEvents) yazıldığı için Pardus Linux üzerinde hiçbir ek yazılım veya kurulum gerektirmeden çalışır:
-
-Klasörü Pardus akıllı tahtada Masaüstüne veya Flash Belleğinize kopyalayın:
-C:\Users\sgnyd\.gemini\antigravity\scratch\zkitap-pardus\
-Pardus için:
-baslat.sh dosyasına sağ tıklayıp Özellikler > İzinler > Çalıştırılabilir Yap deyin ve çift tıklayın (veya doğrudan terminalde ./baslat.sh çalıştırın).
-Masaüstüne kısayol olarak zkitap.desktop dosyasını bırakabilirsiniz.
-Windows için:
-baslat.bat dosyasına çift tıklayarak anında başlatabilirsiniz.
-Tarayıcıdan:
-index.html dosyasını Chromium veya Firefox ile doğrudan açabilirsiniz.
-
-Öneri: Çalışma alanınızı bu projeye ayarlamak için C:\Users\sgnyd\.gemini\antigravity\scratch\zkitap-pardus klasörünü aktif çalışma alanı (workspace) olarak açabilirsiniz. Detaylı kullanım kılavuzu için README.md dosyasını inceleyebilirsiniz.
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -72,6 +14,7 @@ index.html dosyasını Chromium veya Firefox ile doğrudan açabilirsiniz.
     
     <!-- Üst Bildirim / Durum Rozeti -->
     <div id="toastNotification" class="toast hidden"></div>
+
     <!-- SOL ÜST: Menü Açma/Kapama (+) Butonu (FAB) -->
     <div class="top-left-fab-wrapper">
       <button id="btnToggleMenu" class="fab-btn" title="Ana Menü ve Araçlar (Aç / Kapat)" aria-label="Menü">
@@ -80,6 +23,7 @@ index.html dosyasını Chromium veya Firefox ile doğrudan açabilirsiniz.
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
       </button>
+
       <!-- Hızlı Seçim Kısa Araç Çubuğu (Menü kapalıyken bile hızlı erişim) -->
       <div id="quickBar" class="quick-bar">
         <button id="quickPen" class="quick-btn active" title="Kalem"><span class="q-icon">✏️</span></button>
@@ -90,7 +34,385 @@ index.html dosyasını Chromium veya Firefox ile doğrudan açabilirsiniz.
         <button id="quickClear" class="quick-btn" title="Sayfayı Temizle"><span class="q-icon">🗑️</span></button>
       </div>
     </div>
+
     <!-- AÇILIR SOL MENÜ PANELİ (Modal / Drawer) -->
     <aside id="mainMenu" class="main-menu closed">
       <div class="menu-header">
         <div class="menu-title-wrap">
+          <span class="menu-app-logo">📚</span>
+          <div>
+            <h2 class="menu-title">Z-Kitap Etkileşimli Tahta</h2>
+            <span class="menu-subtitle">Pardus ETAP & Linux Uyumlu</span>
+          </div>
+        </div>
+        <button id="btnCloseMenu" class="close-menu-btn" title="Menüyü Kapat">&times;</button>
+      </div>
+
+      <div class="menu-scroll-content">
+        <!-- 1. BÖLÜM: PDF VE DOSYA İŞLEMLERİ -->
+        <section class="menu-section">
+          <h3 class="section-title"><span class="sec-icon">📂</span> PDF & Doküman</h3>
+          <div class="file-action-buttons">
+            <label class="btn btn-primary file-picker-label" for="pdfFileInput">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>PDF Kitap Yükle</span>
+            </label>
+            <input type="file" id="pdfFileInput" accept="application/pdf" class="hidden-input">
+
+            <button id="btnRemovePdf" class="btn btn-warning" title="Yüklü PDF'i kaldır ve boş tahtaya dön">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              <span>PDF'i Kaldır / Boş Tahta</span>
+            </button>
+          </div>
+          <div class="board-mode-selector">
+            <span class="sub-label">Tahta Şablonu:</span>
+            <div class="pill-group" id="boardStyleGroup">
+              <button class="pill-btn active" data-board="white">Beyaz</button>
+              <button class="pill-btn" data-board="black">Kara Tahta</button>
+              <button class="pill-btn" data-board="grid">Kareli</button>
+              <button class="pill-btn" data-board="lines">Çizgili</button>
+              <button class="pill-btn" data-board="music">Müzik Portesi</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. BÖLÜM: ÇİZİM ARAÇLARI -->
+        <section class="menu-section">
+          <h3 class="section-title"><span class="sec-icon">✏️</span> Çizim & İşaretleme</h3>
+          <div class="tool-grid">
+            <button class="tool-tile active" data-tool="pen" id="toolPen">
+              <span class="tool-icon">🖊️</span>
+              <span class="tool-name">Kalem</span>
+            </button>
+            <button class="tool-tile" data-tool="highlighter" id="toolHighlighter">
+              <span class="tool-icon">🖍️</span>
+              <span class="tool-name">Vurgulayıcı</span>
+            </button>
+            <button class="tool-tile" data-tool="eraser" id="toolEraser">
+              <span class="tool-icon">🧹</span>
+              <span class="tool-name">Silgi</span>
+            </button>
+            <button class="tool-tile" data-tool="hand" id="toolHand">
+              <span class="tool-icon">✋</span>
+              <span class="tool-name">Taşıma (El)</span>
+            </button>
+          </div>
+
+          <!-- Geometrik Şekiller -->
+          <div class="sub-section">
+            <span class="sub-label">Hızlı Şekiller:</span>
+            <div class="shape-grid">
+              <button class="shape-btn" data-tool="shape-line" title="Düz Çizgi">📏 Çizgi</button>
+              <button class="shape-btn" data-tool="shape-arrow" title="Ok Çiz">➡️ Ok</button>
+              <button class="shape-btn" data-tool="shape-rect" title="Dikdörtgen">▭ Kutu</button>
+              <button class="shape-btn" data-tool="shape-circle" title="Çember/Daire">◯ Daire</button>
+            </div>
+          </div>
+
+          <!-- Kalınlık Ayarı -->
+          <div class="thickness-slider-wrap">
+            <div class="slider-header">
+              <span class="sub-label">Kalem / Silgi Kalınlığı:</span>
+              <span id="thicknessValueText" class="value-badge">4 px</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" id="strokeWidthSlider" min="1" max="40" value="4" class="custom-slider">
+              <div class="thickness-preview-circle-wrap">
+                <div id="thicknessPreview" class="thickness-preview-circle"></div>
+              </div>
+            </div>
+            <div class="preset-sizes">
+              <button class="size-pill" data-size="2">İnce (2px)</button>
+              <button class="size-pill active" data-size="4">Orta (4px)</button>
+              <button class="size-pill" data-size="8">Kalın (8px)</button>
+              <button class="size-pill" data-size="16">Fosfor (16px)</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. BÖLÜM: RENK PALETİ -->
+        <section class="menu-section">
+          <h3 class="section-title"><span class="sec-icon">🎨</span> Renk Paleti</h3>
+          <div class="palette-swatches" id="colorPalette">
+            <button class="swatch active" data-color="#1e293b" style="background:#1e293b" title="Siyah / Koyu Füme"></button>
+            <button class="swatch" data-color="#dc2626" style="background:#dc2626" title="Kırmızı"></button>
+            <button class="swatch" data-color="#2563eb" style="background:#2563eb" title="Mavi"></button>
+            <button class="swatch" data-color="#16a34a" style="background:#16a34a" title="Yeşil"></button>
+            <button class="swatch" data-color="#ca8a04" style="background:#ca8a04" title="Sarı / Altın"></button>
+            <button class="swatch" data-color="#ea580c" style="background:#ea580c" title="Turuncu"></button>
+            <button class="swatch" data-color="#9333ea" style="background:#9333ea" title="Mor"></button>
+            <button class="swatch" data-color="#0284c7" style="background:#0284c7" title="Açık Mavi"></button>
+            <button class="swatch" data-color="#ffffff" style="background:#ffffff; border:1px solid #94a3b8" title="Beyaz"></button>
+            <button class="swatch" data-color="#fef08a" style="background:#fef08a; border:1px solid #ca8a04" title="Fosforlu Sarı"></button>
+          </div>
+          <div class="custom-color-picker-row">
+            <label for="customColorPicker" class="custom-color-label">
+              <input type="color" id="customColorPicker" value="#1e293b">
+              <span>Özel Renk Seçici...</span>
+            </label>
+            <div id="currentColorIndicator" class="current-color-bubble"></div>
+          </div>
+        </section>
+
+        <!-- 4. BÖLÜM: GEOMETRİ SETLERİ -->
+        <section class="menu-section">
+          <h3 class="section-title"><span class="sec-icon">📐</span> Akıllı Geometri Setleri</h3>
+          <p class="section-desc">Akıllı tahtada parmakla veya kalemle döndürülebilir, taşınabilir ve ölçüm yapılabilir araçlar:</p>
+          <div class="geometry-tool-grid">
+            <button class="geo-btn" id="btnToggleRuler" data-geo="ruler">
+              <span class="geo-icon">📏</span>
+              <div class="geo-info">
+                <strong>Cetvel</strong>
+                <small>cm/mm hassas ölçüm</small>
+              </div>
+              <span class="geo-state" id="rulerState">Kapalı</span>
+            </button>
+
+            <button class="geo-btn" id="btnToggleProtractor" data-geo="protractor">
+              <span class="geo-icon">🧭</span>
+              <div class="geo-info">
+                <strong>İletki (Açıölçer)</strong>
+                <small>0° - 180° açı ölçümü</small>
+              </div>
+              <span class="geo-state" id="protractorState">Kapalı</span>
+            </button>
+
+            <button class="geo-btn" id="btnToggleSetSquare" data-geo="setsquare">
+              <span class="geo-icon">📐</span>
+              <div class="geo-info">
+                <strong>Gönye</strong>
+                <small>45°-90° dik açı ve gönye</small>
+              </div>
+              <span class="geo-state" id="setSquareState">Kapalı</span>
+            </button>
+
+            <button class="geo-btn" id="btnToggleCompass" data-geo="compass">
+              <span class="geo-icon">⭕</span>
+              <div class="geo-info">
+                <strong>Pergel</strong>
+                <small>Hassas daire & yay çizici</small>
+              </div>
+              <span class="geo-state" id="compassState">Kapalı</span>
+            </button>
+          </div>
+          <button id="btnHideAllGeo" class="btn btn-outline small-btn">Tüm Geometri Araçlarını Kapat</button>
+        </section>
+
+        <!-- 5. BÖLÜM: EKRAN, YAKINLAŞTIRMA VE TEMİZLİK -->
+        <section class="menu-section">
+          <h3 class="section-title"><span class="sec-icon">⚙️</span> Görünüm & Sayfa İşlemleri</h3>
+          <div class="action-grid">
+            <button id="btnMenuUndo" class="btn btn-secondary">
+              <span>↩️</span> Geri Al
+            </button>
+            <button id="btnMenuRedo" class="btn btn-secondary">
+              <span>↪️</span> İleri Al
+            </button>
+            <button id="btnMenuClear" class="btn btn-danger">
+              <span>🧹</span> Sayfa Çizimlerini Sil
+            </button>
+            <button id="btnDownloadScreenshot" class="btn btn-secondary">
+              <span>💾</span> Sayfayı Kaydet (PNG)
+            </button>
+          </div>
+
+          <div class="zoom-action-row">
+            <button id="btnMenuZoomOut" class="btn-icon-only" title="Küçült">-</button>
+            <span id="menuZoomText" class="zoom-badge">100%</span>
+            <button id="btnMenuZoomIn" class="btn-icon-only" title="Büyüt">+</button>
+            <button id="btnMenuFitWidth" class="btn btn-outline" title="Genişliğe Sığdır">Genişliğe Sığdır</button>
+            <button id="btnMenuFitPage" class="btn btn-outline" title="Sayfaya Sığdır">Tam Sayfa</button>
+          </div>
+
+          <button id="btnToggleFullscreen" class="btn btn-primary full-btn" title="Tam Ekran (F11)">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            <span id="fullscreenText">Akıllı Tahta Tam Ekran</span>
+          </button>
+        </section>
+
+        <!-- Bilgi / Kısayol Notu -->
+        <div class="menu-footer-note">
+          <p>💡 <strong>İpucu:</strong> Pardus etkileşimli tahtalarda iki parmakla kaydırabilir veya sol üstteki <strong>+</strong> butonuyla bu menüyü dilediğiniz an gizleyebilirsiniz.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ANA ÇALIŞMA ALANI / SAHNE (VIEWPORT) -->
+    <main id="viewport" class="viewport">
+      <!-- Taşıma ve Yakınlaştırma Konteyneri -->
+      <div id="stage" class="stage">
+        <!-- PDF / Tahta Arka Plan Katmanı -->
+        <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+        <!-- Kullanıcı Çizim Katmanı -->
+        <canvas id="drawCanvas" class="draw-canvas"></canvas>
+      </div>
+
+      <!-- Sürükle Bırak PDF Alanı (PDF Yüklü Olmadığında veya Sürüklerken) -->
+      <div id="dropZoneOverlay" class="dropzone-overlay hidden">
+        <div class="dropzone-card">
+          <span class="drop-icon">📄</span>
+          <h3>PDF Kitabınızı Buraya Bırakın</h3>
+          <p>veya bilgisayarınızdan seçmek için tıklayın</p>
+          <button id="btnDropzoneSelect" class="btn btn-primary">PDF Seç</button>
+        </div>
+      </div>
+
+      <!-- GEOMETRİ ARAÇLARI KATMANI (Overlay Interactive SVG / DOM Elements) -->
+      <div id="geometryContainer" class="geometry-container">
+        
+        <!-- 1. CETVEL (RULER) -->
+        <div id="geoRuler" class="geo-widget ruler-widget hidden" data-angle="0">
+          <div class="widget-header">
+            <span class="widget-title">Cetvel (cm)</span>
+            <div class="widget-controls">
+              <span class="angle-display">0°</span>
+              <button class="widget-close-btn" data-close="ruler" title="Kapat">&times;</button>
+            </div>
+          </div>
+          <div class="ruler-body" id="rulerBody">
+            <svg id="rulerSvg" class="ruler-svg" width="500" height="70" viewBox="0 0 500 70">
+              <!-- SVG mm/cm çizgileri geometry.js tarafından çizilir -->
+            </svg>
+          </div>
+          <!-- Döndürme Tutamağı -->
+          <div class="rotate-handle" title="Döndürmek için sürükleyin">🔄</div>
+        </div>
+
+        <!-- 2. İLETKİ / AÇIÖLÇER (PROTRACTOR) -->
+        <div id="geoProtractor" class="geo-widget protractor-widget hidden" data-angle="0">
+          <div class="widget-header">
+            <span class="widget-title">Açıölçer (İletki)</span>
+            <div class="widget-controls">
+              <span class="angle-display">0°</span>
+              <button class="widget-close-btn" data-close="protractor" title="Kapat">&times;</button>
+            </div>
+          </div>
+          <div class="protractor-body" id="protractorBody">
+            <svg id="protractorSvg" class="protractor-svg" width="360" height="200" viewBox="0 0 360 200">
+              <!-- İletki dereceleri geometry.js tarafından çizilir -->
+            </svg>
+          </div>
+          <div class="rotate-handle" title="Döndürmek için sürükleyin">🔄</div>
+        </div>
+
+        <!-- 3. GÖNYE (SET SQUARE) -->
+        <div id="geoSetSquare" class="geo-widget setsquare-widget hidden" data-angle="0">
+          <div class="widget-header">
+            <span class="widget-title">Gönye (45°-90°)</span>
+            <div class="widget-controls">
+              <span class="angle-display">0°</span>
+              <button class="widget-close-btn" data-close="setsquare" title="Kapat">&times;</button>
+            </div>
+          </div>
+          <div class="setsquare-body" id="setSquareBody">
+            <svg id="setSquareSvg" class="setsquare-svg" width="280" height="280" viewBox="0 0 280 280">
+              <!-- Gönye geometry.js tarafından çizilir -->
+            </svg>
+          </div>
+          <div class="rotate-handle" title="Döndürmek için sürükleyin">🔄</div>
+        </div>
+
+        <!-- 4. PERGEL (COMPASS) -->
+        <div id="geoCompass" class="geo-widget compass-widget hidden">
+          <div class="widget-header">
+            <span class="widget-title">Pergel</span>
+            <div class="widget-controls">
+              <span id="compassRadiusText" class="radius-display">r = 100px</span>
+              <button class="widget-close-btn" data-close="compass" title="Kapat">&times;</button>
+            </div>
+          </div>
+          <div class="compass-body">
+            <div class="compass-needle-leg" title="Sabit İğne Ucu (Merkez)">
+              <div class="needle-tip">📌</div>
+            </div>
+            <div class="compass-beam"></div>
+            <div class="compass-pencil-leg" title="Kalem Ucu (Yarıçapı değiştirmek için sürükleyin)">
+              <div class="pencil-tip">✏️</div>
+            </div>
+          </div>
+          <div class="compass-actions">
+            <button id="btnCompassDrawCircle" class="btn btn-primary small-btn">⭕ Daire Çiz</button>
+            <button id="btnCompassDrawArc" class="btn btn-secondary small-btn">⌒ Yay Çiz</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ALT BÖLÜM: SAYFA GEÇİŞ VE KONTROL ÇUBUĞU (BOTTOM BAR) -->
+    <footer id="bottomBar" class="bottom-bar">
+      <!-- Sol: Sayfa Gezinme Düğmeleri -->
+      <div class="page-nav-cluster">
+        <button id="btnFirstPage" class="nav-btn" title="İlk Sayfa (Home)">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+        </button>
+
+        <button id="btnPrevPage" class="nav-btn primary-nav-btn" title="Önceki Sayfa (Sol Ok / Page Up)">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          <span class="nav-btn-text">Önceki</span>
+        </button>
+
+        <!-- Sayfa Sayacı ve Doğrudan Sayfaya Gitme Inputu -->
+        <div class="page-jump-box">
+          <label for="pageNumberInput" class="sr-only">Sayfa Numarası</label>
+          <input type="number" id="pageNumberInput" min="1" max="1" value="1" class="page-input" title="İstediğiniz sayfa numarasını yazıp Enter'a basın">
+          <span class="page-slash">/</span>
+          <span id="pageCountDisplay" class="page-total">1</span>
+          <button id="btnGoToPage" class="btn-go" title="Sayfaya Git">Git</button>
+        </div>
+
+        <button id="btnNextPage" class="nav-btn primary-nav-btn" title="Sonraki Sayfa (Sağ Ok / Page Down)">
+          <span class="nav-btn-text">Sonraki</span>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <button id="btnLastPage" class="nav-btn" title="Son Sayfa (End)">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        </button>
+      </div>
+
+      <!-- Orta: Hızlı Sayfa Kaydırıcı (Slider) -->
+      <div class="page-slider-cluster">
+        <input type="range" id="pageSlider" min="1" max="1" value="1" class="page-range-slider" title="Sayfalar arasında hızlı kaydırma">
+      </div>
+
+      <!-- Sağ: Hızlı Yakınlaştırma & Tam Ekran Araçları -->
+      <div class="quick-zoom-cluster">
+        <button id="btnZoomOut" class="zoom-btn" title="Küçült (-)">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <button id="btnZoomLevelText" class="zoom-level-pill" title="Ölçeği Sıfırla (%100)">100%</button>
+        <button id="btnZoomIn" class="zoom-btn" title="Büyüt (+)">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <button id="btnFitWidthQuick" class="zoom-btn fit-btn" title="Genişliğe Sığdır">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+        <button id="btnToggleBottomBar" class="toggle-bar-btn" title="Alt Çubuğu Gizle / Göster">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </footer>
+
+    <!-- Alt Çubuğu Geri Açma Sekmesi (Gizlendiğinde görünür) -->
+    <button id="btnRestoreBottomBar" class="restore-bar-btn hidden" title="Alt Sayfa Çubuğunu Göster">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+      <span>Sayfalar</span>
+    </button>
+
+  </div>
+
+  <!-- PDF.js Kütüphanesi (Yerel veya CDN Desteği ile) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // Eğer CDN yüklenemezse veya offline ise yerel scripti yükle / fallback
+    if (typeof pdfjsLib === 'undefined') {
+      document.write('<script src="pdf.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- Uygulama Scriptleri -->
+  <script src="geometry.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
