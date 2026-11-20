@@ -17,7 +17,7 @@
       height: 100%; overflow: hidden; background: var(--bg); color: var(--text);
       font-family: "Segoe UI", system-ui, -apple-system, sans-serif; user-select: none;
     }
-    #app { display: grid; grid-template-rows: auto 1fr auto; height: 100%; width: 100%; }
+    #app { display: grid; grid-template-rows: auto 1fr auto; height: 100%; height: 100dvh; width: 100%; }
     .topbar {
       display: flex; align-items: center; gap: 10px; padding: 8px 12px;
       background: var(--panel); border-bottom: 1px solid var(--border);
@@ -76,6 +76,21 @@
       color: var(--text); font-size: 0.7rem; font-weight: 600; cursor: pointer;
     }
     .tool-btn span.icon { font-size: 1.35rem; line-height: 1; }
+    .ico-classic { font-size: 1.5rem; line-height: 1; pointer-events: none; }
+    .ico-classic-sm { font-size: 1.1rem; line-height: 1; pointer-events: none; }
+    .ico-real { width: 26px; height: 26px; flex: 0 0 26px; pointer-events: none; overflow: visible; }
+    .ico-real.ico-lg { width: 30px; height: 30px; flex-basis: 30px; }
+    .menu-actions .ico-real { width: 22px; height: 22px; flex-basis: 22px; }
+    .menu-actions .ico-real.ico-pdf { width: 26px; height: 26px; flex-basis: 26px; filter: drop-shadow(0 1px 1.5px rgba(15,23,42,0.3)); }
+    .tool-chip .ico-real { width: 32px; height: 32px; flex-basis: 32px; filter: drop-shadow(0 1px 1.5px rgba(15,23,42,0.25)); transition: transform .15s; }
+    .tool-chip:active .ico-real { transform: scale(.92); }
+    .bottombar .tool-chip.active .ico-real { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35)); }
+    #bookBtn .ico-real { filter: drop-shadow(0 1px 1.5px rgba(15,23,42,0.25)); }
+    .geometry-icon {
+      width: 22px; height: 22px; flex: 0 0 22px;
+      stroke: currentColor; fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
+    }
     .tool-btn:hover { background: #e2e8f0; }
     .tool-btn.active {
       background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(124,58,237,0.12));
@@ -209,11 +224,145 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #drawCanvas.pan-mode { cursor: grab; }
+
+    /* ---------- Tablet / telefon uyumu ---------- */
+    .bottombar .tool-chip, .swatch, .tool-btn { touch-action: manipulation; }
+    .bottombar { padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+    @media (max-width: 880px) {
+      .bottombar { display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: 6px; }
+      .bb-center { order: 3; width: 100%; justify-content: center; }
+      .toast { bottom: 132px; }
+    }
+    @media (max-width: 600px) {
+      :root { --touch: 40px; }
+      .topbar { padding: 6px 8px; gap: 8px; }
+      .status { display: none; }
+      .btn { padding: 0 8px; border-radius: 10px; }
+      .bottombar { padding-left: 6px; padding-right: 6px; gap: 4px; }
+      .bb-left, .bb-right, .bb-center { gap: 4px; }
+      .bb-left .sep { display: none; }
+      .bottombar .tool-chip { min-width: 40px; min-height: 40px; padding: 0 3px; }
+      .tool-chip .ico-real { width: 28px; height: 28px; flex-basis: 28px; }
+      .page-input { width: 48px; height: 36px; }
+      .page-info { min-width: 44px; }
+      .zoom-label { min-width: 42px; }
+      .canvas-stage { margin: 12px auto; }
+      .toast { bottom: 118px; max-width: 92vw; white-space: normal; text-align: center; }
+      .menu { padding: 10px; }
+      .menu-grid { gap: 6px; }
+      .tool-btn { min-height: 56px; }
+      .menu-actions .btn { font-size: 0.78rem; }
+    }
+    @media (max-width: 360px) {
+      :root { --touch: 36px; }
+      .bottombar .tool-chip { min-width: 36px; min-height: 36px; }
+    }
+
+    /* ---------- Sayfa çevirme animasyonu ---------- */
+    .canvas-stage { z-index: 2; }
+    .canvas-stage.flipping { will-change: transform; }
+    .flip-under {
+      position: absolute; z-index: 1; display: block; background: #fff;
+      box-shadow: 0 8px 32px rgba(15,23,42,0.18); pointer-events: none;
+    }
+    #bookSpine {
+      position: absolute; top: 0; bottom: 0; width: 80px; z-index: 7; pointer-events: none; display: none;
+      background: linear-gradient(to right, rgba(15,23,42,0) 0%, rgba(15,23,42,0.07) 35%, rgba(15,23,42,0.22) 50%, rgba(15,23,42,0.07) 65%, rgba(15,23,42,0) 100%);
+    }
+    .canvas-stage.book-flipping { perspective: 2400px; }
+    .book-under { position: absolute; top: 0; z-index: 6; pointer-events: none; }
+    .book-flipper {
+      position: absolute; top: 0; z-index: 9; pointer-events: none;
+      transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+    }
+    .book-face, .book-shade {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      box-shadow: 0 0 18px rgba(15,23,42,0.18);
+    }
+    .book-shade { box-shadow: none; opacity: 0; }
+    .book-back { transform: rotateY(180deg); }
+    #flipShade { position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 50; opacity: 0; pointer-events: none; }
+
+    /* ---------- Uzun basınca açılan menüyü engelle ---------- */
+    * { -webkit-touch-callout: none; }
+    input, textarea { user-select: text; -webkit-user-select: text; }
+
+    /* ---------- GEOMATİK geometri seti (su yeşili, şeffaf) ---------- */
+    #instrumentsLayer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 30; pointer-events: none; line-height: normal; }
+    .g-inst { position: absolute; left: 0; top: 0; transform-origin: 0 0; cursor: grab; touch-action: none; will-change: transform; }
+    .g-hidden { display: none !important; }
+    #gRuler {
+      pointer-events: auto; transform-origin: 50% 50%;
+      background: rgba(45,212,191,0.10); border: 1.5px solid #0d9488; border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.08);
+    }
+    #gRuler canvas { width: 100%; height: 100%; position: static; }
+    #gTri { transform-origin: 50% 50%; }
+    #gTri, #gProt { pointer-events: none; }
+    #gTri svg, #gProt svg { overflow: visible; pointer-events: none; display: block; }
+    .g-shape { pointer-events: visiblePainted; cursor: grab; }
+    .g-h {
+      position: absolute; width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer; z-index: 60; touch-action: none;
+    }
+    .g-h::before { content: ''; position: absolute; left: -12px; top: -12px; right: -12px; bottom: -12px; border-radius: 50%; }
+    .g-rot { background: #2563eb; }
+    .g-res { background: #059669; }
+    #gProtDot {
+      position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #2563eb;
+      border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(37,99,235,0.5); pointer-events: none; z-index: 61;
+    }
+    #gToggle360 {
+      position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%);
+      background: #0f172a; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4;
+      padding: 3px 10px; border-radius: 999px; border: 1px solid #475569; white-space: nowrap;
+      pointer-events: auto; cursor: pointer;
+    }
+    .tl { font: 600 9px system-ui, sans-serif; fill: #134e4a; }
+    .pl-o { font: 700 10px system-ui, sans-serif; fill: #134e4a; }
+    .pl-i { font: 600 8.5px system-ui, sans-serif; fill: #dc2626; }
+    #gCompass { position: absolute; left: 0; top: 0; z-index: 35; pointer-events: none; touch-action: none; }
+    #gCompass [data-role] { pointer-events: auto; }
+    #gCompass [data-role="move"] { cursor: move; }
+    #gCompass svg { overflow: visible; display: block; }
     .workspace.panning { cursor: grab; }
     .workspace.panning.dragging { cursor: grabbing; }
   </style>
+  <script>
+    // Akıllı tahtada uzun basınca açılan sağ tık menüsünü kapat
+    // (PDF kütüphanesi yüklenemese bile çalışsın diye ayrı betik)
+    (function () {
+      function allow(t) { return t && t.closest && t.closest('input, textarea'); }
+      function block(e) { if (!allow(e.target)) e.preventDefault(); }
+      window.addEventListener('contextmenu', block, true);
+      document.addEventListener('contextmenu', block, true);
+      document.addEventListener('selectstart', block, true);
+      document.addEventListener('dragstart', block, true);
+      document.addEventListener('auxclick', function (e) { if (e.button === 2) e.preventDefault(); }, true);
+    })();
+  </script>
 </head>
-<body>
+<body oncontextmenu="var t=event.target;return !!(t&&t.closest&&t.closest('input, textarea'));">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="gPencil" x1="0" x2="1"><stop offset="0" stop-color="#fcd34d"/><stop offset=".5" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+      <linearGradient id="gMetal" x1="0" x2="1"><stop offset="0" stop-color="#e2e8f0"/><stop offset=".5" stop-color="#f8fafc"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>
+      <linearGradient id="gPink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+      <linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+      <linearGradient id="gSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde2c8"/><stop offset="1" stop-color="#f4b98a"/></linearGradient>
+      <linearGradient id="gCover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+      <linearGradient id="gPaper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef2f7"/></linearGradient>
+      <linearGradient id="gRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f87171"/><stop offset="1" stop-color="#dc2626"/></linearGradient>
+      <linearGradient id="gFolderBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#d97706"/></linearGradient>
+      <linearGradient id="gFolderFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#fbbf24"/></linearGradient>
+      <linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#16a34a"/></linearGradient>
+      <linearGradient id="gBin" x1="0" x2="1"><stop offset="0" stop-color="#cbd5e1"/><stop offset=".55" stop-color="#f1f5f9"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>
+      <linearGradient id="gWood" x1="0" x2="1"><stop offset="0" stop-color="#b45309"/><stop offset=".5" stop-color="#d97706"/><stop offset="1" stop-color="#92400e"/></linearGradient>
+      <linearGradient id="gStraw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+      <linearGradient id="gSpray" x1="0" x2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset=".5" stop-color="#38bdf8"/><stop offset="1" stop-color="#0284c7"/></linearGradient>
+    </defs>
+  </svg>
   <div id="app">
     <header class="topbar">
       <div class="menu-wrap">
@@ -239,22 +388,44 @@
           </div>
           <div class="menu-section">Geometri Seti</div>
           <div class="menu-grid">
-            <button class="tool-btn" data-tool="ruler"><span class="icon">📏</span>Cetvel</button>
-            <button class="tool-btn" data-tool="protractor"><span class="icon">📐</span>Açıölçer</button>
-            <button class="tool-btn" data-tool="setsquare"><span class="icon">△</span>Gönye</button>
-            <button class="tool-btn" data-tool="compass"><span class="icon">⭕</span>Pergel</button>
-          </div>
-          <div class="menu-section">Görünüm</div>
-          <div class="menu-grid">
-            <button class="tool-btn" id="zoomInBtn"><span class="icon">🔍+</span>Büyüt</button>
-            <button class="tool-btn" id="zoomOutBtn"><span class="icon">🔍−</span>Küçült</button>
+            <button class="tool-btn" data-tool="ruler"><svg class="geometry-icon" style="color:#fbbf24" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M6 8v4M9 8v3M12 8v4M15 8v3M18 8v4"/></svg>Cetvel</button>
+            <button class="tool-btn" data-tool="protractor"><svg class="geometry-icon" style="color:#38bdf8" viewBox="0 0 24 24"><path d="M3 19a9 9 0 0 1 18 0H3Z"/><path d="M6 16h.01M9 13h.01M12 12h.01M15 13h.01M18 16h.01"/><path d="M12 19v-7"/></svg>Açıölçer</button>
+            <button class="tool-btn" data-tool="setsquare"><svg class="geometry-icon" style="color:#34d399" viewBox="0 0 24 24"><path d="M4 20V4h16L4 20Z"/><path d="M4 16h4v4"/><path d="M8 16h8"/></svg>Gönye</button>
+            <button class="tool-btn" data-tool="compass"><svg class="geometry-icon" style="color:#fb7185" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><path d="M12 6v3M11 9 5 20M13 9l6 11M7 18h4M13 18h4"/><path d="M9 9h6"/></svg>Pergel</button>
           </div>
           <div class="menu-section">Dosya & Temizlik</div>
           <div class="menu-actions">
-            <button class="btn primary" id="loadPdfBtn">📄 PDF Yükle</button>
-            <button class="btn" id="clearPageBtn">🧹 Sayfayı Temizle</button>
-            <button class="btn danger" id="removePdfBtn">🗑 PDF Kaldır</button>
-            <button class="btn" id="clearAllBtn">✨ Tümünü Temizle</button>
+            <button class="btn primary" id="loadPdfBtn"><svg class="ico-real ico-pdf" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M5.5 1.5h9.2l4.8 4.8v15a1.7 1.7 0 0 1-1.7 1.7H5.5a1.7 1.7 0 0 1-1.7-1.7V3.2a1.7 1.7 0 0 1 1.7-1.7z" fill="#fff" stroke="#cbd5e1" stroke-width=".8"/>
+  <path d="M14.7 1.5v3.5a1.3 1.3 0 0 0 1.3 1.3h3.5z" fill="#e2e8f0" stroke="#cbd5e1" stroke-width=".8" stroke-linejoin="round"/>
+  <path d="M7 9.2h8M7 11.4h6" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
+  <rect x="2.2" y="13.6" width="15.6" height="6.4" rx="1.2" fill="#dc2626"/>
+  <text x="10" y="18.6" text-anchor="middle" font-size="5" font-weight="800" fill="#fff" font-family="Arial,Helvetica,sans-serif">PDF</text>
+</svg> PDF Yükle</button>
+            <button class="btn" id="clearPageBtn"><svg class="ico-real" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(32 12 12)">
+  <rect x="11" y=".2" width="2" height="11.3" rx="1" fill="url(#gWood)"/>
+  <rect x="8.2" y="10.6" width="7.6" height="2.6" rx="1" fill="url(#gRed)"/>
+  <path d="M8.4 13.2h7.2l3 9.2H5.4z" fill="url(#gStraw)" stroke="#b45309" stroke-width=".6" stroke-linejoin="round"/>
+  <path d="M9.6 14l-1.8 7.8M12 14v8.2M14.4 14l1.8 7.8" stroke="#d97706" stroke-width=".7" stroke-linecap="round"/>
+</g></svg> Sayfayı Temizle</button>
+            <button class="btn danger" id="removePdfBtn"><svg class="ico-real" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M9.2 4.4V3.3c0-.7.5-1.2 1.2-1.2h3.2c.7 0 1.2.5 1.2 1.2v1.1" fill="none" stroke="#64748b" stroke-width="1.2"/>
+  <path d="M5.6 8h12.8l-1.1 12.7a1.7 1.7 0 0 1-1.7 1.5H8.4a1.7 1.7 0 0 1-1.7-1.5z" fill="url(#gBin)" stroke="#64748b" stroke-width=".7"/>
+  <path d="M9.4 10.5l.4 9M12 10.5v9M14.6 10.5l-.4 9" stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+  <rect x="3.6" y="4.3" width="16.8" height="3.4" rx="1.4" fill="url(#gRed)"/>
+  <path d="M5 5.4h14" stroke="#fff" stroke-width=".7" opacity=".5" stroke-linecap="round"/>
+</svg> PDF Kaldır</button>
+            <button class="btn" id="clearAllBtn"><svg class="ico-real" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M5.6 3.4h6.6l2 1.8v1.4H5.6z" fill="#f1f5f9" stroke="#64748b" stroke-width=".7" stroke-linejoin="round"/>
+  <path d="M7.8 6.6l-1.9 2.9" stroke="#64748b" stroke-width="1.1" stroke-linecap="round"/>
+  <rect x="7.3" y="6.6" width="3.8" height="3" fill="url(#gMetal)" stroke="#64748b" stroke-width=".5"/>
+  <path d="M6.6 9.6h5.2a2.4 2.4 0 0 1 2.4 2.4v8.6a1.6 1.6 0 0 1-1.6 1.6H5.8a1.6 1.6 0 0 1-1.6-1.6V12a2.4 2.4 0 0 1 2.4-2.4z" fill="url(#gSpray)" stroke="#0369a1" stroke-width=".6"/>
+  <rect x="5.4" y="14" width="7.6" height="4.4" rx=".9" fill="#fff" opacity=".9"/>
+  <path d="M7 16.2h4.4" stroke="#38bdf8" stroke-width="1" stroke-linecap="round"/>
+  <path d="M18.6 2.6l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z" fill="#facc15"/>
+  <path d="M20.6 8.8l.45 1.2 1.2.45-1.2.45-.45 1.2-.45-1.2-1.2-.45 1.2-.45z" fill="#fbbf24"/>
+  <path d="M15.6 6.8l.35.95.95.35-.95.35-.35.95-.35-.95-.95-.35.95-.35z" fill="#fde047"/>
+</svg> Tümünü Temizle</button>
           </div>
         </div>
       </div>
@@ -280,9 +451,22 @@
         <button class="btn icon-only" id="undoBtn" title="Geri Al">↶</button>
         <button class="btn icon-only" id="redoBtn" title="İleri Al">↷</button>
         <div class="sep"></div>
-        <button class="tool-chip active" data-tool="pen" title="Kalem">✏️</button>
-        <button class="tool-chip" data-tool="eraser" title="Silgi">🧽</button>
-        <button class="tool-chip" data-tool="pan" title="Taşı">✋</button>
+        <button class="tool-chip" data-tool="pen" title="Kalem"><svg class="ico-real" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(45 16 16)">
+  <rect x="12.5" y="1.2" width="7" height="4.2" rx="1.6" fill="url(#gPink)"/>
+  <rect x="12.5" y="5" width="7" height="3" fill="url(#gMetal)" stroke="#64748b" stroke-width=".5"/>
+  <path d="M12.5 8h7v13h-7z" fill="url(#gPencil)"/>
+  <path d="M14.8 8h2.4v13h-2.4z" fill="#fde68a" opacity=".55"/>
+  <path d="M12.5 21h7L16 28.6z" fill="#fde7c2" stroke="#d4a373" stroke-width=".5"/>
+  <path d="M14.9 26.3h2.2L16 28.6z" fill="#334155"/>
+</g></svg></button>
+        <button class="tool-chip" data-tool="eraser" title="Silgi"><svg class="ico-real" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-28 16 16)">
+  <rect x="4.5" y="12.5" width="23" height="10" rx="2.5" fill="#be185d" opacity=".35" transform="translate(0 1.6)"/>
+  <path d="M7 10.5h9v10H7a2.5 2.5 0 0 1-2.5-2.5v-5A2.5 2.5 0 0 1 7 10.5z" fill="url(#gPink)"/>
+  <path d="M16 10.5h9a2.5 2.5 0 0 1 2.5 2.5v5a2.5 2.5 0 0 1-2.5 2.5h-9z" fill="url(#gBlue)"/>
+  <path d="M7 11.8h18" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".55"/>
+  <path d="M19 14h5M19 16.5h3.5" stroke="#dbeafe" stroke-width=".9" stroke-linecap="round"/>
+</g><circle cx="7" cy="27" r="1" fill="#f9a8d4"/><circle cx="10.5" cy="28.4" r=".8" fill="#f9a8d4"/><circle cx="4.4" cy="29" r=".7" fill="#f9a8d4"/></svg></button>
+        <button class="tool-chip active" data-tool="pan" title="Taşı"><span class="ico-classic">✋</span></button>
       </div>
       <div class="bb-center">
         <button class="btn icon-only" id="prevPage" title="Önceki">◀</button>
@@ -295,7 +479,14 @@
         <button class="btn icon-only" id="zoomInBottom" title="Büyüt">+</button>
       </div>
       <div class="bb-right">
-        <button class="btn icon-only" id="fitWidthBtn" title="Genişlik">↔</button>
+        <button class="btn icon-only" id="bookBtn" title="Çift sayfa (kitap) / tek sayfa"><svg class="ico-real ico-lg" viewBox="0 0 32 32" aria-hidden="true">
+  <path d="M2 9.5c4.5-1.6 9.5-1.6 14 .8 4.5-2.4 9.5-2.4 14-.8v16c-4.5-1.4-9.5-1.2-14 1.2-4.5-2.4-9.5-2.6-14-1.2z" fill="url(#gCover)"/>
+  <path d="M3.4 8c4.2-1.4 8.6-1.1 12.6 1.4v15.4c-4-2.2-8.4-2.6-12.6-1.4z" fill="url(#gPaper)" stroke="#cbd5e1" stroke-width=".5"/>
+  <path d="M28.6 8c-4.2-1.4-8.6-1.1-12.6 1.4v15.4c4-2.2 8.4-2.6 12.6-1.4z" fill="url(#gPaper)" stroke="#cbd5e1" stroke-width=".5"/>
+  <path d="M6 12.2c2.5-.5 5-.3 7.4.8M6 15.2c2.5-.5 5-.3 7.4.8M6 18.2c2.5-.5 5-.3 7.4.8M18.6 13c2.4-1.1 4.9-1.3 7.4-.8M18.6 16c2.4-1.1 4.9-1.3 7.4-.8M18.6 19c2.4-1.1 4.9-1.3 7.4-.8" stroke="#a5b4fc" stroke-width=".9" stroke-linecap="round" fill="none"/>
+  <path d="M16 9.4v15.4" stroke="#94a3b8" stroke-width=".7"/>
+</svg></button>
+        <button class="btn icon-only" id="fitWidthBtn" title="Genişliğe sığdır / normal ebat">↔</button>
         <button class="btn icon-only" id="fullscreenBtn" title="Tam Ekran">⛶</button>
       </div>
     </footer>
@@ -309,7 +500,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 const PX_PER_CM = 37.795;
 const state = {
   pdf: null, pageNum: 1, pageCount: 0, scale: 1.15,
-  tool: 'pen', color: '#dc2626', brushSize: 3,
+  tool: 'pan', color: '#dc2626', brushSize: 3,
   drawing: false, lastX: 0, lastY: 0, startX: 0, startY: 0,
   paths: {}, tempShape: null,
   panning: false, panStartX: 0, panStartY: 0, scrollLeft0: 0, scrollTop0: 0,
@@ -361,14 +552,15 @@ document.addEventListener('click', e => {
 });
 
 function setTool(t) {
-  if (t === 'ruler' || t === 'protractor' || t === 'setsquare') {
-    spawnGeo(t);
+  if (t === 'ruler' || t === 'protractor' || t === 'setsquare' || t === 'compass') {
+    toggleInstrument(t);          // GEOMATİK geometri seti: aç / kapat
     menu.classList.remove('open');
     return;
   }
   $$('.tool-btn[data-tool], .tool-chip[data-tool]').forEach(b => b.classList.remove('active'));
   $$(`[data-tool="${t}"]`).forEach(b => b.classList.add('active'));
   state.tool = t;
+  syncInstButtons();
   updateCursor();
   menu.classList.remove('open');
   if (t === 'compass') {
@@ -417,6 +609,8 @@ fileInput.addEventListener('change', async e => {
     $('#fileStatus').textContent = file.name;
     emptyState.style.display = 'none';
     canvasStage.style.display = 'block';
+    state.fitMode = 'normal'; updateFitButton();
+    state.scale = Math.max(0.35, Math.min(3.5, await normalScale()));
     await renderPage();
     toast('PDF yüklendi · ' + state.pageCount + ' sayfa');
     menu.classList.remove('open');
@@ -426,11 +620,14 @@ fileInput.addEventListener('change', async e => {
 
 $('#clearPageBtn').onclick = () => {
   if (!state.pdf) return;
-  state.undoStack.push({ page: state.pageNum, paths: clonePaths() });
-  if (state.undoStack.length > 80) state.undoStack.shift();
+  const pages = state.book && state.spread ? [state.spread.left, state.spread.right].filter(Boolean) : [state.pageNum];
+  pages.forEach(n => {
+    state.undoStack.push({ page: n, paths: clonePathsOf(n) });
+    state.paths[n] = [];
+  });
+  while (state.undoStack.length > 80) state.undoStack.shift();
   state.redoStack = [];
-  state.paths[state.pageNum] = [];
-  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  redrawAnnotations();
   updateUndoButtons();
   toast('Sayfa temizlendi'); menu.classList.remove('open');
 };
@@ -451,25 +648,75 @@ $('#removePdfBtn').onclick = () => {
 
 function setScale(s) {
   state.scale = Math.max(0.35, Math.min(3.5, s));
+  if (state.fitMode) { state.fitMode = 'custom'; if (typeof updateFitButton === 'function') updateFitButton(); }
   $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
   if (state.pdf) renderPage();
 }
-$('#zoomInBtn').onclick = () => { setScale(state.scale + 0.15); menu.classList.remove('open'); };
-$('#zoomOutBtn').onclick = () => { setScale(state.scale - 0.15); menu.classList.remove('open'); };
 $('#zoomInBottom').onclick = () => setScale(state.scale + 0.15);
 $('#zoomOutBottom').onclick = () => setScale(state.scale - 0.15);
+// Genişliğe sığdır: hangi görünümdeyse (kitap = iki sayfa, tek sayfa) onu ekran genişliğine büyütür
+async function fitWidthScale() {
+  if (state.book) {
+    const sp = spreadOf(state.pageNum);
+    const v1 = (await state.pdf.getPage(sp.left)).getViewport({ scale: 1 });
+    const v2 = sp.right ? (await state.pdf.getPage(sp.right)).getViewport({ scale: 1 }) : v1;
+    return (workspace.clientWidth - 48) / (v1.width + v2.width);
+  }
+  const vp = (await state.pdf.getPage(state.pageNum)).getViewport({ scale: 1 });
+  return (workspace.clientWidth - 48) / vp.width;
+}
+// Normal ebat: sayfanın (ya da iki sayfanın) tamamı ekrana sığar
+async function normalScale() {
+  if (state.book) return bookFitScale();
+  const vp = (await state.pdf.getPage(state.pageNum)).getViewport({ scale: 1 });
+  return Math.min((workspace.clientWidth - 48) / vp.width, (workspace.clientHeight - 48) / vp.height);
+}
+state.fitMode = 'normal';
+function updateFitButton() { $('#fitWidthBtn').classList.toggle('primary', state.fitMode === 'width'); }
+async function applyFit(mode) {
+  state.fitMode = mode;
+  updateFitButton();
+  const sc = mode === 'width' ? await fitWidthScale() : await normalScale();
+  state.scale = Math.max(0.35, Math.min(3.5, sc));
+  await renderPage();
+  workspace.scrollTop = 0;
+}
+// Tablet/telefon döndürülünce ya da pencere boyutu değişince sayfayı yeniden sığdır
+let rzTimer = null, rzW = window.innerWidth, rzH = window.innerHeight;
+window.addEventListener('resize', () => {
+  clearTimeout(rzTimer);
+  rzTimer = setTimeout(() => {
+    const w = window.innerWidth, h = window.innerHeight;
+    const changed = Math.abs(w - rzW) > 2 || (state.fitMode === 'normal' && Math.abs(h - rzH) > 120);
+    rzW = w; rzH = h;
+    if (!changed || !state.pdf || state.drawing || state.panning || flip.busy) return;
+    if (state.fitMode === 'normal' || state.fitMode === 'width') applyFit(state.fitMode);
+  }, 250);
+});
+
+// ↔: normal ebat ⇄ genişliğe sığdır (tek sayfada da çift sayfada da)
 $('#fitWidthBtn').onclick = async () => {
   if (!state.pdf) return;
-  const page = await state.pdf.getPage(state.pageNum);
-  const vp = page.getViewport({ scale: 1 });
-  setScale((workspace.clientWidth - 48) / vp.width);
+  const mode = state.fitMode === 'width' ? 'normal' : 'width';
+  await applyFit(mode);
   menu.classList.remove('open');
+  const what = state.book ? 'Çift sayfa' : 'Tek sayfa';
+  toast(what + (mode === 'width' ? ' · genişliğe sığdırıldı' : ' · normal ebat'));
 };
-$('#fullscreenBtn').onclick = () => {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else document.exitFullscreen();
-  menu.classList.remove('open');
-};
+function toggleFullscreen() {
+  const d = document, el = d.documentElement;
+  try {
+    if (!(d.fullscreenElement || d.webkitFullscreenElement)) {
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (req) { const pr = req.call(el); if (pr && pr.catch) pr.catch(() => {}); }
+      else toast('Bu cihaz tam ekranı desteklemiyor');
+    } else {
+      const ex = d.exitFullscreen || d.webkitExitFullscreen;
+      if (ex) { const pr = ex.call(d); if (pr && pr.catch) pr.catch(() => {}); }
+    }
+  } catch (_) {}
+}
+$('#fullscreenBtn').onclick = () => { toggleFullscreen(); menu.classList.remove('open'); };
 
 $('#undoBtn').onclick = () => undo();
 $('#redoBtn').onclick = () => redo();
@@ -483,6 +730,12 @@ $('#pageInput').onchange = () => {
 };
 async function changePage(d) {
   if (!state.pdf) return;
+  if (state.book && state.spread) {
+    const nl = state.spread.left + (d > 0 ? 2 : -2);
+    if (nl < 1 || nl > state.pageCount) return;
+    state.pageNum = nl; await renderPage(); workspace.scrollTop = 0;
+    return;
+  }
   const n = state.pageNum + d;
   if (n < 1 || n > state.pageCount) return;
   state.pageNum = n; await renderPage(); workspace.scrollTop = 0;
@@ -490,6 +743,9 @@ async function changePage(d) {
 
 async function renderPage() {
   if (!state.pdf) return;
+  if (state.book) return renderSpread();
+  state.spread = null;
+  const sp = $('#bookSpine'); if (sp) sp.style.display = 'none';
   const page = await state.pdf.getPage(state.pageNum);
   const viewport = page.getViewport({ scale: state.scale });
   const w = Math.floor(viewport.width), h = Math.floor(viewport.height);
@@ -505,35 +761,375 @@ async function renderPage() {
   if (state.compass) renderCompassUI();
 }
 
-function drawPath(p) {
-  drawCtx.save();
-  drawCtx.lineCap = 'round'; drawCtx.lineJoin = 'round';
-  if (p.type === 'pen') {
-    drawCtx.strokeStyle = p.color; drawCtx.lineWidth = p.size;
-    drawCtx.beginPath();
-    p.points.forEach((pt, i) => i ? drawCtx.lineTo(pt.x, pt.y) : drawCtx.moveTo(pt.x, pt.y));
-    drawCtx.stroke();
-  } else if (p.type === 'eraser') {
-    drawCtx.globalCompositeOperation = 'destination-out';
-    drawCtx.lineWidth = p.size;
-    drawCtx.beginPath();
-    p.points.forEach((pt, i) => i ? drawCtx.lineTo(pt.x, pt.y) : drawCtx.moveTo(pt.x, pt.y));
-    drawCtx.stroke();
-  } else if (p.type === 'line') {
-    drawCtx.strokeStyle = p.color; drawCtx.lineWidth = p.size;
-    drawCtx.beginPath(); drawCtx.moveTo(p.x1, p.y1); drawCtx.lineTo(p.x2, p.y2); drawCtx.stroke();
-  } else if (p.type === 'circle' || p.type === 'arc') {
-    drawCtx.strokeStyle = p.color; drawCtx.lineWidth = p.size;
-    drawCtx.beginPath();
-    if (p.type === 'arc' && p.a0 != null) drawCtx.arc(p.cx, p.cy, p.r, p.a0, p.a1, !!p.ccw);
-    else drawCtx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
-    drawCtx.stroke();
-  }
-  drawCtx.restore();
+async function renderSpread() {
+  const { left, right } = spreadOf(state.pageNum);
+  const [imgL, imgR] = await Promise.all([renderPdfToCanvas(left), right ? renderPdfToCanvas(right) : null]);
+  const wL = imgL.width, wR = imgR ? imgR.width : imgL.width;
+  const h = Math.max(imgL.height, imgR ? imgR.height : 0);
+  const w = wL + wR;
+  [pdfCanvas, drawCanvas, toolCanvas].forEach(c => {
+    c.width = w; c.height = h; c.style.width = w + 'px'; c.style.height = h + 'px';
+  });
+  canvasStage.style.width = w + 'px'; canvasStage.style.height = h + 'px';
+  pdfCtx.fillStyle = '#fff'; pdfCtx.fillRect(0, 0, w, h);
+  pdfCtx.drawImage(imgL, 0, 0);
+  if (imgR) pdfCtx.drawImage(imgR, wL, 0);
+  else { pdfCtx.fillStyle = '#eef2f7'; pdfCtx.fillRect(wL, 0, wR, h); }   // kitabın son sayfası: arka kapak
+  state.spread = { left, right, wL, wR, h };
+  if (!sameSpread(state.pageNum)) state.pageNum = left;
+  const sp = bookSpine(); sp.style.display = 'block'; sp.style.left = (wL - 40) + 'px';
+  redrawAnnotations();
+  $('#pageInput').value = state.pageNum;
+  $('#zoomLabel').textContent = Math.round(state.scale * 100) + '%';
+  if (state.compass) renderCompassUI();
 }
+
+function normPath(p) {
+  const k = 1 / state.scale;
+  const q = JSON.parse(JSON.stringify(p));
+  if (q.points) q.points.forEach(pt => { pt.x *= k; pt.y *= k; });
+  ['x1', 'y1', 'x2', 'y2', 'cx', 'cy', 'r', 'size'].forEach(f => { if (q[f] != null) q[f] *= k; });
+  q.n = 1;                       // sayfa birimi (ölçek 1) cinsinden
+  return q;
+}
+function drawPath(p, ctx = drawCtx) {
+  ctx.save();
+  if (p.n) ctx.scale(state.scale, state.scale);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (p.type === 'pen') {
+    ctx.strokeStyle = p.color; ctx.lineWidth = p.size;
+    ctx.beginPath();
+    p.points.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+    ctx.stroke();
+  } else if (p.type === 'eraser') {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = p.size;
+    ctx.beginPath();
+    p.points.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+    ctx.stroke();
+  } else if (p.type === 'line') {
+    ctx.strokeStyle = p.color; ctx.lineWidth = p.size;
+    ctx.beginPath(); ctx.moveTo(p.x1, p.y1); ctx.lineTo(p.x2, p.y2); ctx.stroke();
+  } else if (p.type === 'circle' || p.type === 'arc') {
+    ctx.strokeStyle = p.color; ctx.lineWidth = p.size;
+    ctx.beginPath();
+    if (p.type === 'arc' && p.a0 != null) ctx.arc(p.cx, p.cy, p.r, p.a0, p.a1, !!p.ccw);
+    else ctx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// =====================================================================
+// SAYFA ÇEVİRME: ✋ Taşı aracıyla PDF'yi sola/sağa çekince kitap sayfası gibi döner
+// =====================================================================
+const flip = { active: false, dir: 0, target: 0, under: null, shade: null, busy: false, t0: 0 };
+
+function flipShade() {
+  if (!flip.shade) {
+    flip.shade = document.createElement('div');
+    flip.shade.id = 'flipShade';
+    canvasStage.appendChild(flip.shade);
+  }
+  return flip.shade;
+}
+
+// Alttaki (gelecek) sayfayı hazırla: sayfa + o sayfaya yapılan çizimler
+function prepareUnderPage(target) {
+  const under = document.createElement('canvas');
+  under.className = 'flip-under';
+  under.width = drawCanvas.width; under.height = drawCanvas.height;
+  under.style.width = canvasStage.style.width; under.style.height = canvasStage.style.height;
+  under.style.left = canvasStage.offsetLeft + 'px';
+  under.style.top = canvasStage.offsetTop + 'px';
+  const uctx = under.getContext('2d');
+  uctx.fillStyle = '#fff'; uctx.fillRect(0, 0, under.width, under.height);
+  workspace.insertBefore(under, canvasStage);
+  state.pdf.getPage(target).then(page => {
+    if (flip.under !== under) return;
+    const vp = page.getViewport({ scale: state.scale });
+    const w = Math.floor(vp.width), h = Math.floor(vp.height);
+    under.width = w; under.height = h;
+    under.style.width = w + 'px'; under.style.height = h + 'px';
+    under.style.left = (canvasStage.offsetLeft + (canvasStage.offsetWidth - w) / 2) + 'px';
+    const off = document.createElement('canvas');
+    off.width = w; off.height = h;
+    return page.render({ canvasContext: off.getContext('2d'), viewport: vp }).promise.then(() => {
+      if (flip.under !== under) return;
+      const ann = document.createElement('canvas');
+      ann.width = w; ann.height = h;
+      const actx = ann.getContext('2d');
+      (state.paths[target] || []).forEach(p => drawPath(p, actx));
+      uctx.fillStyle = '#fff'; uctx.fillRect(0, 0, w, h);
+      uctx.drawImage(off, 0, 0);
+      uctx.drawImage(ann, 0, 0);
+    });
+  }).catch(() => {});
+  return under;
+}
+
+function flipBegin(dir) {
+  if (state.book && state.spread) { flip.mode = 'book'; return bookFlipBegin(dir); }
+  flip.mode = 'single';
+  flip.active = true;
+  flip.dir = dir;                                   // +1 sonraki sayfa (sola çek), -1 önceki (sağa çek)
+  flip.target = state.pageNum + dir;
+  flip.t0 = performance.now();
+  const ok = flip.target >= 1 && flip.target <= state.pageCount;
+  flip.under = ok ? prepareUnderPage(flip.target) : null;
+  canvasStage.style.transition = 'none';
+  canvasStage.style.transformOrigin = dir > 0 ? 'left center' : 'right center';
+  canvasStage.classList.add('flipping');
+  flipShade().style.background = dir > 0
+    ? 'linear-gradient(to left, rgba(15,23,42,0.35), rgba(15,23,42,0) 70%)'
+    : 'linear-gradient(to right, rgba(15,23,42,0.35), rgba(15,23,42,0) 70%)';
+}
+
+function flipUpdate(dx) {
+  if (flip.mode === 'book') return bookFlipUpdate(dx);
+  const w = canvasStage.offsetWidth || 1;
+  let frac = Math.min(1, Math.abs(dx) / w);
+  if (!flip.under) frac = Math.min(frac, 0.08);      // ilk/son sayfada sadece hafif esneme
+  const ang = frac * 90;
+  canvasStage.style.transform = `perspective(1800px) rotateY(${flip.dir > 0 ? -ang : ang}deg)`;
+  flipShade().style.opacity = String(Math.min(1, frac * 1.6));
+}
+
+function flipEnd(dx, cancelled) {
+  if (flip.mode === 'book') return bookFlipEnd(dx, cancelled);
+  if (!flip.active) return;
+  flip.active = false;
+  const w = canvasStage.offsetWidth || 1;
+  const dt = Math.max(1, performance.now() - flip.t0);
+  const fast = Math.abs(dx) / dt > 0.5 && Math.abs(dx) > 40;
+  const complete = !cancelled && !!flip.under && (Math.abs(dx) > w * 0.22 || fast);
+  const under = flip.under;
+  const shade = flipShade();
+  flip.busy = true;
+  canvasStage.style.transition = 'transform 0.24s ease-out';
+  shade.style.transition = 'opacity 0.24s ease-out';
+  canvasStage.style.transform = `perspective(1800px) rotateY(${complete ? (flip.dir > 0 ? -90 : 90) : 0}deg)`;
+  shade.style.opacity = complete ? '1' : '0';
+
+  setTimeout(() => {
+    const finish = () => {
+      canvasStage.style.transition = 'none';
+      shade.style.transition = 'none';
+      canvasStage.style.transform = '';
+      shade.style.opacity = '0';
+      canvasStage.classList.remove('flipping');
+      if (under) under.remove();
+      if (flip.under === under) flip.under = null;
+      flip.busy = false;
+    };
+    if (complete) {
+      state.pageNum = flip.target;
+      renderPage().then(() => { workspace.scrollTop = 0; finish(); }, finish);
+    } else {
+      finish();
+    }
+  }, 250);
+}
+
+
+// =====================================================================
+// KİTAP GÖRÜNÜMÜ: iki sayfa yan yana (açık kitap), sayfa ortadaki
+// cilt çizgisinden kitap gibi çevrilir
+// =====================================================================
+state.book = window.innerWidth >= 700;   // telefonda tek sayfa, tablet/PC/tahtada açık kitap
+state.spread = null;           // { left, right, wL, wR, h }
+
+function spreadOf(n) {
+  const left = n % 2 === 1 ? n : n - 1;
+  const right = left + 1 <= state.pageCount ? left + 1 : 0;
+  return { left, right };
+}
+function sameSpread(n) {
+  if (state.book && state.spread) return n === state.spread.left || n === state.spread.right;
+  return n === state.pageNum;
+}
+function drawPagePaths(n, ox, ctx = drawCtx) {
+  ctx.save();
+  ctx.translate(ox, 0);
+  (state.paths[n] || []).forEach(p => drawPath(p, ctx));
+  ctx.restore();
+}
+async function renderPdfToCanvas(n) {
+  const page = await state.pdf.getPage(n);
+  const vp = page.getViewport({ scale: state.scale });
+  const c = document.createElement('canvas');
+  c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  return c;
+}
+async function pageImage(n) {          // PDF sayfası + o sayfadaki çizimler
+  const c = await renderPdfToCanvas(n);
+  drawPagePaths(n, 0, c.getContext('2d'));
+  return c;
+}
+function pathRefX(p) {
+  if (p.points && p.points.length) return p.points[0].x;
+  if (p.type === 'line') return (p.x1 + p.x2) / 2;
+  if (p.cx != null) return p.cx;
+  return 0;
+}
+function shiftPath(p, dx) {
+  const q = JSON.parse(JSON.stringify(p));
+  if (q.points) q.points.forEach(pt => { pt.x += dx; });
+  if (q.x1 != null) { q.x1 += dx; q.x2 += dx; }
+  if (q.cx != null) q.cx += dx;
+  return q;
+}
+async function bookFitScale() {
+  const s = spreadOf(state.pageNum);
+  const p1 = await state.pdf.getPage(s.left);
+  const v1 = p1.getViewport({ scale: 1 });
+  let w = v1.width * 2, h = v1.height;
+  if (s.right) {
+    const v2 = (await state.pdf.getPage(s.right)).getViewport({ scale: 1 });
+    w = v1.width + v2.width; h = Math.max(h, v2.height);
+  }
+  return Math.min((workspace.clientWidth - 48) / w, (workspace.clientHeight - 48) / h);
+}
+function bookSpine() {
+  let el = $('#bookSpine');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'bookSpine';
+    canvasStage.appendChild(el);
+  }
+  return el;
+}
+function updateBookButton() {
+  const b = $('#bookBtn');
+  if (b) b.classList.toggle('primary', state.book);
+}
+$('#bookBtn').onclick = async () => {
+  state.book = !state.book;
+  updateBookButton();
+  if (!state.pdf) { toast(state.book ? 'Kitap görünümü (çift sayfa)' : 'Tek sayfa görünümü'); return; }
+  await applyFit('normal');            // görünüm değişince normal ebatla açılır
+  toast(state.book ? '📖 Çift sayfa · normal ebat (↔ genişliğe sığdır)' : 'Tek sayfa · normal ebat (↔ genişliğe sığdır)');
+};
+updateBookButton();
+
+// ---------- kitap gibi sayfa çevirme ----------
+const bflip = { active: false, dir: 0, ok: false, el: null, under: null, t0: 0, newLeft: 0 };
+
+function cropCanvas(src1, src2, x, w, h) {
+  const c = document.createElement('canvas');
+  c.width = Math.max(1, w); c.height = Math.max(1, h);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.drawImage(src1, x, 0, w, h, 0, 0, w, h);
+  ctx.drawImage(src2, x, 0, w, h, 0, 0, w, h);
+  return c;
+}
+function faceCanvas(cls, w, h) {
+  const c = document.createElement('canvas');
+  c.className = cls; c.width = Math.max(1, w); c.height = Math.max(1, h);
+  c.style.width = w + 'px'; c.style.height = h + 'px';
+  const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+  return c;
+}
+function paintInto(target, n) {
+  if (!n || n < 1 || n > state.pageCount) {
+    const ctx = target.getContext('2d'); ctx.fillStyle = '#eef2f7'; ctx.fillRect(0, 0, target.width, target.height);
+    return;
+  }
+  pageImage(n).then(img => {
+    const ctx = target.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, target.width, target.height);
+    ctx.drawImage(img, 0, 0, target.width, target.height);
+  }).catch(() => {});
+}
+
+function bookFlipBegin(dir) {
+  const s = state.spread;
+  bflip.active = true; bflip.dir = dir; bflip.t0 = performance.now();
+  const h = s.h;
+  const forward = dir > 0;
+  bflip.newLeft = s.left + (forward ? 2 : -2);
+  bflip.ok = forward ? (!!s.right && bflip.newLeft <= state.pageCount) : bflip.newLeft >= 1;
+  const x = forward ? s.wL : 0;
+  const w = forward ? s.wR : s.wL;
+
+  // altta görünecek sayfa (yeni açılımın aynı taraftaki sayfası)
+  if (bflip.ok) {
+    const under = faceCanvas('book-under', w, h);
+    under.style.left = x + 'px';
+    paintInto(under, forward ? bflip.newLeft + 1 : bflip.newLeft);
+    canvasStage.appendChild(under);
+    bflip.under = under;
+  }
+  // dönen yaprak: ön yüz = şimdiki sayfa, arka yüz = yeni açılımın karşı sayfası
+  const el = document.createElement('div');
+  el.className = 'book-flipper';
+  el.style.left = x + 'px'; el.style.width = w + 'px'; el.style.height = h + 'px';
+  el.style.transformOrigin = forward ? 'left center' : 'right center';
+  const front = cropCanvas(pdfCanvas, drawCanvas, x, w, h);
+  front.className = 'book-face'; front.style.width = w + 'px'; front.style.height = h + 'px';
+  const back = faceCanvas('book-face book-back', w, h);
+  if (bflip.ok) paintInto(back, forward ? bflip.newLeft : bflip.newLeft + 1);
+  const shadeF = document.createElement('div'); shadeF.className = 'book-shade';
+  const shadeB = document.createElement('div'); shadeB.className = 'book-shade book-back';
+  shadeF.style.background = `linear-gradient(to ${forward ? 'right' : 'left'}, rgba(15,23,42,0.35), rgba(15,23,42,0) 60%)`;
+  shadeB.style.background = `linear-gradient(to ${forward ? 'left' : 'right'}, rgba(15,23,42,0.35), rgba(15,23,42,0) 60%)`;
+  el.appendChild(front); el.appendChild(shadeF); el.appendChild(back); el.appendChild(shadeB);
+  canvasStage.appendChild(el);
+  canvasStage.classList.add('book-flipping');
+  bflip.el = el; bflip.shadeF = shadeF; bflip.shadeB = shadeB;
+}
+
+function bookFlipAngle(frac) { return (bflip.dir > 0 ? -180 : 180) * frac; }
+function bookFlipUpdate(dx) {
+  if (!bflip.el) return;
+  const w = bflip.el.offsetWidth || 1;
+  let frac = Math.min(1, Math.max(0, (bflip.dir > 0 ? -dx : dx) / (w * 1.4)));
+  if (!bflip.ok) frac = Math.min(frac, 0.06);
+  bflip.el.style.transform = `rotateY(${bookFlipAngle(frac)}deg)`;
+  const k = Math.sin(frac * Math.PI);
+  bflip.shadeF.style.opacity = String(k * 0.9);
+  bflip.shadeB.style.opacity = String(k * 0.9);
+}
+
+function bookFlipEnd(dx, cancelled) {
+  if (!bflip.active) return;
+  bflip.active = false;
+  const w = bflip.el ? bflip.el.offsetWidth : 1;
+  const dist = bflip.dir > 0 ? -dx : dx;
+  const fast = dist / Math.max(1, performance.now() - bflip.t0) > 0.5 && dist > 40;
+  const complete = !cancelled && bflip.ok && (dist > w * 0.35 || fast);
+  const el = bflip.el, under = bflip.under;
+  flip.busy = true;
+  el.style.transition = 'transform 0.32s ease-out';
+  bflip.shadeF.style.transition = bflip.shadeB.style.transition = 'opacity 0.32s ease-out';
+  el.style.transform = `rotateY(${bookFlipAngle(complete ? 1 : 0)}deg)`;
+  bflip.shadeF.style.opacity = bflip.shadeB.style.opacity = '0';
+  setTimeout(() => {
+    const finish = () => {
+      el.remove(); if (under) under.remove();
+      canvasStage.classList.remove('book-flipping');
+      bflip.el = bflip.under = null;
+      flip.busy = false;
+    };
+    if (complete) {
+      state.pageNum = bflip.newLeft;
+      renderPage().then(() => { workspace.scrollTop = 0; finish(); }, finish);
+    } else finish();
+  }, 340);
+}
+
 function redrawAnnotations() {
   drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-  (state.paths[state.pageNum] || []).forEach(drawPath);
+  if (state.book && state.spread) {
+    drawPagePaths(state.spread.left, 0);
+    if (state.spread.right) drawPagePaths(state.spread.right, state.spread.wL);
+    return;
+  }
+  (state.paths[state.pageNum] || []).forEach(p => drawPath(p));
 }
 function clonePaths() {
   const src = state.paths[state.pageNum] || [];
@@ -541,6 +1137,13 @@ function clonePaths() {
 }
 
 function pushPath(p) {
+  if (state.book && state.spread) {
+    const s = state.spread;
+    if (s.right && pathRefX(p) >= s.wL) { p = shiftPath(p, -s.wL); state.pageNum = s.right; }
+    else state.pageNum = s.left;
+    $('#pageInput').value = state.pageNum;
+  }
+  if (!p.n) p = normPath(p);
   // snapshot before change for undo
   state.undoStack.push({ page: state.pageNum, paths: clonePaths() });
   if (state.undoStack.length > 80) state.undoStack.shift();
@@ -551,44 +1154,28 @@ function pushPath(p) {
   updateUndoButtons();
 }
 
+function clonePathsOf(n) {
+  return (state.paths[n] || []).map(p => JSON.parse(JSON.stringify(p)));
+}
+function applyHistory(h) {
+  const go = state.pdf && h.page !== state.pageNum && !sameSpread(h.page);
+  state.paths[h.page] = h.paths;
+  state.pageNum = h.page;
+  if (go) renderPage().then(updateUndoButtons);
+  else { redrawAnnotations(); updateUndoButtons(); $('#pageInput').value = state.pageNum; }
+}
 function undo() {
   if (!state.undoStack.length) { toast('Geri alınacak bir şey yok'); return; }
-  const cur = { page: state.pageNum, paths: clonePaths() };
-  state.redoStack.push(cur);
   const prev = state.undoStack.pop();
-  // restore paths for that page; also switch if needed
-  if (prev.page !== state.pageNum && state.pdf) {
-    state.pageNum = prev.page;
-    renderPage().then(() => {
-      state.paths[prev.page] = prev.paths;
-      redrawAnnotations();
-      updateUndoButtons();
-    });
-  } else {
-    state.paths[prev.page] = prev.paths;
-    redrawAnnotations();
-    updateUndoButtons();
-  }
+  state.redoStack.push({ page: prev.page, paths: clonePathsOf(prev.page) });
+  applyHistory(prev);
   toast('Geri alındı');
 }
-
 function redo() {
   if (!state.redoStack.length) { toast('İleri alınacak bir şey yok'); return; }
-  const cur = { page: state.pageNum, paths: clonePaths() };
-  state.undoStack.push(cur);
   const next = state.redoStack.pop();
-  if (next.page !== state.pageNum && state.pdf) {
-    state.pageNum = next.page;
-    renderPage().then(() => {
-      state.paths[next.page] = next.paths;
-      redrawAnnotations();
-      updateUndoButtons();
-    });
-  } else {
-    state.paths[next.page] = next.paths;
-    redrawAnnotations();
-    updateUndoButtons();
-  }
+  state.undoStack.push({ page: next.page, paths: clonePathsOf(next.page) });
+  applyHistory(next);
   toast('İleri alındı');
 }
 
@@ -598,13 +1185,21 @@ function updateUndoButtons() {
   if (r) r.style.opacity = state.redoStack.length ? '1' : '0.4';
 }
 
-function startDraw(e) {
+function startDraw(e, forcedEdge) {
   if (!state.pdf) return;
+  if (e.button > 0) return;            // sağ tık / uzun basma sağ tıkı yok say
+  if (state.activePointer != null && state.activePointer !== e.pointerId) {
+    if (!e.isPrimary) return;          // ikinci parmak / avuç içi
+    endDraw({ type: 'pointercancel', pointerId: state.activePointer, clientX: state.panStartX, clientY: state.panStartY });
+  }
+  state.activePointer = e.pointerId;
   e.preventDefault();
   try { drawCanvas.setPointerCapture(e.pointerId); } catch (_) {}
 
   if (state.tool === 'pan') {
+    if (flip.busy) { state.activePointer = null; return; }
     state.panning = true;
+    state.panGesture = null;                 // 'scroll' ya da 'flip' (ilk harekete göre)
     state.panStartX = e.clientX; state.panStartY = e.clientY;
     state.scrollLeft0 = workspace.scrollLeft; state.scrollTop0 = workspace.scrollTop;
     workspace.classList.add('dragging');
@@ -613,6 +1208,12 @@ function startDraw(e) {
 
   const { x, y } = getPointer(e);
   state.drawing = true; state.lastX = x; state.lastY = y; state.startX = x; state.startY = y;
+
+  // Cetvel / gönye ölçülü kenarına yakın başlanırsa: kenar boyunca düz çizgi
+  if (state.tool === 'pen') {
+    const hit = forcedEdge || findEdge({ x, y }, EDGE_OUTSIDE, 3);
+    if (hit) { state.edgeDraw = { edge: hit.edge, t0: hit.t, t1: hit.t }; state.tempShape = null; return; }
+  }
 
   if (state.tool === 'pen' || state.tool === 'eraser') {
     state.tempShape = {
@@ -649,16 +1250,34 @@ function startDraw(e) {
 }
 
 function moveDraw(e) {
+  if (state.activePointer != null && e.pointerId !== state.activePointer) return;
   if (state.panning) {
     e.preventDefault();
-    workspace.scrollLeft = state.scrollLeft0 - (e.clientX - state.panStartX);
-    workspace.scrollTop = state.scrollTop0 - (e.clientY - state.panStartY);
+    const dx = e.clientX - state.panStartX, dy = e.clientY - state.panStartY;
+    if (!state.panGesture && Math.hypot(dx, dy) > 10) {
+      // yatay çekiş + sayfa yatayda kaymıyorsa (ya da kenara dayanmışsa) → sayfa çevir
+      const maxSL = workspace.scrollWidth - workspace.clientWidth;
+      const atEdge = maxSL <= 2 || (dx < 0 && workspace.scrollLeft >= maxSL - 2) || (dx > 0 && workspace.scrollLeft <= 2);
+      if (Math.abs(dx) > Math.abs(dy) * 1.3 && atEdge && state.pageCount > 0) {
+        state.panGesture = 'flip';
+        flipBegin(dx < 0 ? 1 : -1);
+      } else state.panGesture = 'scroll';
+    }
+    if (state.panGesture === 'flip') { flipUpdate(dx); return; }
+    workspace.scrollLeft = state.scrollLeft0 - dx;
+    workspace.scrollTop = state.scrollTop0 - dy;
     return;
   }
   if (!state.drawing || !state.pdf) return;
   e.preventDefault();
   const { x, y } = getPointer(e);
   state.lastX = x; state.lastY = y;
+
+  if (state.edgeDraw) {
+    state.edgeDraw.t1 = edgeT({ x, y }, state.edgeDraw.edge);
+    previewEdgeLine(state.edgeDraw.edge, state.edgeDraw.t0, state.edgeDraw.t1);
+    return;
+  }
 
   if (state.tool === 'pen' || state.tool === 'eraser') {
     state.tempShape.points.push({ x, y });
@@ -708,12 +1327,28 @@ function moveDraw(e) {
 }
 
 function endDraw(e) {
+  if (state.activePointer != null && e.pointerId != null && e.pointerId !== state.activePointer) return;
+  state.activePointer = null;
   if (state.panning) {
-    state.panning = false; workspace.classList.remove('dragging'); return;
+    state.panning = false; workspace.classList.remove('dragging');
+    if (state.panGesture === 'flip') flipEnd(e.clientX - state.panStartX, e.type === 'pointercancel');
+    state.panGesture = null;
+    return;
   }
   if (!state.drawing) return;
   state.drawing = false;
   toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+
+  if (state.edgeDraw) {
+    const ed = state.edgeDraw;
+    state.edgeDraw = null;
+    if (e && e.type === 'pointerup') ed.t1 = edgeT(getPointer(e), ed.edge);
+    if (Math.abs(ed.t1 - ed.t0) > 1) {
+      const L = edgeLinePoints(ed.edge, ed.t0, ed.t1, state.brushSize);
+      drawStraightLine(L.x1, L.y1, L.x2, L.y2);
+    }
+    return;
+  }
 
   if ((state.tool === 'pen' || state.tool === 'eraser') && state.tempShape) {
     pushPath(state.tempShape);
@@ -742,6 +1377,7 @@ drawCanvas.addEventListener('pointerdown', startDraw);
 drawCanvas.addEventListener('pointermove', moveDraw);
 drawCanvas.addEventListener('pointerup', endDraw);
 drawCanvas.addEventListener('pointercancel', endDraw);
+drawCanvas.addEventListener('lostpointercapture', e => { if (e.pointerId === state.activePointer) endDraw(e); });
 
 function compassPencilTip() {
   const c = state.compass;
@@ -806,249 +1442,534 @@ function renderCompassUI() {
   c.el = el;
 }
 
-function clearAllGeo() {
-  state.geos.forEach(g => g.el.remove());
-  state.geos = [];
-}
-
+function clearAllGeo() { hideAllInstruments(); }
 function drawStraightLine(x1, y1, x2, y2) {
   pushPath({ type: 'line', color: state.color, size: state.brushSize, x1, y1, x2, y2 });
 }
 
-function buildRulerSVG(cm) {
-  const unit = 20;
-  const w = cm * unit + 16;
-  const h = 48;
-  let ticks = '', labels = '';
-  for (let i = 0; i <= cm * 10; i++) {
-    const x = 8 + i * (unit / 10);
-    const major = i % 10 === 0, mid = i % 5 === 0;
-    const th = major ? 20 : mid ? 12 : 7;
-    ticks += `<line x1="${x}" y1="0" x2="${x}" y2="${th}" stroke="#1e293b" stroke-width="${major ? 1.4 : 0.7}"/>`;
-    if (major) labels += `<text x="${x}" y="36" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b" font-family="system-ui">${i / 10}</text>`;
-  }
-  return { svg: `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-    <rect width="${w}" height="${h}" rx="3" fill="#fef08a" stroke="#a16207" stroke-width="2"/>
-    <rect width="${w}" height="2" fill="#ca8a04"/>
-    ${ticks}${labels}
-    <text x="${w - 6}" y="${h - 5}" text-anchor="end" font-size="9" fill="#854d0e">cm</text>
-  </svg>`, w, h, unit, cm };
+// =====================================================================
+// GEOMATİK GEOMETRİ SETİ (su yeşili, şeffaf cetvel · açıölçer · gönye · pergel)
+// Koordinatlar: sayfa (canvas-stage) pikseli = çizim tuvali pikseli
+// =====================================================================
+const TRI_PAD = 6, PROT_STRIP = 16;
+const EDGE_OUTSIDE = 30, EDGE_INSIDE = 26;
+const IDPR = Math.min(window.devicePixelRatio || 1, 2);
+const f1 = n => n.toFixed(1);
+const gclamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function angleDiff(a, b) {
+  let d = a - b;
+  while (d > Math.PI) d -= 2 * Math.PI;
+  while (d < -Math.PI) d += 2 * Math.PI;
+  return d;
 }
 
-function buildProtractorSVG() {
-  const R = 120, cx = 130, cy = 130, W = 260, H = 140;
-  let ticks = '', labels = '';
-  for (let a = 0; a <= 180; a++) {
-    const rad = a * Math.PI / 180;
-    const x1 = cx + R * Math.cos(Math.PI - rad);
-    const y1 = cy - R * Math.sin(Math.PI - rad);
-    const major = a % 10 === 0, mid = a % 5 === 0;
-    const len = major ? 14 : mid ? 9 : 5;
-    const x2 = cx + (R - len) * Math.cos(Math.PI - rad);
-    const y2 = cy - (R - len) * Math.sin(Math.PI - rad);
-    ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1e293b" stroke-width="${major ? 1.3 : 0.7}"/>`;
-    if (major) {
-      const lx = cx + (R - 26) * Math.cos(Math.PI - rad);
-      const ly = cy - (R - 26) * Math.sin(Math.PI - rad);
-      labels += `<text x="${lx}" y="${ly + 3}" text-anchor="middle" font-size="9" font-weight="600" fill="#1e293b">${a}</text>`;
+const G = {
+  ruler:      { x: 60,  y: 60,  angle: 0, width: 480, height: 80, visible: false },
+  protractor: { x: 300, y: 300, angle: 0, radius: 190, mode360: false, visible: false },
+  triangle45: { x: 120, y: 160, angle: 0, width: 300, height: 300, visible: false },
+  compass:    { x: 300, y: 380, radius: 150, angle: 0, visible: false },
+};
+const INST_EL = { ruler: 'gRuler', triangle45: 'gTri', protractor: 'gProt', compass: 'gCompass' };
+const MENU_KEY = { ruler: 'ruler', protractor: 'protractor', setsquare: 'triangle45', compass: 'compass' };
+
+const instLayer = document.createElement('div');
+instLayer.id = 'instrumentsLayer';
+instLayer.innerHTML = `
+  <div id="gRuler" class="g-inst g-hidden" style="width:480px;height:80px">
+    <canvas id="gRulerCanvas"></canvas>
+    <div class="g-h g-rot" data-action="rotate" style="top:-8px;right:-8px" title="Döndür"></div>
+    <div class="g-h g-res" data-action="resize" style="bottom:-8px;right:-8px" title="Uzunluğu ayarla"></div>
+  </div>
+  <div id="gProt" class="g-inst g-hidden" style="width:380px;height:206px">
+    <svg id="gProtSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="gProtDot" title="Merkez"></div>
+    <div id="gProtHandle" class="g-h g-res" data-action="resize" title="Büyüt / Küçült / Döndür"></div>
+    <button id="gToggle360" type="button">180° / 360°</button>
+  </div>
+  <div id="gTri" class="g-inst g-hidden" style="width:300px;height:300px">
+    <svg id="gTriSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="g-h g-rot" data-action="rotate" style="left:-2px;top:-12px" title="Döndür"></div>
+    <div class="g-h g-res" data-action="resize" style="right:-4px;bottom:-4px" title="Boyutlandır"></div>
+  </div>
+  <div id="gCompass" class="g-hidden">
+    <svg id="gCompassSVG" width="360" height="500" viewBox="-180 -350 360 500">
+      <circle id="gcGuide" cx="0" cy="0" r="100" stroke="#2563eb" stroke-dasharray="6 5" stroke-width="1.75" fill="rgba(37,99,235,0.05)" opacity="0"/>
+      <line id="gcRadiusLine" x1="0" y1="0" x2="100" y2="0" stroke="#2563eb" stroke-dasharray="4 3" stroke-width="1.5" opacity="0"/>
+      <g id="gcBadge" opacity="0" transform="translate(50, -20)">
+        <rect x="-50" y="-14" width="100" height="28" rx="14" fill="#0f172a"/>
+        <text id="gcRadiusText" x="0" y="5" fill="#f8fafc" font-size="12" font-weight="700" text-anchor="middle">5.0 cm</text>
+      </g>
+      <g>
+        <path id="gcLegNeedle" data-role="move" d="M 60,-180 L 0,0" stroke="#9ca3af" stroke-width="12" fill="none"/>
+        <path data-role="move" d="M -5,-1 L 0,16 L 5,-1 Z" fill="#1e293b"/>
+        <path id="gcLegPencil" data-role="move" d="M 60,-180 L 120,0" stroke="#9ca3af" stroke-width="12" fill="none"/>
+        <g id="gcScrew" data-role="move">
+          <path d="M 30,-108 L 90,-108" stroke="#4b5563" stroke-width="10" fill="none"/>
+          <circle cx="60" cy="-108" r="7.5" fill="#1f2937"/>
+          <circle cx="60" cy="-108" r="2.8" fill="#cbd5e1"/>
+        </g>
+        <g id="gcPencil" data-role="radius" transform="translate(120, 0)" style="cursor:grab">
+          <rect x="-20" y="-54" width="40" height="76" fill="transparent"/>
+          <rect x="-12" y="-48" width="24" height="42" rx="3" fill="#be185d"/>
+          <path d="M -12,-2 L 0,18 L 12,-2 Z" fill="#d97706"/>
+          <path d="M -2,13 L 0,18 L 2,13 Z" fill="#0f172a"/>
+          <circle id="gcActiveRing" cx="0" cy="2" r="18" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+        </g>
+        <g id="gcHead" data-role="rotate" style="cursor:grab">
+          <rect x="36" y="-258" width="48" height="70" fill="transparent"/>
+          <rect x="46" y="-197" width="28" height="22" rx="9" fill="#374151"/>
+          <rect x="55.5" y="-234" width="9" height="38" rx="2.5" fill="#6b7280"/>
+          <path d="M 55.5,-229 H 64.5 M 55.5,-225 H 64.5 M 55.5,-221 H 64.5 M 55.5,-217 H 64.5 M 55.5,-213 H 64.5 M 55.5,-209 H 64.5 M 55.5,-205 H 64.5 M 55.5,-201 H 64.5" stroke="#374151" stroke-width="1.2"/>
+          <rect x="54" y="-240" width="12" height="8" rx="3.5" fill="#1f2937"/>
+        </g>
+        <circle id="gcPivotOuter" data-role="move" cx="60" cy="-180" r="8" fill="#1f2937"/>
+        <circle id="gcPivotInner" cx="60" cy="-180" r="2.6" fill="#e5e7eb" pointer-events="none"/>
+        <g id="gcRadiusHandle" data-role="radius" opacity="0">
+          <circle id="gcRadiusHandleCircle" cx="120" cy="0" r="12" fill="#ffffff" stroke="#2563eb" stroke-width="2.5"/>
+        </g>
+      </g>
+    </svg>
+  </div>`;
+canvasStage.appendChild(instLayer);
+const $id = id => document.getElementById(id);
+
+// ---------- yardımcılar ----------
+function stageToClient(x, y) {
+  const r = canvasStage.getBoundingClientRect();
+  return { x: r.left + x, y: r.top + y };
+}
+const rafPending = {};
+function rafOnce(key, fn) {
+  if (rafPending[key]) return;
+  rafPending[key] = true;
+  requestAnimationFrame(() => { rafPending[key] = false; fn(); });
+}
+function dragSession(e, onMove, onEnd) {
+  const pid = e.pointerId;
+  let ended = false;
+  const mv = ev => { if (ev.pointerId === pid) { ev.preventDefault(); onMove(ev); } };
+  const up = ev => { if (ev.pointerId === pid) end(); };
+  function end() {
+    if (ended) return;
+    ended = true;
+    window.removeEventListener('pointermove', mv);
+    window.removeEventListener('pointerup', up);
+    window.removeEventListener('pointercancel', up);
+    onEnd && onEnd();
+  }
+  window.addEventListener('pointermove', mv, { passive: false });
+  window.addEventListener('pointerup', up);
+  window.addEventListener('pointercancel', up);
+  return { end };
+}
+
+// ---------- çizimler ----------
+function renderRulerGraphics() {
+  const c = $id('gRulerCanvas'), r = G.ruler;
+  c.width = Math.round(r.width * IDPR);
+  c.height = Math.round(80 * IDPR);
+  const ctx = c.getContext('2d');
+  ctx.setTransform(IDPR, 0, 0, IDPR, 0, 0);
+  ctx.strokeStyle = '#134e4a'; ctx.fillStyle = '#134e4a';
+  ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 1;
+  const pxPerCm = 32, totalCm = Math.floor(r.width / pxPerCm);
+  ctx.beginPath();
+  for (let i = 0; i <= totalCm * 10; i++) {
+    const x = i * (pxPerCm / 10) + 0.5;
+    const len = i % 10 === 0 ? 24 : i % 5 === 0 ? 16 : 8;
+    ctx.moveTo(x, 0); ctx.lineTo(x, len);
+  }
+  ctx.stroke();
+  for (let k = 1; k <= totalCm; k++) ctx.fillText(String(k), k * pxPerCm, 38);
+}
+
+function renderProtractorGraphics() {
+  const p = G.protractor, r = p.radius, full = p.mode360;
+  const W = 2 * r, H = full ? 2 * r : r + PROT_STRIP;
+  const svg = $id('gProtSvg');
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const sc = gclamp(r / 190, 0.55, 1.6);
+  const cx = r, cy = r, R = r - 1, ri = r - 48 * sc;
+  const shape = full
+    ? `M${cx - R},${cy}A${R},${R} 0 1 1 ${cx + R},${cy}A${R},${R} 0 1 1 ${cx - R},${cy}Z`
+    : `M1,${H - 1}L1,${cy}A${R},${R} 0 0 1 ${W - 1},${cy}L${W - 1},${H - 1}Z`;
+  const inner = full
+    ? `M${cx - ri},${cy}A${ri},${ri} 0 1 1 ${cx + ri},${cy}A${ri},${ri} 0 1 1 ${cx - ri},${cy}`
+    : `M${cx - ri},${cy}A${ri},${ri} 0 0 1 ${cx + ri},${cy}`;
+  let ticks = '', guides = '', labels = '';
+  for (let d = 0; d <= (full ? 359 : 180); d++) {
+    const a = d * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+    const len = (d % 10 === 0 ? 15 : d % 5 === 0 ? 10 : 6) * Math.max(0.75, sc);
+    ticks += `M${f1(cx + R * c)},${f1(cy - R * s)}L${f1(cx + (R - len) * c)},${f1(cy - (R - len) * s)}`;
+    if (d % 10 === 0) {
+      ticks += `M${f1(cx + ri * c)},${f1(cy - ri * s)}L${f1(cx + (ri + 5) * c)},${f1(cy - (ri + 5) * s)}`;
+      guides += `M${f1(cx + 14 * c)},${f1(cy - 14 * s)}L${f1(cx + ri * c)},${f1(cy - ri * s)}`;
+      const rot = 90 - d;
+      const x1 = cx + (r - 26 * sc) * c, y1 = cy - (r - 26 * sc) * s;
+      labels += `<text class="pl-o" style="font-size:${f1(10 * sc)}px" x="${f1(x1)}" y="${f1(y1)}" text-anchor="middle" dominant-baseline="central" transform="rotate(${rot} ${f1(x1)} ${f1(y1)})">${full ? d : 180 - d}</text>`;
+      if (!full) {
+        const x2 = cx + (r - 39 * sc) * c, y2 = cy - (r - 39 * sc) * s;
+        labels += `<text class="pl-i" style="font-size:${f1(8.5 * sc)}px" x="${f1(x2)}" y="${f1(y2)}" text-anchor="middle" dominant-baseline="central" transform="rotate(${rot} ${f1(x2)} ${f1(y2)})">${d}</text>`;
+      }
     }
   }
-  return { svg: `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-    <path d="M10,130 A120,120 0 0 1 250,130 L10,130Z" fill="rgba(255,255,255,0.93)" stroke="#2563eb" stroke-width="2.5"/>
-    <line x1="10" y1="130" x2="250" y2="130" stroke="#1e293b" stroke-width="2"/>
-    <circle cx="130" cy="130" r="3.5" fill="#dc2626"/>
-    <line x1="130" y1="130" x2="130" y2="16" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="3 2"/>
-    ${ticks}${labels}
-  </svg>`, w: W, h: H, cx: 130, cy: 130, R: 120 };
+  const base = full
+    ? `M${cx - R},${cy}L${cx + R},${cy}M${cx},${cy - R}L${cx},${cy + R}`
+    : `M8,${cy}L${W - 8},${cy}`;
+  svg.innerHTML =
+    `<path d="${shape}" transform="translate(1.5,2.5)" fill="rgba(15,23,42,0.035)"/>` +
+    `<path class="g-shape" d="${shape}" fill="rgba(45,212,191,0.10)" stroke="#0d9488" stroke-width="1.5"/>` +
+    `<path d="${guides}" stroke="rgba(13,148,136,0.18)" stroke-width="1"/>` +
+    `<path d="${inner}" fill="none" stroke="rgba(13,148,136,0.6)" stroke-width="1"/>` +
+    `<path d="${base}" stroke="#0f766e" stroke-width="1.2"/>` +
+    `<path d="${ticks}" stroke="#134e4a" stroke-width="1"/>` + labels +
+    `<circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="#dc2626" stroke-width="1.5"/>` +
+    `<path d="M${cx},${cy - 12}L${cx},${cy + (full ? 12 : PROT_STRIP - 3)}M${cx - 12},${cy}L${cx + 12},${cy}" stroke="#dc2626" stroke-width="1"/>`;
 }
 
-function buildSetSquareSVG() {
-  const s = 170;
-  let ticks = '';
-  for (let i = 0; i <= 10; i++) {
-    const x = i * 15;
-    ticks += `<line x1="${x}" y1="${s}" x2="${x}" y2="${s - (i % 5 ? 7 : 12)}" stroke="#14532d" stroke-width="1"/>`;
-    ticks += `<line x1="0" y1="${s - x}" x2="${i % 5 ? 7 : 12}" y2="${s - x}" stroke="#14532d" stroke-width="1"/>`;
-  }
-  return { svg: `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
-    <polygon points="0,${s} ${s},${s} 0,0" fill="rgba(34,197,94,0.25)" stroke="#16a34a" stroke-width="2.5"/>
-    <line x1="0" y1="${s}" x2="${s}" y2="${s}" stroke="#15803d" stroke-width="2.5"/>
-    <line x1="0" y1="${s}" x2="0" y2="0" stroke="#15803d" stroke-width="2.5"/>
-    <line x1="0" y1="0" x2="${s}" y2="${s}" stroke="#15803d" stroke-width="2.5"/>
-    ${ticks}
-    <text x="22" y="${s - 8}" font-size="11" font-weight="700" fill="#14532d">45°</text>
-    <text x="6" y="36" font-size="11" font-weight="700" fill="#14532d">45°</text>
-    <text x="58" y="95" font-size="11" font-weight="700" fill="#14532d">90°</text>
-  </svg>`, w: s, h: s, s };
+function updateProtractorTransform() {
+  const el = $id('gProt'), p = G.protractor;
+  el.style.width = (p.radius * 2) + 'px';
+  el.style.height = (p.mode360 ? p.radius * 2 : p.radius + PROT_STRIP) + 'px';
+  el.style.transformOrigin = `${p.radius}px ${p.radius}px`;
+  el.style.transform = `translate3d(${p.x - p.radius}px, ${p.y - p.radius}px, 0) rotate(${p.angle}deg)`;
+  const gh = $id('gProtHandle');
+  gh.style.left = (2 * p.radius - 8) + 'px';
+  gh.style.top = (p.radius - 8) + 'px';
+  const cd = $id('gProtDot');
+  cd.style.left = (p.radius - 5) + 'px';
+  cd.style.top = (p.radius - 5) + 'px';
 }
 
-function spawnGeo(type) {
-  if (!state.pdf) { toast('Önce PDF yükleyin'); return; }
-  state.geos.filter(g => g.type === type).forEach(g => g.el.remove());
-  state.geos = state.geos.filter(g => g.type !== type);
-
-  const el = document.createElement('div');
-  el.className = 'geo';
-  el.style.left = '30px'; el.style.top = '40px';
-
-  let meta;
-  if (type === 'ruler') meta = buildRulerSVG(12);
-  else if (type === 'protractor') meta = buildProtractorSVG();
-  else meta = buildSetSquareSVG();
-
-  el.innerHTML = `
-    <div class="body">${meta.svg}</div>
-    <div class="h move" style="left:-10px;top:50%;transform:translateY(-50%)" title="Taşı">✥</div>
-    <div class="h rot" style="right:-10px;top:50%;transform:translateY(-50%)" title="Döndür">↻</div>
-    ${type === 'ruler' ? '<div class="h len" style="right:-10px;bottom:-10px" title="Uzunluk">↔</div>' : ''}
-    <div class="h draw" style="left:50%;bottom:-36px;transform:translateX(-50%)" title="Kenardan çiz">✏️</div>
-    <button class="close">×</button>
-    <div class="badge" style="bottom:-58px">0°</div>
-  `;
-  canvasStage.appendChild(el);
-
-  const geo = { type, el, meta, rot: 0, lengthCm: type === 'ruler' ? 12 : 0, drawEdge: 0 };
-  state.geos.push(geo);
-  bindGeo(geo);
-
-  const tips = {
-    ruler: 'Cetvel: ✥ taşı · ↻ döndür · ↔ uzat/kısalt · ✏️ kenardan çizgi',
-    protractor: 'Açıölçer: ✥ taşı · ↻ döndür · ✏️ taban + açı ışını çiz',
-    setsquare: 'Gönye: ✥ taşı · ↻ döndür · ✏️ kenarlardan çizgi (3 kez bas)'
-  };
-  toast(tips[type]);
-}
-
-function bindGeo(geo) {
-  const el = geo.el;
-  const body = el.querySelector('.body');
-  const badge = el.querySelector('.badge');
-  let mode = null, sx, sy, sLeft, sTop, sRot, sCm;
-
-  function applyTransform() {
-    body.style.transform = `rotate(${geo.rot}deg)`;
-    badge.textContent = Math.round(((geo.rot % 360) + 360) % 360) + '°'
-      + (geo.type === 'ruler' ? ' · ' + geo.lengthCm + ' cm' : '');
-  }
-  applyTransform();
-
-  function onDown(e, m) {
-    e.stopPropagation(); e.preventDefault();
-    mode = m; sx = e.clientX; sy = e.clientY;
-    sLeft = parseFloat(el.style.left) || 0;
-    sTop = parseFloat(el.style.top) || 0;
-    sRot = geo.rot; sCm = geo.lengthCm;
-    e.target.setPointerCapture?.(e.pointerId);
-  }
-
-  el.querySelector('.h.move').onpointerdown = e => onDown(e, 'move');
-  el.querySelector('.h.rot').onpointerdown = e => onDown(e, 'rot');
-  const lenH = el.querySelector('.h.len');
-  if (lenH) lenH.onpointerdown = e => onDown(e, 'len');
-  body.onpointerdown = e => {
-    if (e.target.closest('.h') || e.target.closest('.close')) return;
-    onDown(e, 'move');
-  };
-
-  const onMove = e => {
-    if (!mode || !state.geos.includes(geo)) return;
-    e.preventDefault();
-    const dx = e.clientX - sx, dy = e.clientY - sy;
-    if (mode === 'move') {
-      el.style.left = (sLeft + dx) + 'px';
-      el.style.top = (sTop + dy) + 'px';
-    } else if (mode === 'rot') {
-      const rect = body.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
-      const a0 = Math.atan2(sy - cy, sx - cx);
-      const a1 = Math.atan2(e.clientY - cy, e.clientX - cx);
-      geo.rot = sRot + (a1 - a0) * 180 / Math.PI;
-      const snap = Math.round(geo.rot / 15) * 15;
-      if (Math.abs(geo.rot - snap) < 4) geo.rot = snap;
-      applyTransform();
-    } else if (mode === 'len' && geo.type === 'ruler') {
-      geo.lengthCm = Math.max(5, Math.min(30, Math.round((sCm + dx / 20) * 2) / 2));
-      const m = buildRulerSVG(geo.lengthCm);
-      geo.meta = m;
-      body.innerHTML = m.svg;
-      applyTransform();
+function renderTriangleGraphics() {
+  const s = G.triangle45.width, p = TRI_PAD, L = s - 2 * p;
+  const svg = $id('gTriSvg');
+  svg.setAttribute('width', s); svg.setAttribute('height', s);
+  svg.setAttribute('viewBox', `0 0 ${s} ${s}`);
+  const k = Math.max(34, L * 0.16);
+  const outer = `M${p},${p}L${p},${s - p}L${s - p},${s - p}Z`;
+  const hole = `M${f1(p + k)},${f1(p + k + k * 1.4142)}L${f1(p + k)},${f1(s - p - k)}L${f1(s - p - k - k * 1.4142)},${f1(s - p - k)}Z`;
+  let ticks = '', labels = '';
+  for (let i = 1; ; i++) {
+    const off = i * 3.2, len = i % 10 === 0 ? 13 : i % 5 === 0 ? 9 : 5;
+    if (L - off < len + 4) break;
+    ticks += `M${p},${f1(s - p - off)}h${len}M${f1(p + off)},${s - p}v${-len}`;
+    if (i % 10 === 0 && L - off > 34) {
+      labels += `<text class="tl" x="${p + 16}" y="${f1(s - p - off)}" dominant-baseline="central">${i / 10}</text>`;
+      labels += `<text class="tl" x="${f1(p + off)}" y="${s - p - 18}" text-anchor="middle">${i / 10}</text>`;
     }
-  };
-  const onUp = () => { mode = null; };
-  window.addEventListener('pointermove', onMove);
-  window.addEventListener('pointerup', onUp);
+  }
+  svg.innerHTML =
+    `<path d="${outer + hole}" fill-rule="evenodd" transform="translate(1.5,2.5)" fill="rgba(15,23,42,0.035)"/>` +
+    `<path class="g-shape" d="${outer + hole}" fill-rule="evenodd" fill="rgba(45,212,191,0.10)" stroke="#0d9488" stroke-width="1.5" stroke-linejoin="round"/>` +
+    `<path d="${ticks}" stroke="#134e4a" stroke-width="1"/>` + labels;
+}
 
-  el.querySelector('.close').onclick = e => {
+function applyInstrumentTransform(key) {
+  const el = $id(INST_EL[key]), inst = G[key];
+  el.style.width = inst.width + 'px';
+  el.style.height = inst.height + 'px';
+  el.style.transform = `translate3d(${inst.x}px, ${inst.y}px, 0) rotate(${inst.angle}deg)`;
+}
+
+function updateCompassTransform() {
+  const c = G.compass, el = $id('gCompass');
+  el.style.left = c.x + 'px';
+  el.style.top = c.y + 'px';
+  el.style.transformOrigin = '180px 350px';
+  el.style.transform = `translate(-180px, -350px) rotate(${c.angle}deg)`;
+  const r = c.radius, hx = r / 2;
+  $id('gcLegNeedle').setAttribute('d', `M ${hx},-180 L 0,0`);
+  $id('gcLegPencil').setAttribute('d', `M ${hx},-180 L ${r},0`);
+  $id('gcPivotOuter').setAttribute('cx', hx);
+  $id('gcPivotInner').setAttribute('cx', hx);
+  $id('gcHead').setAttribute('transform', `translate(${hx - 60}, 0)`);
+  $id('gcScrew').setAttribute('transform', `translate(${hx - 60}, 0)`);
+  $id('gcPencil').setAttribute('transform', `translate(${r}, 0)`);
+  $id('gcRadiusHandleCircle').setAttribute('cx', r);
+  $id('gcGuide').setAttribute('r', r);
+  $id('gcRadiusLine').setAttribute('x2', r);
+  $id('gcBadge').setAttribute('transform', `translate(${r / 2}, -20)`);
+  $id('gcRadiusText').textContent = (r / 32).toFixed(1) + ' cm';
+}
+
+// ---------- ölçülü kenarlar (cetvel üst kenarı, gönyenin iki dik kenarı) ----------
+function instPoint(inst, lx, ly) {
+  const a = inst.angle * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+  const dx = lx - inst.width / 2, dy = ly - inst.height / 2;
+  return { x: inst.x + inst.width / 2 + dx * c - dy * s, y: inst.y + inst.height / 2 + dx * s + dy * c };
+}
+function instVec(inst, vx, vy) {
+  const a = inst.angle * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+  return { x: vx * c - vy * s, y: vx * s + vy * c };
+}
+function makeEdge(key, a, b, n) {
+  const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy) || 1;
+  return { key, a, len, u: { x: dx / len, y: dy / len }, n };
+}
+function getEdges() {
+  const list = [];
+  if (G.ruler.visible) {
+    const r = G.ruler;
+    list.push(makeEdge('ruler', instPoint(r, 0, 0), instPoint(r, r.width, 0), instVec(r, 0, -1)));
+  }
+  if (G.triangle45.visible) {
+    const t = G.triangle45, s = t.width, p = TRI_PAD;
+    const B = instPoint(t, p, s - p);
+    list.push(makeEdge('triangle45', B, instPoint(t, p, p), instVec(t, -1, 0)));
+    list.push(makeEdge('triangle45', B, instPoint(t, s - p, s - p), instVec(t, 0, 1)));
+  }
+  return list;
+}
+function findEdge(pos, outside, inside, onlyKey) {
+  let best = null;
+  getEdges().forEach(ed => {
+    if (onlyKey && ed.key !== onlyKey) return;
+    const vx = pos.x - ed.a.x, vy = pos.y - ed.a.y;
+    const t = vx * ed.u.x + vy * ed.u.y;
+    if (t < -12 || t > ed.len + 12) return;
+    const d = vx * ed.n.x + vy * ed.n.y;
+    if (d > outside || d < -inside) return;
+    if (!best || Math.abs(d) < Math.abs(best.d)) best = { edge: ed, t: gclamp(t, 0, ed.len), d };
+  });
+  return best;
+}
+function edgeT(pos, ed) {
+  return gclamp((pos.x - ed.a.x) * ed.u.x + (pos.y - ed.a.y) * ed.u.y, 0, ed.len);
+}
+function edgeLinePoints(ed, t0, t1, size) {
+  const off = size / 2 + 1;   // çizgi kenara tam yaslanır
+  return {
+    x1: ed.a.x + ed.u.x * t0 + ed.n.x * off, y1: ed.a.y + ed.u.y * t0 + ed.n.y * off,
+    x2: ed.a.x + ed.u.x * t1 + ed.n.x * off, y2: ed.a.y + ed.u.y * t1 + ed.n.y * off,
+  };
+}
+function previewEdgeLine(ed, t0, t1) {
+  const L = edgeLinePoints(ed, t0, t1, state.brushSize);
+  toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+  toolCtx.save();
+  toolCtx.lineCap = 'round';
+  toolCtx.strokeStyle = state.color;
+  toolCtx.lineWidth = state.brushSize;
+  toolCtx.beginPath(); toolCtx.moveTo(L.x1, L.y1); toolCtx.lineTo(L.x2, L.y2); toolCtx.stroke();
+  toolCtx.restore();
+}
+const canEdgeDraw = () => state.tool === 'pen';
+
+// ---------- cetvel & gönye etkileşimi ----------
+const instSessions = {};
+function setupInstrument(key) {
+  const el = $id(INST_EL[key]);
+  el.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    const actEl = e.target.closest('[data-action]');
+    const action = actEl ? actEl.getAttribute('data-action') : null;
+    // Kalemle ölçülü kenarın üstünden başlanırsa: aleti taşıma, düz çiz
+    if (!action && canEdgeDraw() && state.pdf) {
+      const hit = findEdge(getPointer(e), 4, EDGE_INSIDE, key);
+      if (hit) { e.stopPropagation(); startDraw(e, hit); return; }
+    }
+    if (instSessions[key]) { if (!e.isPrimary) return; instSessions[key].end(); }
+    e.preventDefault(); e.stopPropagation();
+    const inst = G[key];
+    const b = el.getBoundingClientRect();
+    const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    const sx = e.clientX, sy = e.clientY;
+    const st = { x: inst.x, y: inst.y, w: inst.width, h: inst.height };
+    const mode = action || 'drag';
+    let prevPtr = Math.atan2(e.clientY - cy, e.clientX - cx);
+    instSessions[key] = dragSession(e, ev => {
+      if (mode === 'drag') {
+        inst.x = st.x + (ev.clientX - sx);
+        inst.y = st.y + (ev.clientY - sy);
+      } else if (mode === 'rotate') {
+        const cur = Math.atan2(ev.clientY - cy, ev.clientX - cx);
+        inst.angle += angleDiff(cur, prevPtr) * 180 / Math.PI;
+        prevPtr = cur;
+      } else {
+        const a = inst.angle * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a);
+        const dx = ev.clientX - sx, dy = ev.clientY - sy;
+        const lx = dx * cs + dy * sn, ly = -dx * sn + dy * cs;
+        let nw, nh;
+        if (key === 'ruler') { nw = gclamp(st.w + lx, 200, 1400); nh = st.h; }
+        else { nw = nh = gclamp(st.w + (lx + ly) / 2, 160, 900); }
+        const c0x = st.x + st.w / 2, c0y = st.y + st.h / 2;
+        const hw = (nw - st.w) / 2, hh = (nh - st.h) / 2;
+        const c1x = c0x + hw * cs - hh * sn, c1y = c0y + hw * sn + hh * cs;
+        inst.x = c1x - nw / 2; inst.y = c1y - nh / 2;
+        inst.width = nw; inst.height = nh;
+        rafOnce(key, key === 'ruler' ? renderRulerGraphics : renderTriangleGraphics);
+      }
+      applyInstrumentTransform(key);
+    }, () => { instSessions[key] = null; });
+  });
+}
+setupInstrument('ruler');
+setupInstrument('triangle45');
+
+// ---------- açıölçer: gövdeden taşı, yeşil noktadan büyüt/küçült + döndür ----------
+(() => {
+  const el = $id('gProt');
+  let session = null;
+  el.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    if (e.target.closest('#gToggle360')) return;
+    if (session) { if (!e.isPrimary) return; session.end(); }
+    e.preventDefault(); e.stopPropagation();
+    const p = G.protractor;
+    const mode = e.target.closest('[data-action]') ? 'resize' : 'drag';
+    const piv = stageToClient(p.x, p.y);
+    let prevPtr = Math.atan2(e.clientY - piv.y, e.clientX - piv.x);
+    const startDist = Math.hypot(e.clientX - piv.x, e.clientY - piv.y);
+    const sx = e.clientX, sy = e.clientY, st = { x: p.x, y: p.y, r: p.radius };
+    session = dragSession(e, ev => {
+      if (mode === 'drag') {
+        p.x = st.x + (ev.clientX - sx);
+        p.y = st.y + (ev.clientY - sy);
+      } else {
+        const dist = Math.hypot(ev.clientX - piv.x, ev.clientY - piv.y);
+        p.radius = gclamp(st.r + (dist - startDist), 90, 560);
+        const cur = Math.atan2(ev.clientY - piv.y, ev.clientX - piv.x);
+        p.angle += angleDiff(cur, prevPtr) * 180 / Math.PI;
+        prevPtr = cur;
+        rafOnce('protractor', renderProtractorGraphics);
+      }
+      updateProtractorTransform();
+    }, () => { session = null; });
+  });
+  $id('gToggle360').addEventListener('click', e => {
     e.stopPropagation();
-    el.remove();
-    state.geos = state.geos.filter(g => g !== geo);
-  };
+    G.protractor.mode360 = !G.protractor.mode360;
+    renderProtractorGraphics();
+    updateProtractorTransform();
+  });
+})();
 
-  el.querySelector('.h.draw').onpointerdown = e => {
-    e.stopPropagation(); e.preventDefault();
-    startEdgeDraw(geo);
-  };
+// ---------- pergel: bacaklar taşı · baş döndürür ve çizer · kalem ucu yarıçap ----------
+(() => {
+  const el = $id('gCompass');
+  let session = null;
+  const guides = on => ['gcGuide', 'gcRadiusLine', 'gcBadge'].forEach(id => $id(id).setAttribute('opacity', on ? '1' : '0'));
+  el.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    const roleEl = e.target.closest('[data-role]');
+    if (!roleEl) return;
+    if (session) { if (!e.isPrimary) return; session.end(); }
+    e.preventDefault(); e.stopPropagation();
+    const c = G.compass;
+    const mode = roleEl.getAttribute('data-role');
+    const sx = e.clientX, sy = e.clientY, st = { x: c.x, y: c.y, r: c.radius };
+    const needle = stageToClient(c.x, c.y);
+    let prevPtr = Math.atan2(e.clientY - needle.y, e.clientX - needle.x);
+    const startDist = Math.hypot(e.clientX - needle.x, e.clientY - needle.y);
+    const arcStart = c.angle * Math.PI / 180;
+    let travel = 0;
+    if (mode === 'rotate') $id('gcActiveRing').setAttribute('opacity', '1');
+    if (mode === 'radius') guides(true);
+
+    session = dragSession(e, ev => {
+      if (mode === 'move') {
+        c.x = st.x + (ev.clientX - sx);
+        c.y = st.y + (ev.clientY - sy);
+      } else {
+        const cur = Math.atan2(ev.clientY - needle.y, ev.clientX - needle.x);
+        const dA = angleDiff(cur, prevPtr);
+        prevPtr = cur;
+        c.angle += dA * 180 / Math.PI;
+        if (mode === 'radius') {
+          const d = Math.hypot(ev.clientX - needle.x, ev.clientY - needle.y);
+          c.radius = gclamp(st.r + (d - startDist), 30, 700);
+        } else if (state.pdf) {
+          travel += dA;
+          // canlı önizleme (bırakınca kalıcı yay / çember olur)
+          toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+          toolCtx.save();
+          toolCtx.lineCap = 'round';
+          toolCtx.strokeStyle = state.color;
+          toolCtx.lineWidth = state.brushSize;
+          toolCtx.beginPath();
+          toolCtx.arc(c.x, c.y, c.radius, arcStart, arcStart + travel, travel < 0);
+          toolCtx.stroke();
+          toolCtx.restore();
+        }
+      }
+      rafOnce('compass', updateCompassTransform);
+    }, () => {
+      session = null;
+      guides(false);
+      $id('gcActiveRing').setAttribute('opacity', '0');
+      toolCtx.clearRect(0, 0, toolCanvas.width, toolCanvas.height);
+      if (mode === 'rotate' && state.pdf && Math.abs(travel) > 0.02) {
+        if (Math.abs(travel) >= Math.PI * 2 - 0.05) {
+          pushPath({ type: 'circle', color: state.color, size: state.brushSize, cx: c.x, cy: c.y, r: c.radius });
+          toast('Çember çizildi · r = ' + (c.radius / 32).toFixed(1) + ' cm');
+        } else {
+          pushPath({ type: 'arc', color: state.color, size: state.brushSize, cx: c.x, cy: c.y, r: c.radius,
+                     a0: arcStart, a1: arcStart + travel, ccw: travel < 0 });
+        }
+      }
+      updateCompassTransform();
+    });
+  });
+})();
+
+// ---------- göster / gizle ----------
+function visibleCenter() {
+  const w = workspace.getBoundingClientRect(), s = canvasStage.getBoundingClientRect();
+  return { x: w.left + w.width / 2 - s.left, y: w.top + w.height / 2 - s.top, vw: w.width, vh: w.height };
 }
-
-function startEdgeDraw(geo) {
-  const el = geo.el;
-  const body = el.querySelector('.body');
-  const rect = body.getBoundingClientRect();
-  const stageRect = canvasStage.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2 - stageRect.left;
-  const cy = rect.top + rect.height / 2 - stageRect.top;
-  const rad = geo.rot * Math.PI / 180;
-  const scaleX = drawCanvas.width / drawCanvas.getBoundingClientRect().width;
-  const scaleY = drawCanvas.height / drawCanvas.getBoundingClientRect().height;
-
-  if (geo.type === 'ruler') {
-    const w = geo.meta.w, h = geo.meta.h;
-    const hw = w / 2, hh = h / 2;
-    const rot = (p) => ({
-      x: cx + p.x * Math.cos(rad) - p.y * Math.sin(rad),
-      y: cy + p.x * Math.sin(rad) + p.y * Math.cos(rad)
-    });
-    const A = rot({ x: -hw, y: -hh }), B = rot({ x: hw, y: -hh });
-    drawStraightLine(A.x * scaleX, A.y * scaleY, B.x * scaleX, B.y * scaleY);
-    toast('Cetvel kenarı çizildi · ' + geo.lengthCm + ' cm');
-  } else if (geo.type === 'protractor') {
-    const ox = rect.left - stageRect.left + geo.meta.cx * (rect.width / geo.meta.w);
-    const oy = rect.top - stageRect.top + geo.meta.cy * (rect.height / geo.meta.h);
-    const dirX = Math.sin(rad), dirY = -Math.cos(rad);
-    const len = geo.meta.R * (rect.width / geo.meta.w);
-    drawStraightLine(ox * scaleX, oy * scaleY, (ox + dirX * len) * scaleX, (oy + dirY * len) * scaleY);
-    const baseDirX = Math.cos(rad), baseDirY = Math.sin(rad);
-    const half = (geo.meta.w / 2 - 10) * (rect.width / geo.meta.w);
-    drawStraightLine(
-      (ox - baseDirX * half) * scaleX, (oy - baseDirY * half) * scaleY,
-      (ox + baseDirX * half) * scaleX, (oy + baseDirY * half) * scaleY
-    );
-    toast('Açıölçer: taban + ' + Math.round(((geo.rot % 360) + 360) % 360) + '° ışını');
-  } else if (geo.type === 'setsquare') {
-    geo.drawEdge = (geo.drawEdge || 0) % 3;
-    const s = geo.meta.s;
-    const scaleDisp = rect.width / s;
-    const hw = s / 2, hh = s / 2;
-    const corners = [
-      { x: -hw, y: hh }, { x: hw, y: hh }, { x: -hw, y: -hh }
-    ];
-    const edges = [
-      [corners[0], corners[1]],
-      [corners[0], corners[2]],
-      [corners[2], corners[1]]
-    ];
-    const [pA, pB] = edges[geo.drawEdge];
-    const rotP = (p) => ({
-      x: cx + p.x * scaleDisp * Math.cos(rad) - p.y * scaleDisp * Math.sin(rad),
-      y: cy + p.x * scaleDisp * Math.sin(rad) + p.y * scaleDisp * Math.cos(rad)
-    });
-    const A = rotP(pA), B = rotP(pB);
-    drawStraightLine(A.x * scaleX, A.y * scaleY, B.x * scaleX, B.y * scaleY);
-    const names = ['yatay kenar', 'dikey kenar', 'hipotenüs'];
-    toast('Gönye: ' + names[geo.drawEdge] + ' çizildi');
-    geo.drawEdge++;
+function syncInstButtons() {
+  Object.keys(MENU_KEY).forEach(t => {
+    $$(`.tool-btn[data-tool="${t}"]`).forEach(b => b.classList.toggle('active', !!G[MENU_KEY[t]].visible));
+  });
+}
+function toggleInstrument(menuTool) {
+  if (!state.pdf) { toast('Önce PDF yükleyin'); return; }
+  const key = MENU_KEY[menuTool];
+  const inst = G[key];
+  inst.visible = !inst.visible;
+  $id(INST_EL[key]).classList.toggle('g-hidden', !inst.visible);
+  if (inst.visible) {
+    const v = visibleCenter();
+    if (v.vw < 600) {                                  // telefon
+      if (G.protractor.radius > 140) { G.protractor.radius = 130; renderProtractorGraphics(); }
+      if (G.triangle45.width > 230) { G.triangle45.width = G.triangle45.height = 220; renderTriangleGraphics(); }
+      if (G.compass.radius > 120) G.compass.radius = 110;
+    }
+    if (key === 'ruler' || key === 'triangle45') {
+      if (key === 'ruler') { inst.width = Math.max(200, Math.min(480, Math.round(v.vw * 0.8))); renderRulerGraphics(); }
+      inst.x = v.x - inst.width / 2; inst.y = v.y - inst.height / 2;
+      applyInstrumentTransform(key);
+    } else if (key === 'protractor') {
+      inst.x = v.x; inst.y = v.y + G.protractor.radius / 3;
+      updateProtractorTransform();
+    } else {
+      inst.x = v.x; inst.y = v.y + Math.min(120, v.vh * 0.15);
+      updateCompassTransform();
+    }
+    const tips = {
+      ruler: 'Cetvel: gövdeden taşı · mavi döndür · yeşil uzat · kalemle çentikli kenardan düz çizgi',
+      protractor: 'Açıölçer: gövdeden taşı · yeşil nokta büyüt/küçült ve döndür',
+      triangle45: 'Gönye: gövdeden taşı · mavi döndür · yeşil büyüt · kalemle iki dik kenardan düz çizgi',
+      compass: 'Pergel: bacaklardan taşı · kalem ucundan aç/kapa · baştan tutup çevir → çizer',
+    };
+    toast(tips[key], 3400);
   }
+  syncInstButtons();
 }
+function hideAllInstruments() {
+  Object.keys(G).forEach(k => { G[k].visible = false; $id(INST_EL[k]).classList.add('g-hidden'); });
+  syncInstButtons();
+}
+
+renderRulerGraphics();
+renderProtractorGraphics();
+renderTriangleGraphics();
+applyInstrumentTransform('ruler');
+applyInstrumentTransform('triangle45');
+updateProtractorTransform();
+updateCompassTransform();
 
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) { e.preventDefault(); undo(); return; }
@@ -1057,14 +1978,12 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') changePage(1);
   if (e.key === '+' || e.key === '=') setScale(state.scale + 0.1);
   if (e.key === '-') setScale(state.scale - 0.1);
-  if (e.key === 'f' || e.key === 'F') {
-    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-    else document.exitFullscreen();
-  }
+  if (e.key === 'f' || e.key === 'F') toggleFullscreen();
   if (e.key === 'Escape') { menu.classList.remove('open'); clearCompass(); }
 });
 
 updateUndoButtons();
+updateCursor();
 toast('Z-Kitap hazır · PDF yükleyin', 2800);
 </script>
 </body>
