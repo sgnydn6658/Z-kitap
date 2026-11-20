@@ -101,6 +101,18 @@
       width: 34px; height: 34px; border-radius: 50%; border: 3px solid transparent;
       cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
+    .swatch-custom {
+      position: relative; display: inline-flex; align-items: center; justify-content: center; overflow: hidden;
+      background: conic-gradient(#ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #ef4444);
+    }
+    .swatch-custom-dot {
+      width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9;
+      border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(15,23,42,0.15); pointer-events: none;
+    }
+    .swatch-custom input {
+      position: absolute; left: -8px; top: -8px; width: 50px; height: 50px;
+      opacity: 0; cursor: pointer; border: 0; padding: 0;
+    }
     .swatch.active {
       border-color: var(--accent);
       box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent);
@@ -379,6 +391,10 @@
             <div class="swatch" data-color="#db2777" style="background:#db2777"></div>
             <div class="swatch" data-color="#0f172a" style="background:#0f172a"></div>
             <div class="swatch" data-color="#ffffff" style="background:#ffffff;border:1px solid #94a3b8"></div>
+            <label class="swatch swatch-custom" id="customSwatch" title="İstediğin rengi seç">
+              <span class="swatch-custom-dot" id="customDot"></span>
+              <input type="color" id="customColor" value="#0ea5e9" aria-label="Özel renk">
+            </label>
           </div>
           <div class="menu-section">Kalınlık</div>
           <div class="slider-row">
@@ -577,13 +593,24 @@ $$('.tool-btn[data-tool], .tool-chip[data-tool]').forEach(btn => {
   btn.addEventListener('click', () => setTool(btn.dataset.tool));
 });
 
-$$('.swatch').forEach(s => {
+$$('.swatch[data-color]').forEach(s => {
   s.addEventListener('click', () => {
     $$('.swatch').forEach(x => x.classList.remove('active'));
     s.classList.add('active');
     state.color = s.dataset.color;
   });
 });
+// Özel renk: renk seçiciden istenen renk
+const customColor = $('#customColor');
+function applyCustomColor() {
+  state.color = customColor.value;
+  $('#customDot').style.background = customColor.value;
+  $$('.swatch').forEach(x => x.classList.remove('active'));
+  $('#customSwatch').classList.add('active');
+}
+customColor.addEventListener('input', applyCustomColor);
+customColor.addEventListener('change', applyCustomColor);
+customColor.addEventListener('click', e => e.stopPropagation());
 $('#brushSize').addEventListener('input', () => {
   state.brushSize = +$('#brushSize').value;
   $('#brushVal').textContent = state.brushSize;
